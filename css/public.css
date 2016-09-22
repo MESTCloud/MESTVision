@@ -1,0 +1,12 @@
+.reminder{
+    width: 400px;
+    height:200px;
+    border-radius: 5px;
+    border: 1px solid gainsboro;
+    background: white;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    margin-left: -200px;
+    z-index: 100;
+}
