@@ -1,10 +1,16 @@
 $(function(){
 
-    /*²Ëµ¥µã»÷ºó Ìí¼ÓÑ¡ÖÐÑùÊ½*/
+    /*ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Ê½*/
     $(".sub-menu>li").click(function(){
-        $(".sub-menu").children("li").removeClass("active open");
+     $(".sub-menu").children("li").removeClass("active open");
         $(this).addClass("active open");
         $(this).parent().parent().addClass("active").siblings().removeClass("active");
+
+        var $page=$(this).find("a").attr("data-page");
+        console.log($page);
+        
+        $("#iframepage").attr("src",$page);
+
     });
 
 })
