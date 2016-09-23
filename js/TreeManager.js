@@ -1,7 +1,8 @@
-$(function() {
-	$(".userMenu_left tbody tr").on("click", function() {
+~function (jQuery) {
+	  function Menu(trclick,treeid){
+	  	$(trclick).on("click", function() {
 			var $dataid = $(this).attr("data_uid");
-			 		$("#tree_2").find( "a").removeClass("jstree-clicked");
+			 		$(treeid).find( "a").removeClass("jstree-clicked");
 			        active($dataid)
 	});
 	     var active=function($id)
@@ -28,4 +29,11 @@ $(function() {
 				}
 
 			}
-});
+
+	  	
+	  }
+    //->扩展jQuery插件
+    jQuery.fn.extend({
+        Menu: Menu
+    });
+}(jQuery);

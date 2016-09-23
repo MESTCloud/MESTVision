@@ -60,13 +60,13 @@
 .portlet.box.blue{
     border: 0px;
 }
-/*�û��˵����� UserMenuManage*/
+/*用户菜单UserMenuManage*//*角色菜单管理 RoleManager*/
 .box{
 /* width:700px;*/
  
 }
 tbody tr{cursor: pointer}
-.userMenu_left,.userMenu_right{
+.userMenu_left,.userMenu_right,.RoleMenu_left,.RoleMenu_right,.userRole_left,.userRole_right,.Roleuser_left,.Roleuser_right{
 
     height: 800px;
     border: 1px solid #0088cc;
@@ -74,12 +74,12 @@ tbody tr{cursor: pointer}
     border-radius: 5px;
 
 }
-.userMenu_left{
+.userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left{
     width: 30%;
     margin-right: 10px;
-     overflow-x: scroll;
+     overflow-x: auto;
 }
-.userMenu_right{
+.userMenu_right,.RoleMenu_right,.userRole_right,.Roleuser_right{
     width: 65%;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
