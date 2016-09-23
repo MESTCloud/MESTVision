@@ -3,7 +3,7 @@ $(function(){
 
     /*tree  点击事件*/
     $(".tree li a").on("click",function(){
-      console.dir($(this).context );/!*context.innerText*!/
+      console.dir($(this).context );/*context.innerText*/
     });
 
     /*删除操作*/

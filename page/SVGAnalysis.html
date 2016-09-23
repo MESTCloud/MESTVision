@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>气体站</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
+          type="text/css"/>
+    <link rel="stylesheet" href="../assets/global/plugins/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
+    <link rel="stylesheet" href="../assets/global/plugins/datatables/datatables.min.css"/>
+    <link rel="stylesheet" href="../assets/global/css/components-rounded.min.css"/>
+    <link rel="stylesheet" href="../assets/global/css/plugins.min.css"/>
+    <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="../css/public.css"/>
+</head>
+<body>
+<!--列表 begin-->
+<div class="container-fluid page-content row col-md-12" >   
+    <div class="portlet box blue ">
+        <div class="portlet-title">
+            <div class="caption">预冷</div>
+            <div class="actions ">
+                <button type="button" class="btn btn-default btn-lg" data-toggle="modal"
+                         id="user_Enlarge">
+                    <i class="fa fa-search-plus"></i> 放大
+                </button>
+                <button type="button" class="btn btn-default btn-lg"
+                        data-target="#myModal_Del" id="user_Narrow">
+                    <i class="fa fa-search-minus"></i>缩小
+                </button>
+                <button type="button" class="btn btn-default btn-lg" data-target="#myModal_Update"
+                        id="user_Return">
+                    <i class="fa fa-file"></i> 还原
+                </button>
+            </div>
+        </div>
+        <div id="SVGBox" class="portlet-bodyS table-scrollableS"></div>
+    </div>
+</div>
+<!--end-->
+</body>
+</html>
+<script src="../assets/global/plugins/jquery.min.js"></script>
+<script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/SVGAnalysis.js"></script>
+<script src="../js/public.js"></script>
