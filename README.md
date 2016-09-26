@@ -1,2 +1,0 @@
-# MESTVision
-MESTVision

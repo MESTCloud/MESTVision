@@ -1,22 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>用户管理</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
-          type="text/css"/>
-
-    <link rel="stylesheet" href="../assets/global/plugins/bootstrap/css/bootstrap.min.css"/>
-
-    <link rel="stylesheet" href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
-    <link rel="stylesheet" href="../assets/global/plugins/datatables/datatables.min.css"/>
-    <link rel="stylesheet" href="../assets/global/css/components-rounded.min.css"/>
-    <link rel="stylesheet" href="../assets/global/css/plugins.min.css"/>
-    <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-
+    <link href="../css/index.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" />
+    <link rel="stylesheet" href="../resource/datatables/datatables.min.css" />
+   <link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css"/>
+    <link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
     <link rel="stylesheet" href="../css/Manage.css"/>
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
    <style type="text/css">
    	 .portlet.box.blue{
    		border: 1px solid #3598dc;
@@ -265,6 +258,7 @@
 <div class="container" id="Add">
     <div class="modal fade" id="myModal_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add"
          aria-hidden="true" data-backdrop="static">
+     
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -561,42 +555,29 @@
 
 </div>
 <!--end-->
-<!--删除begin-->
-<div class="container" id="User_del" style="display:none">
-    <div class="row">
-        <h3>&nbsp;&nbsp;删除</h3>
-        <hr/>
+  <div id="dialogalert" title="系统提示：">
+        <p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+
+        </p>
     </div>
 
-    <div class="text-center">是否删除此操作！</div>
-    <div class="pull-right" >
-        <p><p>
-        <button type="button" class="btn btn-default" id="del_user">确定</button>
-        <button type="button" class="btn btn-default" id="del_cancel">取消</button>
+    <div id="dialogconfirm" title="系统提示：">
+        <p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+        </p>
     </div>
 
-</div>
-<!--end-->
-<!--提示框begin-->
-<div class="container" id="User_Check" style="display:none" >
-    <div class="row" class="alert-warning">
-        <h3>&nbsp;&nbsp;提示</h3>
-        <hr/>
-    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../resource/bootstrap/js/bootstrap.min.js"></script>
 
-    <div class="text-center">请选择要操作的项！</div>
-    <div class="pull-right" >
-        <p><p>
-        <button type="button" class="btn btn-default" id="check_cancel">取消</button>
-    </div>
-
-</div>
-<!--end-->
+    <script src="../resource/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+        <script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
+    <script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+    <script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
+    <script src="../js/UserManage.js"></script>
+    <script src="../js/public.js"></script>
+    
+ 
 </body>
 </html>
-<script src="../assets/global/plugins/jquery.min.js"></script>
-<script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/UserManage.js"></script>
-<script src="../js/public.js"></script>
-
-

@@ -52,8 +52,8 @@ $(function () {
             }
         }
     );
-    /**/
-    $("input[name='check_table']").click(function () {
+
+    $("tbody").click(function () {
         var $check = $("input[name='check_table']:checked");
         var ototal = $check.length;
 
@@ -68,16 +68,16 @@ $(function () {
     /*删除user_delete*/
     $("#Role_delete").click(function () {
         //当复选框已经被选中后
-        if (!CheckedLength()) {
-            $("#del").show();
-            return false;
-        }else{
-        
-        	alert("删除操作");
+        if (CheckedLength()) {
+           	shconfirm("确定要删除吗", function(result) {
+				if(result) {
+					/* 对删除进行交互;*/
+				}
+			});
         }
     });
    /* $("#del_Role").click(function(){
-        alert("删除操作");
+        shalert("删除操作");
     });*/
 
     $("#check_cancel").click(function(){
@@ -102,11 +102,15 @@ $(function () {
                 total++;
             }
         }
-        if (total == 0) {
-            $("#User_Check").show();
-            return false;
-        }
-        return true;
+      	if(total == 0) {
+			shalert('请选择操作项！');
+			return false;
+		} else if(total != 1) {
+			shalert('请选择一项进行操作！');
+			return false;
+		} else {
+			return true;
+		}
     }
 
 });
@@ -117,19 +121,19 @@ $(function () {
     $("#Rolesave_Add").click(function () {
       if($("#Name_Add").val().trim()=="")
       {
-          alert("姓名不能为空！");
+          shalert("姓名不能为空！");
           $("#Name_Add").focus();
           return false;
       }
         if($("#Number_Add").val().trim()=="")
-        {alert("编号不能为空！");
+        {shalert("编号不能为空！");
             $("#Number_Add").focus();
             return false;
         }
        
 
         if($("#Role_Add").prop("selected")==false){
-            alert("请选择类型！");
+            shshalert("请选择类型！");
             return false;
         }
 
@@ -138,18 +142,18 @@ $(function () {
     $("#Rolesave_Update").click(function(){
          if($("#Name_update").val().trim()=="")
       {
-          alert("姓名不能为空！");
+          shalert("姓名不能为空！");
           $("#Name_update").focus();
           return false;
       }
         if($("#Number_Update").val().trim()=="")
-        {alert("编号不能为空！");
+        {shalert("编号不能为空！");
             $("#Number_Update").focus();
             return false;
         }
         if($("#Role_Update").val().trim()=="")
         {
-            alert("请选择类别！");
+            shalert("请选择类别！");
             $("#Role_Update").focus();
             return false;
         }
@@ -162,7 +166,7 @@ $(function () {
     $("#save_inputPassWordUpdate").click(function(){
         if($("#inputPassWordUpdate").val().trim()!=$("#inputPassWordUpdate2").val().trim())
         {
-            alert("两次密码不一致，请重新填写");
+            shalert("两次密码不一致，请重新填写");
             $("#inputPassWordUpdate2").val("");
             $("#inputPassWordUpdate2").focus();
             return false;

@@ -54,7 +54,7 @@
     width: 60%;
     float: left;
     height: 800px;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     border: 1px solid #0088cc;
 }
 .portlet.box.blue{
@@ -71,7 +71,7 @@ tbody tr{cursor: pointer}
     height: 800px;
     border: 1px solid #0088cc;
     float: left;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 
 }
 .userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left{

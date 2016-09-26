@@ -1,0 +1,27 @@
+@import "../resource/font-awesome/css/font-awesome.min.css";
+@import "../resource/simple-line-icons/simple-line-icons.min.css";
+@import "../resource/bootstrap/css/bootstrap.min.css";
+@import "components-rounded.min.css";
+@import "../resource/layout/css/layout.min.css";
+@import "../resource/layout/css/themes/darkblue.min.css";
+@import "../resource/layout/css/custom.min.css";
+
+.page-logo-show {
+    float: left;
+    display: block;
+    width: 235px;
+    height: 50px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.index-Title1{
+	color: white;
+	font-size: 18px;
+}
+
+.index-Title2{
+	color: red;
+	font-size: 18px;
+}

@@ -19,7 +19,29 @@ $(function() {
 			$("#checkAll").prop('checked', false);
 		}
 
-	})
+	});
+	$("#checkAll").click(
+		function() {
+			if(this.checked) {
+
+				$("input[name='check_table']").prop('checked', true);
+
+			} else {
+				$("input[name='check_table']").prop('checked', false);
+
+			}
+		}
+	);
+	$("tbody").bind("click", function() {
+		var $check = $("input[name='check_table']:checked");
+		var ototal = $check.length;
+
+		if($("input[name='check_table']").length == ototal) {
+			$("#checkAll").prop("checked", true);
+		} else {
+			$("#checkAll").prop("checked", false);
+		}
+	});
     $("#RoleUser_Add").on("click",function(){
       /*保存内容*/
     });

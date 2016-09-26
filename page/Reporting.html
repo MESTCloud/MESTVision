@@ -1,81 +1,48 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>气体站</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <link rel="stylesheet" href="../assets/global/plugins/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
-    <link rel="stylesheet" href="../assets/global/plugins/datatables/datatables.min.css"/>
-    <link rel="stylesheet" href="../assets/global/css/components-rounded.min.css"/>
-<!--    <link rel="stylesheet" href="../assets/global/css/plugins.min.css"/>-->
-    <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="../css/public.css"/>
-    
-    <!--excel样式-->
-    <link href="../css/gcspread.sheets.excel2013white.9.40.20161.0.css" rel="stylesheet" type="text/css" />  
+    <title>运行报表</title>
+    <link href="../css/index.css" rel="stylesheet" type="text/css" />
+    <link href="../css/gcspread.sheets.excel2013white.9.40.20161.0.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />  
 </head>
-<!--列表 begin-->
-<div class="container-fluid page-content row " >   
-    <div class="portlet box blue">
-        <div class="portlet-title ">
-            <div class="caption ">
-            	系统报表
-            </div> 
-        	<div class="actions">
-        		<!--<div class="col-md-6 ">
-            		开始日期：<input type="text" id="d241" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
-        		</div>
-        		<div class="col-md-3 text-right">
-            		结束日期：<input type="text" id="d242" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
-        		</div>-->
-        		
-	                <button type="button" class="btn btn-default" id="btnQuery">
-	                	<i class="fa fa-search"></i>查询
-	                </button>
-			        <button type="button" class="btn btn-default" id="btnOutputExcel">
-			        	<i class="fa fa-file-excel-o"></i>导出EXCEL
-			        </button>
-			        <button type="button" class="btn btn-default" id="btnOutputPdf">
-			        	<i class="fa fa-file-pdf-o"></i>导出PDF
-			        </button>
-        			                
-        	</div>
-        </div>       
-    
+<body>
+<div class="portlet box blue" style="margin:0 0; ">
+    <div class="portlet-title ">
+        <div class="caption ">系统报表</div>
+        <div class="actions">
+	        <button type="button" class="btn btn-default" id="btnQuery">
+	            <i class="fa fa-search"></i>
+                <span>查询</span>
+	        </button>
+		    <button type="button" class="btn btn-default" id="btnOutputExcel">
+			    <i class="fa fa-file-excel-o"></i>
+                <span>导出EXCEL</span>
+		    </button>
+		    <button type="button" class="btn btn-default" id="btnOutputPdf">
+			    <i class="fa fa-file-pdf-o"></i>
+                <span>导出PDF</span>
+		    </button>          
+        </div>
+    </div>       
     <div class="portlet-body">
-    	 <div class="row">
+        <div class="row">
             <div class="col-md-3 text-left">
-                	开始日期：<input type="text" id="txt_start" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+                    开始日期：<input type="text" id="txt_start" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
             </div>
             <div class="col-md-9 text-left">
-                	结束日期：<input type="text" id="txt_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+                    结束日期：<input type="text" id="txt_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
             </div>
-            <!--<div class="col-md-6 text-left">
-                <button type="button" class="btn btn-default" id="btnQuery">
-                	<i class="fa fa-search"></i>查询
-                </button>
-		        <button type="button" class="btn btn-default" id="btnOutputExcel">
-		        	<i class="fa fa-file-excel-o"></i>导出EXCEL
-		        </button>
-		        <button type="button" class="btn btn-default" id="btnOutputPdf">
-		        	<i class="fa fa-file-pdf-o"></i>导出PDF
-		        </button>
-            </div>-->
-       </div>
-   </div>
-   <div id="ss" class="portlet-body " style="width:100%; height:500PX; border: 1px solid gray;"></div>
-   </div>
+        </div>
+    </div>
+    <div id="ss" style="width: 100%; height: 500px; border: 1px solid gray;"></div>
 </div>
-<!--end-->
+     <script src="../js/jquery.min.js"></script>
+     <script src="../resource/bootstrap/js/bootstrap.min.js"></script>
+     <script language="javascript" type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
+     <script type="text/javascript" src="../js/gcspread.sheets.all.9.40.20161.0.min.js"></script>
+     <script src="../js/Reporting.js"></script>
+     <script src="../js/public.js"></script>
 </body>
 </html>
-<script src="../assets/global/plugins/jquery.min.js"></script>
-<script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/public.js"></script>
-<script language="javascript" type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
-<script src="../js/Reporting.js"></script>
-
-<!--excel js-->
-<script type="text/javascript" src="../js/gcspread.sheets.all.9.40.20161.0.min.js"></script>

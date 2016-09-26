@@ -2,7 +2,7 @@
 $(function () {		
 	/*获得数据*/
 	if (getQueryString("name")) {
-        $("#SVGBox").append("<embed id='ShowSVG' src='" + "../img/" + getQueryString("name") + ".svg" + "' type='image/svg+xml' width='100%' />");
+	    $("#SVGBox").append("<embed id='ShowSVG' src='" + "../ProcessWatching/" + getQueryString("name") + ".svg" + "' type='image/svg+xml' width='100%' />");
     }
 	
 	/*获得Url参数值*/
@@ -16,7 +16,6 @@ $(function () {
 	$("#user_Enlarge").click(
         function () {
         	var svg = document.getElementById("ShowSVG");
-        	//console.log(svg.src);
             svg.setAttribute("width", parseInt(parseInt(svg.getAttribute("width").substring(0, svg.getAttribute("width").length - 1)) + 10) + "%");
         }
     );
