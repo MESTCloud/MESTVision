@@ -43,15 +43,15 @@
 .left_row{
 
     height: 800px;
-    width: 35%;
+    width: 30%;
     
     float: left;
-    border-radius: 4px;
-    margin-right: 10px;
+    /*border-radius: 4px;*/
+    margin-right: 1%;
     border: 1px solid #0088cc;
 }
 .right_row{
-    width: 60%;
+    width: 69%;
     float: left;
     height: 800px;
     /*border-radius: 4px;*/
@@ -76,10 +76,10 @@ tbody tr{cursor: pointer}
 }
 .userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left{
     width: 30%;
-    margin-right: 10px;
+    margin-right: 1%;
      overflow-x: auto;
 }
 .userMenu_right,.RoleMenu_right,.userRole_right,.Roleuser_right{
-    width: 65%;
+    width: 69%;
     overflow-x: auto;
 }

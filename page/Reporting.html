@@ -12,15 +12,15 @@
     <div class="portlet-title ">
         <div class="caption ">系统报表</div>
         <div class="actions">
-	        <button type="button" class="btn btn-default" id="btnQuery">
+	        <button type="button" class="btn btn-warning" id="btnQuery">
 	            <i class="fa fa-search"></i>
                 <span>查询</span>
 	        </button>
-		    <button type="button" class="btn btn-default" id="btnOutputExcel">
+		    <button type="button" class="btn btn-primary" id="btnOutputExcel">
 			    <i class="fa fa-file-excel-o"></i>
                 <span>导出EXCEL</span>
 		    </button>
-		    <button type="button" class="btn btn-default" id="btnOutputPdf">
+		    <button type="button" class="btn btn-success" id="btnOutputPdf">
 			    <i class="fa fa-file-pdf-o"></i>
                 <span>导出PDF</span>
 		    </button>          
@@ -28,10 +28,10 @@
     </div>       
     <div class="portlet-body">
         <div class="row">
-            <div class="col-md-3 text-left">
+            <div class="col-md-3 text-left" style="padding-left: 25px;">
                     开始日期：<input type="text" id="txt_start" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
             </div>
-            <div class="col-md-9 text-left">
+            <div class="col-md-9 text-left" style="padding-left: 25px;">
                     结束日期：<input type="text" id="txt_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
             </div>
         </div>
