@@ -1,5 +1,5 @@
 /*交互*/
-$(function() {
+/*$(function() {
 	$.ajax({
 		url: "../js/json",
 		type: "get",
@@ -8,7 +8,7 @@ $(function() {
 			$("tbody").html(bindTable(data));
 		}
 	});
-});
+});*/
 /*获取集合*/
 function bindTable(datatable) {
 	if(datatable.length > 0) {
@@ -21,14 +21,13 @@ function bindTable(datatable) {
 				str += "<tr class='gradeX even' role='row'>"
 			}
 			str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-			str += "<input type='checkbox' class='checkboxes' value='" + data["id"] + "' name='check_table'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table'>";
 			str += "<span></span>";
 			str += "</label> </td>";
-			str += "<td class='sorting_1'>" + data["loginName"] + "</td>";
-			str += "<td>" + data["name"] + "</td>";
-			str += "<td>" + data["number"] + "</td>";
-			str += "<td>" + data["role"] + "</td>";
-			str += "<td>" + data["you"] + "</td>";
+			str += "<td class='sorting_1'>" + data["UserName"] + "</td>";
+			str += "<td>" + data["RealName"] + "</td>";
+			str += "<td>" + data["Mobile"] + "</td>";
+			str += "<td>" + data["RoleName"] + "</td>";
 			str += "</tr>";
 
 		});
@@ -88,7 +87,36 @@ $(function() {
 		//当复选框已经被选中后
 		if(CheckedLength()) {
 			$("#user_update").prop("data-toggle", "modal");
-			$('#myModal_Update').modal('show')
+			$('#myModal_Update').modal('show');
+			var idIndex = $("input[name='check_table']:checked").val();
+			console.log(idIndex);
+			send("userlist");
+
+			//收到消息
+			socket.onmessage = function(msg) {
+				var result = msg.data;
+				result = JSON.parse(result);
+				if(result["error"]) {
+					shalert(result["error"]);
+				} else if(result["exception"]) {
+					shalert(result["exception"]);
+				} else {
+					switch(result["Function"]) {
+						case "UserList":
+							var obj=result["data"][idIndex];
+                               $("#login_Update").val(obj["UserName"]);
+                               $("#name_Update").val(obj["RealName"]);
+                               $("#inputphone_Update").val(obj["Mobile"]);
+                               $("#select_role").find("option[text='"+obj['RoleName']+"']").attr("selected",true);
+                               UpdateUser(obj["Id"]);
+                               
+							break;
+
+					}
+
+				}
+			}
+
 		}
 
 	});
@@ -129,7 +157,7 @@ $(function() {
 		if($("#login_Add").val().trim() == "") {
 
 			shalert("登录名不能为空！");
-            $("#login_Add").focus();
+			$("#login_Add").focus();
 			return false;
 		}
 		if($("#name_Add").val().trim() == "") {
@@ -149,20 +177,7 @@ $(function() {
 				return false;
 			}
 		}
-		if($("#inputEmail_Add").val().trim() == "") {
-			shalert("邮箱不能为空！");
-			$("#inputEmail_Add").focus();
-			return false;
-		} else {
-			var temp = document.getElementById("inputEmail_Add");
-			//对电子邮件的验证
-			var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-			if(!myreg.test(temp.value)) {
-				shalert('提示\n\n请输入有效的E_mail！');
-				$("#inputEmail_Add").focus();
-				return false;
-			}
-		}
+
 		if($("#inputPassword_Add").val().trim() == "") {
 			shalert("密码不能为空！");
 			$("#inputPassword_Add").focus();
@@ -174,20 +189,39 @@ $(function() {
 			return false;
 		}
 
-		if($("#check_Add").prop("checked") == false) {
-			shalert("请选择是否有效！");
-			return false;
-		}
 		if($("#inputPassword_Add").val().trim() != $("#inputPassword2_Add").val().trim()) {
 			shalert("两次密码不一致，请重新填写");
 			$("#inputPassword2_Add").val("");
 			$("#inputPassword2_Add").focus();
 			return false;
 		}
+		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
+		// "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\""+ $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#check_Add").val().trim() + "\",}";
+		console.log(jsStr);
+		send(jsStr);
+
+		socket.onmessage = function(msg) {
+			var result = msg.data;
+			result = JSON.parse(result);
+			if(result["error"]) {
+				shalert(result["error"]);
+			} else if(result["exception"]) {
+				shalert(result["exception"]);
+			} else {
+				switch(result["Function"]) {
+					case "AddUser":
+						shalert("添加成功");
+						return false;
+
+				}
+			}
+		}
 
 	});
 	/*修改*/
-	$("#save_Update").click(function() {
+	function UpdateUser(userid)
+	{
+		$("#save_Update").click(function() {
 		if($("#login_Update").val().trim() == "") {
 			shalert("登录名不能为空！");
 			$("#login_Update").focus();
@@ -211,29 +245,55 @@ $(function() {
 				return false;
 			}
 		}
-		if($("#inputEmail_Update").val().trim() == "") {
-			shalert("邮箱不能为空！");
-			$("#inputEmail_Update").focus();
+		if($("#inputPassword_Update").val().trim() == "") {
+			shalert("密码不能为空！");
+			$("#inputPassword_Add").focus();
 			return false;
-		} else {
-			var temp = document.getElementById("inputEmail_Update");
-			//对电子邮件的验证
-			var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-			if(!myreg.test(temp.value)) {
-				shalert('提示\n\n请输入有效的E_mail！');
-				$("#inputEmail_Update").focus();
-				return false;
+		}
+		if($("#inputPassword_Update2").val().trim() == "") {
+			shalert("请再次填写密码！");
+			$("#inputPassword2_Add").focus();
+			return false;
+		}
+
+		if($("#inputPassword_Add").val().trim() != $("#inputPassword2_Add").val().trim()) {
+			shalert("两次密码不一致，请重新填写");
+			$("#inputPassword2_Add").val("");
+			$("#inputPassword2_Add").focus();
+			return false;
+		}
+
+		var jsStr = "UpdateUser {\"Id\":\"" + userid + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
+		// "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\""+ $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#check_Add").val().trim() + "\",}";
+		console.log(jsStr);
+		send(jsStr);
+
+		socket.onmessage = function(msg) {
+			var result = msg.data;
+			result = JSON.parse(result);
+			if(result["error"]) {
+				shalert(result["error"]);
+			} else if(result["exception"]) {
+				shalert(result["exception"]);
+			} else {
+				switch(result["Function"]) {
+					case "UpdateUser":
+						shalert("修改成功！");
+						return false;
+                     
+				}
 			}
 		}
-
-		if($("#check_Update").prop("checked") == false) {
-			shalert("请选择是否有效！");
-			return false;
-		}
-
 	});
+
+	}
+	
 	/*密码重置*/
 	$("#save_inputPassWordUpdate").click(function() {
+		if($("#inputPassWordUpdate").val().trim() == "" || $("#inputPassWordUpdate2").val().trim() == "") {
+			shalert("密码不能为空");
+			return false;
+		}
 		if($("#inputPassWordUpdate").val().trim() != $("#inputPassWordUpdate2").val().trim()) {
 			shalert("两次密码不一致，请重新填写");
 			$("#inputPassWordUpdate2").val("");
@@ -242,3 +302,50 @@ $(function() {
 		}
 	});
 })
+
+//连接成功
+socket.onopen = function() {
+	if($.cookie("user") && $.cookie("password")) {
+
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+	}
+
+	send("userlist");
+}
+
+//收到消息
+socket.onmessage = function(msg) {
+	var result = msg.data;
+	result = JSON.parse(result);
+	if(result["error"]) {
+		shalert(result["error"]);
+	} else if(result["exception"]) {
+		shalert(result["exception"]);
+	} else {
+		switch(result["Function"]) {
+			case "UserList":
+				console.log(result["data"]);
+
+				$("tbody").html(bindTable(result["data"]));
+				break;
+
+		}
+
+	}
+}
+
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//location.href = "http://www.baidu.com";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
+}
