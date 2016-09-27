@@ -285,24 +285,8 @@
                                                              placeholder="手机号码"></div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputEmail_Add" class="col-md-3 text-right">邮箱地址：</label>
-
-                                <div class="col-md-9"><input type="email" class="form-control" id="inputEmail_Add"
-                                                             placeholder="邮箱地址">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputNumber_Add" class="col-md-3 text-right">编号：</label>
-
-                                <div class="col-md-9"><input type="text" class="form-control" id="inputNumber_Add"
-                                                             placeholder="编号">
-                                </div>
-                            </div>
-                        </div>
+                  
+                  
                         <div class="form-group">
                             <div class="row">
                                 <label for="inputRole_Add" class="col-md-3 text-right">默认角色：</label>
@@ -315,22 +299,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputSafety_Add" class="col-md-3 text-right">安全级别：</label>
-
-                                <div class="col-md-9"><select class="form-control" id="inputSafety_Add">
-                                    <option>一级安全（绝密）</option>
-                                    <option>二级安全（机密）</option>
-                                    <option>三级安全（秘密）</option>
-                                    <option>四级安全（限制）</option>
-                                    <option>五级安全（不保密）</option>
-                                </select>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="form-group">
+              
+                      
+                      <div class="form-group">
                             <div class="row">
                                 <label for="inputPassword_Add" class="col-md-3 text-right">密码：</label>
 
@@ -348,17 +319,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="col-md-3 text-right">
-                                        <input type="checkbox" id="check_Add"> 是否有效
-                                    </label>
-                                </div>
-                            </div>
-
-
-                        </div>
+                   
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" id="save_Add">确定</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -394,7 +355,7 @@
                                 <label for="login_Update" class="col-md-3 text-right">登录名：</label>
 
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" id="login_Update" placeholder="登录名">
+                                    <input type="text" class="form-control" id="login_Update" disabled="disabled" placeholder="登录名">
                                 </div>
                             </div>
                         </div>
@@ -417,34 +378,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputEmail_Update" class="col-md-3 text-right">邮箱地址：</label>
+                      
 
-                                <div class="col-md-9">
-                                    <input type="email" class="form-control" id="inputEmail_Update" placeholder="邮箱地址">
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputNumber_Update" class="col-md-3 text-right">编号：</label>
-
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="inputNumber_Update" placeholder="编号">
-
-                                </div>
-                            </div>
-                        </div>
+                       
 
                         <div class="form-group">
                             <div class="row">
                                 <label for="inputRole_Add" class="col-md-3 text-right">默认角色：</label>
 
                                 <div class="col-md-9">
-                                    <select class="form-control">
+                                    <select class="form-control" id="select_role">
                                         <option>超级管理员</option>
                                         <option>管理员</option>
 
@@ -452,37 +395,26 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
+  <div class="form-group">
                             <div class="row">
-                                <label for="inputSafety_Add" class="col-md-3 text-right">安全级别：</label>
+                                <label for="inputPassword_Update" class="col-md-3 text-right">密码：</label>
 
-                                <div class="col-md-9">
-                                    <select class="form-control">
-                                        <option>一级安全（绝密）</option>
-                                        <option>二级安全（机密）</option>
-                                        <option>三级安全（秘密）</option>
-                                        <option>四级安全（限制）</option>
-                                        <option>五级安全（不保密）</option>
-                                    </select>
-
+                                <div class="col-md-9"><input type="password" class="form-control" id="inputPassword_Update"
+                                                             placeholder="密码">
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
-
                             <div class="row">
-                                <div class="col-md-12 ">
-                                    <label class="col-md-3 text-right">
-                                        <input type="checkbox" id="check_Update"> 是否有效
-                                    </label>
+                                <label for="inputPassword_Update2" class="col-md-3 text-right">确认密码：</label>
 
-
+                                <div class="col-md-9"><input type="password" class="form-control"
+                                                             id="inputPassword_Update2" placeholder="确认密码">
                                 </div>
                             </div>
                         </div>
-
+               
+                       
                     </form>
 
 
