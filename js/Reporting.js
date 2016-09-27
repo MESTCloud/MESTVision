@@ -1,6 +1,46 @@
 
 $(function () {
 	
+	/*获得Url参数值*/
+	function getQueryString(pTitle) {
+	  var reg = new RegExp("(^|&)" + pTitle + "=([^&]*)(&|$)", "i");
+	  var r = window.location.search.substr(1).match(reg);
+
+	  if (r != null) return unescape(r[2]); return null;
+	}
+	
+	/*页面title赋值*/
+		switch (getQueryString("pTitle"))
+		{
+		case "1":
+			{
+				$("#txt_title").html("空压、预冷和纯化系统日报表");
+			}
+			break;
+
+		case "2":
+			{
+				$("#txt_title").html("膨胀机系统日报表");
+			}
+			break;
+		case "3":
+			{
+				$("#txt_title").html("分馏塔系统日报表");
+			}
+			break;
+
+		case "4":
+			{
+				$("#txt_title").html("压氧压氮系统日报表");
+			}
+			break;
+		case "5":
+		{
+			$("#txt_title").html("综合日报表");
+		}
+		break;
+	}
+	
 	/*显示excel*/
 	var spread = new GcSpread.Sheets.Spread(document.getElementById('ss'), { sheetCount: 1 });
 	

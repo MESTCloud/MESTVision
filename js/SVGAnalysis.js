@@ -2,6 +2,44 @@
 $(function () {		
 	/*获得数据*/
 	if (getQueryString("name")) {
+		
+		/*页面title赋值*/
+		switch (getQueryString("name"))
+		{
+		case "AHHX_001":
+			{
+				$("#txt_title").html("预冷");
+			}
+			break;
+
+		case "AHHX_002":
+			{
+				$("#txt_title").html("纯化");
+			}
+			break;
+		case "AHHX_003":
+			{
+				$("#txt_title").html("膨胀机");
+			}
+			break;
+
+		case "AHHX_004":
+			{
+				$("#txt_title").html("分馏塔");
+			}
+			break;
+		case "AHHX_005":
+		{
+			$("#txt_title").html("压氧压氮");
+		}
+		break;
+		case "AHHX_006":
+		{
+			$("#txt_title").html("空压机");
+		}
+		break;
+	}
+		
 	    $("#SVGBox").append("<embed id='ShowSVG' src='" + "../ProcessWatching/" + getQueryString("name") + ".svg" + "' type='image/svg+xml' width='100%' />");
     }
 	
@@ -9,6 +47,7 @@ $(function () {
 	function getQueryString(name) {
 	  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	  var r = window.location.search.substr(1).match(reg);
+
 	  if (r != null) return unescape(r[2]); return null;
 	}
 	
