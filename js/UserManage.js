@@ -54,7 +54,7 @@ $(function() {
 			});
 		}
 	});
-	
+
 	/*修改*/
 	$("#user_update").click(function() {
 		//当复选框已经被选中后
@@ -69,10 +69,7 @@ $(function() {
 			$("#login_Update").val(obj["UserName"]);
 			$("#name_Update").val(obj["RealName"]);
 			$("#inputphone_Update").val(obj["Mobile"]);
-			//console.log($("#select_role_update").find("option[text='超级管理员']"));
-			//console.log($("#select_role_update option[text='"+obj["RoleName"]+"']"));
-			//$("#select_role_update").attr("selected",true);
-			$("#select_role_update").val("10000010");
+			$("#select_role_update").val(obj["RoleId"]);
 			UpdateUser(obj["Id"]);
 		}
 
@@ -250,7 +247,7 @@ $(function() {
 			$("#inputPassword2_Add").focus();
 			return false;
 		}
-	
+
 		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
 
 		send(jsStr);
@@ -341,9 +338,9 @@ socket.onmessage = function(msg) {
 
 				UserData = result["data"]
 				$("tbody").html(bindTable(result["data"]));
-				console.log(UserData);
+				console.log(result["data"]);
 				break;
-				
+
 			case "AddUser":
 				shalert("添加成功");
 
@@ -376,7 +373,7 @@ socket.onmessage = function(msg) {
 				UserData[idIndexUpdate].UserName = $("#login_Update").val().trim();
 				UserData[idIndexUpdate].RoleName = $("#select_role_update").text().trim();
 				ckbs.each(function() {
-				
+
 					$(this).parent().parent().parent().replaceWith(AddUser(obj));
 
 				});
