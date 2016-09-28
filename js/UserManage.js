@@ -370,7 +370,7 @@ socket.onmessage = function(msg) {
 				UserData[idIndexUpdate].UserName = $("#login_Update").val().trim();
 				UserData[idIndexUpdate].RoleName = $("#select_role_update").text().trim();
 				ckbs.each(function() {
-					console.log(AddUser(obj));
+				
 					$(this).parent().parent().parent().replaceWith(AddUser(obj));
 
 				});
