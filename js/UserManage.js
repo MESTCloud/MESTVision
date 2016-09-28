@@ -1,5 +1,7 @@
 var UserData;
 /*复选框操作*/
+var indexsDel;
+var idIndexUpdate;
 $(function() {
 
 	/*全选 反选*/
@@ -29,39 +31,40 @@ $(function() {
 	/*删除user_delete*/
 	$("#user_delete").click(function() {
 		//当复选框已经被选中后
-		var indexs = CheckedLength("del");
+		indexsDel = CheckedLength("del");
 
-		if(indexs) {
+		if(indexsDel) {
 			shconfirm("确定要删除吗", function(result) {
 				var id = "";
 				if(result) {
+
 					var jsStr = "DeleteUser {\"id\":\"";
-					for(var i = 0; i < indexs.length; i++) {
-						jsStr += UserData[indexs[i]]["Id"] + "\,";
+					for(var i = 0; i < indexsDel.length; i++) {
+
+						jsStr += UserData[indexsDel[i]]["Id"] + "\,";
 
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
 
 				}
-				
+
 				send(jsStr);
 
 			});
 		}
 	});
-
-
+	
 	/*修改*/
 	$("#user_update").click(function() {
 		//当复选框已经被选中后
 		if(CheckedLength()) {
 			$("#user_update").prop("data-toggle", "modal");
 			$('#myModal_Update').modal('show');
-			var idIndex = $("input[name='check_table']:checked").val();
+			idIndexUpdate = $("input[name='check_table']:checked").val();
 
 			//send("userlist");
-			var obj = UserData[idIndex];
+			var obj = UserData[idIndexUpdate];
 			$("#login_Update").val(obj["UserName"]);
 			$("#name_Update").val(obj["RealName"]);
 			$("#inputphone_Update").val(obj["Mobile"]);
@@ -157,7 +160,7 @@ $(function() {
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-			
+
 			send(jsonStr);
 		});
 	}
@@ -246,7 +249,7 @@ $(function() {
 		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
 
 		send(jsStr);
-	
+
 	});
 
 })
@@ -276,6 +279,23 @@ function bindTable(datatable) {
 
 	}
 
+	return str;
+}
+
+function AddUser(datatable) {
+	var str = "";
+	var length = parseInt(UserData.length) - 1;
+	str += "<tr class='gradeX even' role='row'>"
+
+	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+	str += "<span></span>";
+	str += "</label> </td>";
+	str += "<td class='sorting_1'>" + datatable["UserName"] + "</td>";
+	str += "<td>" + datatable["RealName"] + "</td>";
+	str += "<td>" + datatable["Mobile"] + "</td>";
+	str += "<td>" + datatable["RoleName"] + "</td>";
+	str += "</tr>";
 	return str;
 }
 /*角色绑定*/
@@ -316,21 +336,54 @@ socket.onmessage = function(msg) {
 
 				UserData = result["data"]
 				$("tbody").html(bindTable(result["data"]));
-				console.log(UserData);
+				
 				break;
 			case "AddUser":
 				shalert("添加成功");
-				console.log(UserData);
-			
-			    UserData.push({"Id":"10000","Mobile":"13655555555","RealName":"测试","RoleName":"测试","UserName":"钉钉"});//"data":[{"Id":"100000","Mobile":"13655555555","RealName":"测试","RoleName":"测试","UserName":"钉钉"}]]
-				console.log(UserData);
+
+				var obj = {
+					"Id": result["info"],
+					"Mobile": $("#inputphone_Add").val().trim(),
+					"RealName": $("#name_Add").val().trim(),
+					"UserName": $("#login_Add").val().trim(),
+					"RoleName": $("#inputRole_Add  option:selected").text().trim()
+				};
+
+				UserData.push(obj);
+				$("tbody").append(AddUser(obj));
 				$('#myModal_Add').modal('hide');
 				break;
 			case "UpdateUser":
 				shalert("修改成功");
+				var ckbs = $("input[name='check_table']:checked");
+
+				var obj = {
+					"Id": UserData[idIndexUpdate].Id,
+					"Mobile": $("#inputphone_Update").val().trim(),
+					"RealName": $("#name_Update").val().trim(),
+					"UserName": $("#login_Update").val().trim(),
+					"RoleName": $("#select_role_update  option:selected").text().trim()
+				};
+
+				UserData[idIndexUpdate].Mobile = $("#inputphone_Update").val().trim();
+				UserData[idIndexUpdate].RealName = $("#name_Update").val().trim();
+				UserData[idIndexUpdate].UserName = $("#login_Update").val().trim();
+				UserData[idIndexUpdate].RoleName = $("#select_role_update").text().trim();
+				ckbs.each(function() {
+					console.log(AddUser(obj));
+					$(this).parent().parent().parent().replaceWith(AddUser(obj));
+
+				});
 				$('#myModal_Update').modal('hide');
 				break;
 			case "DeleteUser":
+
+				var ckbs = $("input[name='check_table']:checked");
+				ckbs.each(function() {
+					$(this).parent().parent().parent().remove();
+
+				});
+
 				shalert("删除成功");
 				break;
 			case "RoleList":
