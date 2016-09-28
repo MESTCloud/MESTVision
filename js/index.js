@@ -1,57 +1,127 @@
-$(".sub-menu > li").click(function () {
-    var menu = $('.page-sidebar-menu');
+$(".sub-menu > li").click(function() {
+	var menu = $('.page-sidebar-menu');
 
-    var el = $(this);
+	var el = $(this);
 
-    if (!el || el.size() == 0) {
-        return;
-    }
+	if(!el || el.size() == 0) {
+		return;
+	}
 
-    if (el.attr('href') == 'javascript:;' ||
-        el.attr('ui-sref') == 'javascript:;' ||
-        el.attr('href') == '#' ||
-        el.attr('ui-sref') == '#'
-        ) {
-        return;
-    }
+	if(el.attr('href') == 'javascript:;' ||
+		el.attr('ui-sref') == 'javascript:;' ||
+		el.attr('href') == '#' ||
+		el.attr('ui-sref') == '#'
+	) {
+		return;
+	}
 
-    var slideSpeed = parseInt(menu.data('slide-speed'));
-    var keepExpand = menu.data('keep-expanded');
+	var slideSpeed = parseInt(menu.data('slide-speed'));
+	var keepExpand = menu.data('keep-expanded');
 
-    // begin: handle active state
-    if (menu.hasClass('page-sidebar-menu-hover-submenu') === false) {
-        menu.find('li.nav-item.open').each(function () {
-            $(this).removeClass('open');
-            $(this).find('> a > .arrow.open').removeClass('open');
-            //$(this).find('> .sub-menu').slideUp();
-        });
-    } else {
-        menu.find('li.open').removeClass('open');
-    }
+	// begin: handle active state
+	if(menu.hasClass('page-sidebar-menu-hover-submenu') === false) {
+		menu.find('li.nav-item.open').each(function() {
+			$(this).removeClass('open');
+			$(this).find('> a > .arrow.open').removeClass('open');
+			//$(this).find('> .sub-menu').slideUp();
+		});
+	} else {
+		menu.find('li.open').removeClass('open');
+	}
 
-    menu.find('li.active').removeClass('active');
-    menu.find('li > a > .selected').remove();
-    // end: handle active state
+	menu.find('li.active').removeClass('active');
+	menu.find('li > a > .selected').remove();
+	// end: handle active state
 
-    el.parents('li').each(function () {
-        $(this).addClass('active');
-        $(this).find('> a > span.arrow').addClass('open');
-        
-        if ($(this).parent('ul.page-sidebar-menu').size() === 1) {
-            $(this).find('> a').append('<span class="selected"></span>');
-        }
+	el.parents('li').each(function() {
+		$(this).addClass('active');
+		$(this).find('> a > span.arrow').addClass('open');
 
-        if ($(this).children('ul.sub-menu').size() === 1) {
-            $(this).addClass('open');
-        }
-    });
+		if($(this).parent('ul.page-sidebar-menu').size() === 1) {
+			$(this).find('> a').append('<span class="selected"></span>');
+		}
 
-    if ($(this).find('> a').attr('data-page')) {
-        $("#ShowPage").attr("src", $(this).find('> a').attr('data-page'));
-    }
+		if($(this).children('ul.sub-menu').size() === 1) {
+			$(this).addClass('open');
+		}
+	});
 
-    var resBreakpointMd = App.getResponsiveBreakpoint('md');
-    if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
-        $('.page-header .responsive-toggler').click();
-    }
+	if($(this).find('> a').attr('data-page')) {
+		$("#ShowPage").attr("src", $(this).find('> a').attr('data-page'));
+	}
+
+	var resBreakpointMd = App.getResponsiveBreakpoint('md');
+	if(App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
+		$('.page-header .responsive-toggler').click();
+	}
 });
+
+$("#save_inputPassWordUpdate").click(function() {
+	
+	if($("#inputPassWordUpdateOld").val().trim() == "") {
+		shalert("旧密码不能为空");
+		return false;
+	}
+	if($("#inputPassWordUpdate").val().trim() == "" || $("#inputPassWordUpdate2").val().trim() == "") {
+		shalert("密码不能为空");
+		return false;
+	}
+	if($("#inputPassWordUpdate").val().trim() != $("#inputPassWordUpdate2").val().trim()) {
+		shalert("两次密码不一致，请重新填写");
+		$("#inputPassWordUpdate2").val("");
+		$("#inputPassWordUpdate2").focus();
+		return false;
+	}
+	var jsonStr = "ChangePassword {\"oldPassword\":\"" + $("#inputPassWordUpdateOld").val().trim() + "\",\"newPassword\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
+
+	send(jsonStr);
+});
+/*登录用户加载*/
+$("#userLoginName").html($.cookie("user"));
+//连接成功
+socket.onopen = function() {
+		if($.cookie("user") && $.cookie("password")) {
+			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+		}
+	}
+	//收到消息
+socket.onmessage = function(msg) {
+	var result = msg.data;
+	result = JSON.parse(result);
+	if(result["error"]) {
+		shalert(result["error"]);
+	} else if(result["exception"]) {
+		shalert(result["exception"]);
+	} else {
+		switch(result["Function"]) {
+
+			case "ChangePassword":
+				
+				if(result["info"].toString().trim() != "") {
+					shalert(result["info"]);
+				} else {
+					shalert("密码修改成功！");
+				}
+
+				$('#myModal_PassWordUpdate').modal('hide');
+				break;
+
+		}
+
+	}
+}
+
+socket.onclose = function(event) {
+	//console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//  location.href = "Login.html";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
+}
