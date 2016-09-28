@@ -15,9 +15,6 @@ $(".sub-menu > li").click(function () {
         return;
     }
 
-    var slideSpeed = parseInt(menu.data('slide-speed'));
-    var keepExpand = menu.data('keep-expanded');
-
     // begin: handle active state
     if (menu.hasClass('page-sidebar-menu-hover-submenu') === false) {
         menu.find('li.nav-item.open').each(function () {
@@ -45,9 +42,32 @@ $(".sub-menu > li").click(function () {
             $(this).addClass('open');
         }
     });
-
+    
     if ($(this).find('> a').attr('data-page')) {
-        $("#ShowPage").attr("src", $(this).find('> a').attr('data-page'));
+        var path = new Array();
+
+        while (true) {
+            if (el.parent('ul.page-sidebar-menu').size() === 1) {
+                path.push(el.find(' > a > span.title')[0].textContent);
+                break;
+            } else {
+                if (el.find(' > a > span.title')[0]) {
+                    path.push(el.find(' > a > span.title')[0].textContent);
+                }
+            }
+
+            el = el.parent();
+        }
+        
+        var url = $(this).find('> a').attr('data-page');
+        if (url.indexOf('?') > -1) {
+            url += "&path=" + escape(path.reverse());
+        } else {
+            url += "?path=" + escape(path.reverse());
+        }
+
+        console.log(url);
+        $("#ShowPage").attr("src", url);
     }
 
     var resBreakpointMd = App.getResponsiveBreakpoint('md');
