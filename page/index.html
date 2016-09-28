@@ -3,185 +3,236 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-    <!--<![endif]-->
-    <head>
-        <meta charset="utf-8" />
-        <title>云平台</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link href="../css/index.css" rel="stylesheet" type="text/css" />
-        <link href="../resource/layout/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
- <link href="../css/Main.css" rel="stylesheet" type="text/css" />
-    </head>
-    <body >
-    	<div class="container-fluid" >
-        	<div class="page-content">
-          		<h1 class="page-title" style="padding: 10px 0px 5px 0px;"> Admin Dashboard
+	<!--<![endif]-->
+	<head>
+		<meta charset="utf-8" />
+		<title>云平台</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link href="../css/index.css" rel="stylesheet" type="text/css" />
+		<link href="../resource/layout/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+		<link href="../css/Main.css" rel="stylesheet" type="text/css" />
+		<link href="../css/indexpage.css" rel="stylesheet" type="text/css" />
+		<style type="text/css">
+			.portlet.light.bordered {
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="page-content">
+				<h1 class="page-title" style="padding: 10px 0px 5px 0px;"> Admin Dashboard
                     <small>statistics, charts, recent events and reports</small>
                </h1>
-         	<div class="row">
-	            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	                <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
-	                    <div class="visual">
-	                        <i class="fa fa-comments"></i>
-	                    </div>
-	                    <div class="details">
-	                        <div class="number">
-	                            <span data-counter="counterup" data-value="1349">0</span>
-	                        </div>
-	                        <div class="desc"> New Feedbacks </div>
-	                    </div>
-	                </a>
-	            </div>
-	            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	                <a class="dashboard-stat dashboard-stat-v2 red" href="#">
-	                    <div class="visual">
-	                        <i class="fa fa-bar-chart-o"></i>
-	                    </div>
-	                    <div class="details">
-	                        <div class="number">
-	                            <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
-	                        <div class="desc"> Total Profit </div>
-	                    </div>
-	                </a>
-	            </div>
-	            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
-	                    <div class="visual">
-	                        <i class="fa fa-shopping-cart"></i>
-	                    </div>
-	                    <div class="details">
-	                        <div class="number">
-	                            <span data-counter="counterup" data-value="549">0</span>
-	                        </div>
-	                        <div class="desc"> New Orders </div>
-	                    </div>
-	                </a>
-	            </div>
-	            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	                <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
-	                    <div class="visual">
-	                        <i class="fa fa-globe"></i>
-	                    </div>
-	                    <div class="details">
-	                        <div class="number"> +
-	                            <span data-counter="counterup" data-value="89"></span>% </div>
-	                        <div class="desc"> Brand Popularity </div>
-	                    </div>
-	                </a>
-	            </div>
-        	</div>
-	         <div class="row">
-	            <div class="col-lg-6 col-xs-12 col-sm-12">
-	                <!-- BEGIN PORTLET-->
-	                <div class="portlet light bordered">
-	                    <div class="portlet-title">
-	                        <div class="caption">
-	                            <i class="icon-bar-chart font-dark hide"></i>
-	                            <span class="caption-subject font-dark bold uppercase">Site Visits</span>
-	                            <span class="caption-helper">weekly stats...</span>
-	                        </div>
-	                        <div class="actions">
-	                            <div class="btn-group btn-group-devided" data-toggle="buttons">
-                    <label class="btn red btn-outline btn-circle btn-sm active">
-                    <input type="radio" name="options" class="toggle" id="option1">New</label>
-	                                <label class="btn red btn-outline btn-circle btn-sm">
-	                                    <input type="radio" name="options" class="toggle" id="option2">Returning</label>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="portlet-body">
-	                        <div id="site_statistics_loading">
-	                            <img src="../img/loading.gif" alt="loading" /> </div>
-                        <div id="site_statistics_content" class="display-none">
-                            <div id="site_statistics" class="chart"> </div>
-                        </div>
-	                    </div>
-	                </div>
-	                <!-- END PORTLET-->
-	            </div>
-	            <div class="col-lg-6 col-xs-12 col-sm-12">
-                    <div class="portlet light bordered">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <i class="icon-share font-red-sunglo hide"></i>
-                                <span class="caption-subject font-dark bold uppercase">Revenue</span>
-                                <span class="caption-helper">monthly stats...</span>
-                            </div>
-                            <div class="actions">
-                                <div class="btn-group">
-                                    <a href="" class="btn dark btn-outline btn-circle btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Filter Range
-                                        <span class="fa fa-angle-down"> </span>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li>
-                                            <a href="javascript:;"> Q1 2014
-                                                <span class="label label-sm label-default"> past </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;"> Q2 2014
-                                                <span class="label label-sm label-default"> past </span>
-                                            </a>
-                                        </li>
-                                        <li class="active">
-                                            <a href="javascript:;"> Q3 2014
-                                                <span class="label label-sm label-success"> current </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;"> Q4 2014
-                                                <span class="label label-sm label-warning"> upcoming </span>
-                                            </a>
-                                        </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="portlet-body">
-                                <div id="site_activities_loading">
-                                    <img src="../img/loading.gif" alt="loading" /> </div>
-                                <div id="site_activities_content" class="display-none">
-                                    <div id="site_activities" style="height: 228px;"> </div>
-                                </div>
-                                <div style="margin: 20px 0 10px 30px">
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
-                                            <span class="label label-sm label-success"> Revenue: </span>
-                                            <h3>$13,234</h3>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
-                                            <span class="label label-sm label-info"> Tax: </span>
-                                            <h3>$134,900</h3>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
-                                            <span class="label label-sm label-danger"> Shipment: </span>
-                                            <h3>$1,134</h3>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
-                                            <span class="label label-sm label-warning"> Orders: </span>
-                                            <h3>235090</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-	        </div>
-       </div>
-	</div>
-<script src="../js/jquery.min.js"></script>
-<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+							<div class="visual">
+								<i class="fa fa-comments"></i>
+							</div>
+							<div class="details">
+								<div class="number">
+									<span data-counter="counterup" data-value="1349">0</span>
+								</div>
+								<div class="desc"> New Feedbacks </div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<a class="dashboard-stat dashboard-stat-v2 red" href="#">
+							<div class="visual">
+								<i class="fa fa-bar-chart-o"></i>
+							</div>
+							<div class="details">
+								<div class="number">
+									<span data-counter="counterup" data-value="12,5">0</span>M$ </div>
+								<div class="desc"> Total Profit </div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<a class="dashboard-stat dashboard-stat-v2 green" href="#">
+							<div class="visual">
+								<i class="fa fa-shopping-cart"></i>
+							</div>
+							<div class="details">
+								<div class="number">
+									<span data-counter="counterup" data-value="549">0</span>
+								</div>
+								<div class="desc"> New Orders </div>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+							<div class="visual">
+								<i class="fa fa-globe"></i>
+							</div>
+							<div class="details">
+								<div class="number"> +
+									<span data-counter="counterup" data-value="89"></span>% </div>
+								<div class="desc"> Brand Popularity </div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="row row1">
+					<div class="col-lg-6 col-xs-12 col-sm-12">
+						<div class="portlet1 light bordered">
+							<table class="table" cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td colspan="2" class="tit">电（kwh）小时能耗数据</td>
+								</tr>
+								<tr>
+									<th>2015/12/21 15:00-16:00</th>
+									<td>
+										<span>能耗指</span>
+										<span>1500kw</span>
+									</td>
+								</tr>
+								<tr>
+									<th>2015/12/21 15:00-16:00</th>
+									<td>
+										<span>能耗指</span>
+										<span>2500kw</span>
+									</td>
+								</tr>
+								<tr>
+									<th>2015/12/21 15:00-16:00</th>
+									<td>
+										<span>能耗指</span>
+										<span>4500kw</span>
+									</td>
+								</tr>
+								<tr>
+									<th class="last">2015/12/21 15:00-16:00</th>
+									<td class="last">
+										<span>能耗指</span>
+										<span>5500kw</span>
+									</td>
+								</tr>
+							</table>
 
-<script src="../resource/layout/scripts/app.min.js" type="text/javascript"></script>
-<script src="../resource/layout/scripts/layout.min.js" type="text/javascript"></script>
+						</div>
+					</div>
+					<div class="col-lg-6 col-xs-12 col-sm-12">
+						<div class="portlet1 light bordered">
 
-<script src="../resource/layout/scripts/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
-<script src="../resource/layout/scripts/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+							<table class="table" cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td colspan="2" class="tit">电（kwh）小时能耗数据</td>
+								</tr>
+								<tr>
+									<th>上月使用流量</th>
+									<td>
+										<span class="s-box no"></span><span class="s-box no"></span><span class="s-box no"></span><span>,</span>
+										<span class="s-box">3</span><span class="s-box">2</span><span class="s-box">5</span><span>,</span>
+										<span class="s-box">5</span><span class="s-box">3</span><span class="s-box">3</span><span><span>kw/h</span>
+									</td>
+								</tr>
+								<tr>
+									<th>本月使用流量</th>
+									<td>
+										<span class="s-box no"></span><span class="s-box no"></span><span class="s-box no"></span><span>,</span>
+										<span class="s-box">3</span><span class="s-box">2</span><span class="s-box">5</span><span>,</span>
+										<span class="s-box">5</span><span class="s-box">3</span><span class="s-box">3</span><span><span>kw/h</span>
+									</td>
+								</tr>
+								<tr>
+									<th>昨日使用流量</th>
+									<td>
+										<span class="s-box no"></span><span class="s-box no"></span><span class="s-box no"></span><span>,</span>
+										<span class="s-box">3</span><span class="s-box">2</span><span class="s-box">5</span><span>,</span>
+										<span class="s-box">5</span><span class="s-box">3</span><span class="s-box">3</span><span><span>kw/h</span>
+									</td>
+								</tr>
+								<tr>
+									<th>今日使用流量</th>
+									<td>
+										<span class="s-box no"></span><span class="s-box no"></span><span class="s-box no"></span><span>,</span>
+										<span class="s-box">3</span><span class="s-box">2</span><span class="s-box">5</span><span>,</span>
+										<span class="s-box">5</span><span class="s-box">3</span><span class="s-box">3</span><span><span>kw/h</span>
+									</td>
+								</tr>
+							</table>
 
-<!--显示表趋势-->
-<script src="../resource/layout/scripts/flot/jquery.flot.min.js" type="text/javascript"></script>
-<script src="../resource/layout/scripts/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
-<script src="../resource/layout/scripts/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
-<script src="../resource/layout/scripts/dashboard.min.js" type="text/javascript"></script>
-</body>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<!-- BEGIN PORTLET-->
+						<div class="portlet light bordered ">
+							<div class="row row2">
+								<!--<div class="col-md-3 ">
+									<span class="tab selectedTab">Site Visits</span>
+									<span class="tab">Revenue</span>
+								</div>-->
+								<ul class="tabGroup">
+									<li class="tab selectedTab">Revenue</li>
+									<li class="tab">Site Visits</li>
+								</ul>
+								<div>
+									<div class="content selectedContent">
+
+										<div id="site_activities_loading">
+											<img src="../img/loading.gif" alt="loading" />
+										</div>
+										<div id="site_activities_content" class="display-none">
+											<div id="site_activities" style="height: 228px;">
+											</div>
+										</div>
+										<div style="margin: 20px 0 10px 30px">
+											<div class="row">
+												<div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+													<span class="label label-sm label-success"> Revenue: </span>
+													<h3>$13,234</h3>
+												</div>
+												<div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+													<span class="label label-sm label-info"> Tax: </span>
+													<h3>$134,900</h3>
+												</div>
+												<div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+													<span class="label label-sm label-danger"> Shipment: </span>
+													<h3>$1,134</h3>
+												</div>
+												<div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+													<span class="label label-sm label-warning"> Orders: </span>
+													<h3>235090</h3>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="content ">
+										<div id="site_statistics_loading">
+											<img src="../img/loading.gif" alt="loading" />
+										</div>
+										<div id="site_statistics_content" class="display-none">
+											<div id="site_statistics" class="chart"> </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<script src="../js/jquery.min.js"></script>
+				<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+				<script src="../resource/layout/scripts/app.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/layout.min.js" type="text/javascript"></script>
+
+				<script src="../resource/layout/scripts/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+
+				<!--显示表趋势-->
+				<script src="../resource/layout/scripts/flot/jquery.flot.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/dashboard.min.js" type="text/javascript"></script>
+				<script src="../resource/layout/scripts/DOM.js" type="text/javascript"></script>
+				<script src="../js/indexpage.js" type="text/javascript"></script>
+	</body>
 </html>

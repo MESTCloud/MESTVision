@@ -1,0 +1,125 @@
+
+.portlet1.light {
+    padding: 0px 0px 0px;
+    background-color: #fff;
+}
+
+.portlet1.light.bordered {
+    border: 1px solid #e7ecf1!important;
+}
+
+.portlet2.light {
+    padding: 0px 20px 15px;
+    background-color: #fff;
+}
+
+.portlet2.light.bordered {
+    border: 1px solid #e7ecf1!important;
+}
+
+.row1 {
+
+    margin-bottom: 20px;
+}
+
+.row2 {
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+
+.table tr td> span {
+	float: left;
+	margin-right: 6px;
+}
+
+.table span.s-box {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	border: 1px solid #d5dadf;
+	border-radius: 1px;
+	text-align: center;
+}
+
+table span.no {
+	background: #eff2f5;
+}
+
+.table tr{
+	padding:15px 0px 10px 15px;
+}
+.table tr th {
+	width: 25%;
+	height: 46px;
+	border-bottom: 1px solid #d1e0ef;
+	border-right: 1px dashed #d1e0ef;
+	font-size: 14px;
+	color: #8198b0;
+}
+
+.table tr td {
+	height: 46px;
+	border-bottom: 1px solid #d1e0ef;
+	font-size: 14px;
+	color: #8198b0;
+	font-weight: bold;
+	text-align: center;
+}
+
+.table tr td.tit {
+	height: 40px;
+	background: url(../img/form-tit.png);
+	padding-left: 16px;
+	padding-top: 10px;
+	color: #52799e;
+	font-size: 14px;
+	text-align: left;
+	border-radius: 5px 5px 0px 0px;
+	border-bottom: 1px solid #b5c8d9;
+}
+
+/*Revenue和Site Visits样式设置*/
+.tabGroup {
+	height: 42px;
+	list-style: none;
+	margin-top: -12px;
+	padding: 0;
+	background: url(../img/form-tit.png) repeat-x;
+}
+
+.tab_group li {
+	background: #8198b0;
+	border-radius: 15px;
+	color: #FFFFFF;
+	position: relative;
+	width: 150px;
+	height: 50px;
+}
+
+.tabGroup li.tab {
+	width: 80px;
+	height: 2em;
+	font-size: 16px;
+	margin-left: 10px;
+	margin-top: 5px;
+	float: left;
+	text-align: center;
+	line-height: 2em;
+	cursor: pointer;
+}
+
+.tabGroup li.tab.selectedTab {
+	background: #ccc;
+	font-weight: bold;
+}
+
+.portlet div.content {
+	clear: both;
+	display: none;
+	padding: 10px;
+}
+
+.portlet div.content.selectedContent {
+	display: block;
+}
