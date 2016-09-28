@@ -8,10 +8,21 @@ $(function() {
 		$("#username").val($.cookie("user"));
 		$("#password").val("");
 	}
-
+	document.onkeydown = function(event) {
+		
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if(e && e.keyCode == 13) { // enter 键
+			
+			login();
+		}
+	}
 	$("#loginClick").on("click", function() {
 		/*判定*/
+		login();
 
+	});
+
+	function login() {
 		if($("#username").val().trim() == "") {
 			shalert('用户名不能为空');
 			return false;
@@ -24,9 +35,7 @@ $(function() {
 		var jsStr = "Login {\"username\":\"" + $("#username").val().trim() + "\",\"password\":\"" + $("#password").val().trim() + "\"}";
 		send(jsStr);
 
-	});
-
-
+	}
 
 	socket.onmessage = function(msg) {
 		var result = msg.data;

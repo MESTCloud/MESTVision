@@ -157,7 +157,7 @@ $(function() {
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-			console.log(jsonStr);
+			
 			send(jsonStr);
 		});
 	}
@@ -246,6 +246,7 @@ $(function() {
 		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
 
 		send(jsStr);
+	
 	});
 
 })
@@ -285,7 +286,7 @@ function roleBind(data) {
 			strRole += "<option value=" + item["RoleId"] + ">" + item["RealName"] + "</option>";
 		});
 	}
-	console.log(data);
+
 	return strRole;
 
 }
@@ -319,7 +320,10 @@ socket.onmessage = function(msg) {
 				break;
 			case "AddUser":
 				shalert("添加成功");
-			/*	var obj={"data":}*/
+				console.log(UserData);
+			
+			    UserData.push({"Id":"10000","Mobile":"13655555555","RealName":"测试","RoleName":"测试","UserName":"钉钉"});//"data":[{"Id":"100000","Mobile":"13655555555","RealName":"测试","RoleName":"测试","UserName":"钉钉"}]]
+				console.log(UserData);
 				$('#myModal_Add').modal('hide');
 				break;
 			case "UpdateUser":
