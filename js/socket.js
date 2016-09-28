@@ -8,7 +8,6 @@
 		socket = new WebSocket(host);
 	} catch(exception) {
 		shalert("对不起，您所使用的浏览器不支持WebSocket.");
-	
 	}
 		//发送
 	function send(msg) {
