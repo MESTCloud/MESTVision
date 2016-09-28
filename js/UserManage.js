@@ -65,10 +65,14 @@ $(function() {
 
 			//send("userlist");
 			var obj = UserData[idIndexUpdate];
+			console.log(obj);
 			$("#login_Update").val(obj["UserName"]);
 			$("#name_Update").val(obj["RealName"]);
 			$("#inputphone_Update").val(obj["Mobile"]);
-			$("#select_role").find("option[text='" + obj['RoleName'] + "']").attr("selected", true);
+			//console.log($("#select_role_update").find("option[text='超级管理员']"));
+			//console.log($("#select_role_update option[text='"+obj["RoleName"]+"']"));
+			//$("#select_role_update").attr("selected",true);
+			$("#select_role_update").val("10000010");
 			UpdateUser(obj["Id"]);
 		}
 
@@ -246,6 +250,7 @@ $(function() {
 			$("#inputPassword2_Add").focus();
 			return false;
 		}
+	
 		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
 
 		send(jsStr);
@@ -336,8 +341,9 @@ socket.onmessage = function(msg) {
 
 				UserData = result["data"]
 				$("tbody").html(bindTable(result["data"]));
-				
+				console.log(UserData);
 				break;
+				
 			case "AddUser":
 				shalert("添加成功");
 

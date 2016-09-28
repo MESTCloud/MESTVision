@@ -2959,8 +2959,7 @@
 		 * @trigger activate_node.jstree, changed.jstree
 		 */
 		activate_node : function (obj, e) {
-			console.log("obj"+obj);
-			console.log("e"+e.html());
+			
 			if(this.is_disabled(obj)) {
 				return false;
 			}

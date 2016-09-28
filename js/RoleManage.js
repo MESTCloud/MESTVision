@@ -1,4 +1,6 @@
 var UserData = "";
+var indexsDel;
+var idIndexUpdate;
 /*获取集合*/
 function bindTable(datatable) {
 	if(datatable.length > 0) {
@@ -25,6 +27,24 @@ function bindTable(datatable) {
 
 	return str;
 }
+
+function AddRole(datatable) {
+	var str = "";
+	var length = parseInt(UserData.length) - 1;
+	str += "<tr class='gradeX even' role='row'>"
+
+	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+			str += "<span></span>";
+			str += "</label> </td>";
+			str += "<td>" + datatable["RoleId"] + "</td>";
+			str += "<td>" + datatable["RealName"] + "</td>";
+
+			str += "</tr>";
+	return str;
+}
+
+
 /*复选框操作*/
 $(function() {
 	/*全选 反选*/
@@ -85,9 +105,9 @@ $(function() {
 		if(CheckedLength()) {
 			$("#user_update").prop("data-toggle", "modal");
 			$('#myModal_Update').modal('show');
-			var idIndex = $("input[name='check_table']:checked").val();
+			idIndexUpdate = $("input[name='check_table']:checked").val();
 			//send("userlist");
-			var obj = UserData[idIndex];
+			var obj = UserData[idIndexUpdate];
 			$("#Name_update").val(obj["RealName"]);
 			$("#Number_Update").val(obj["RoleId"]);
 			UpdateRole(obj["RoleId"]);
@@ -187,19 +207,50 @@ socket.onmessage = function(msg) {
 	} else {
 		switch(result["Function"]) {
 			case "RoleList":
-				UserData = result["data"]
+				UserData = result["data"];
+				console.log(UserData);
 				$("tbody").html(bindTable(result["data"]));
 				break;
 			case "AddRole": 
-				shalert(result["info"]);
+				shalert("添加成功！");
+					var obj = {
+					"RoleId": result["info"],
+				
+					"RealName": $("#Name_Add").val().trim(),
+					
+				};
+
+				UserData.push(obj);
+				$("tbody").append(AddRole(obj));
 				$('#myModal_Add').modal('hide');
-				$("tbody").append("<tr class='gradeX even' role='row'><td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'><input type='checkbox' class='checkboxes' value='1' name='check_table'><span></span></label> </td><td>2</td><td>22</td></tr>");
 				break;
 			case "UpdateRole":
 				shalert("修改成功");
-				//$('#myModal_Update').modal('hide');
+				var ckbs = $("input[name='check_table']:checked");
+
+				var obj = {
+					"RoleId": UserData[idIndexUpdate].RoleId,
+				
+					"RealName": $("#Name_update").val().trim(),
+				
+				};
+
+				;
+				 UserData[idIndexUpdate].RealName = $("#Name_update").val().trim();
+	
+				ckbs.each(function() {
+				
+					$(this).parent().parent().parent().replaceWith(AddRole(obj));
+
+				});
+				$('#myModal_Update').modal('hide');
 				break;
 			case "DeleteRole":
+			var ckbs = $("input[name='check_table']:checked");
+				ckbs.each(function() {
+					$(this).parent().parent().parent().remove();
+
+				});
 				shalert("删除成功");
 				break;
 
