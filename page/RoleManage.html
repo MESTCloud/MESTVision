@@ -68,9 +68,7 @@
 													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
 														名称
 													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
-														描述
-													</th>
+													
 												</tr>
 											</thead>
 											<tbody>
@@ -218,40 +216,10 @@
 										</div>
 
 									</div>
-									<div class="form-group">
-										<div class="row">
-											<label for="Number_Add" class="col-md-3 text-right">编号：</label>
+									
 
-											<div class="col-md-9"><input type="text" class="form-control" id="Number_Add" placeholder="编号"></div>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class="row">
-											<label for="Role_Add" class="col-md-3 text-right">分类：</label>
-
-											<div class="col-md-9">
-												<select class="form-control" id="Role_Add">
-													<option>业务角色</option>
-													<option>岗位</option>
-													<option>用户群组</option>
-													<option>系统角色</option>
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<label for="describe_Add" class="col-md-3 text-right">描述：</label>
-
-											<div class="col-md-9">
-												<textarea class="form-control" rows="3" id="describe_Add"></textarea>
-
-											</div>
-										</div>
-
-									</div>
-									<div class="modal-footer">
+									
+								<div class="modal-footer">
 										<button type="button" class="btn btn-default" id="Rolesave_Add">确定</button>
 										<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
@@ -284,6 +252,13 @@
 							<form role="form">
 									<div class="form-group">
 										<div class="row">
+											<label for="Number_Update" class="col-md-3 text-right">编号：</label>
+
+											<div class="col-md-9"><input type="text" class="form-control" id="Number_Update" placeholder="编号" disabled="disabled"></div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
 											<label for="Name_update" class="col-md-3 text-right">名称：</label>
 
 											<div class="col-md-9">
@@ -292,39 +267,9 @@
 										</div>
 
 									</div>
-									<div class="form-group">
-										<div class="row">
-											<label for="Number_Update" class="col-md-3 text-right">编号：</label>
+								
 
-											<div class="col-md-9"><input type="text" class="form-control" id="Number_Update" placeholder="编号"></div>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class="row">
-											<label for="inputRole_Add" class="col-md-3 text-right">分类：</label>
-
-											<div class="col-md-9">
-												<select class="form-control" id="Role_Update">
-													<option>业务角色</option>
-													<option>岗位</option>
-													<option>用户群组</option>
-													<option>系统角色</option>
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<label for="describe_Update" class="col-md-3 text-right">描述：</label>
-
-											<div class="col-md-9">
-												<textarea class="form-control" rows="3" id="describe_Update"></textarea>
-
-											</div>
-										</div>
-
-									</div>
+								
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" id="Rolesave_Update">确定</button>
 										<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -365,5 +310,7 @@ text-align: center;">
         <script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
     <script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
     <script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/socket.js"></script>
 <script src="../js/public.js"></script>
 <script src="../js/RoleManage.js"></script>
