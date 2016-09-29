@@ -48,7 +48,7 @@ function bindUserTable(datatable) {
 			str += "<input type='checkbox' class='checkboxes' data-userid ='" + data["Id"] + "' name='check_table'>";
 			str += "<span></span>";
 			str += "</label> </td>";
-			str += "<td class='sorting_1'>" + data["UserName"] + "</td>";
+			str += "<td >" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "</tr>";
 

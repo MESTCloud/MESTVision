@@ -22,7 +22,7 @@ function bindUserTable(datatable) {
 		$.each(datatable, function(index, data) {
 
 			str += "<tr class='gradeX even' role='row' data-userid='" + data["Id"] + "'>"
-			str += "<td class='sorting_1'>" + data["UserName"] + "</td>";
+			str += "<td >" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "</tr>";
 

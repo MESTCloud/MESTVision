@@ -271,7 +271,7 @@ function bindTable(datatable) {
 			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table'>";
 			str += "<span></span>";
 			str += "</label> </td>";
-			str += "<td class='sorting_1'>" + data["UserName"] + "</td>";
+			str += "<td>" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "<td>" + data["Mobile"] + "</td>";
 			str += "<td>" + data["RoleName"] + "</td>";
