@@ -183,21 +183,9 @@
     </div>
 
 </div>
-<!--右键显示功能begin-->
-<div id="context-menu2" style="position: absolute">
-    <ul class="dropdown-menu" role="menu">
-        <li id="Add"><a tabindex="-1">添加</a></li>
-        <li><a tabindex="-1">编辑</a></li>
-        <li><a tabindex="-1">删除</a></li>
-        <!--<li class="divider"></li>-->
-        <li><a tabindex="-1">置顶</a></li>
-        <li><a tabindex="-1">上移</a></li>
-        <li><a tabindex="-1">下移</a></li>
-        <li><a tabindex="-1">置低</a></li>
-    </ul>
-</div>
-<!--end-->
+
 <!--右键功能的div 新增 begin-->
+
 <div class="container" id="tree_Add">
     <!-- Modal -->
     <div class="modal fade" id="my_Modal_tree_Add" tabindex="-1" role="dialog"
@@ -225,10 +213,20 @@
                                 <label class="col-md-3 text-right">图标：</label>
 
                                 <div class="col-md-9">
-                                   <select class="form-control" id="inputRole_Add">
-                                    <option>ico-1</option>
-                                    <option>ico-2</option>
-
+                                   <select class="form-control" id="inputTree_Add">
+                                    <option>icon-user-female</option>
+                                    <option>icon-user-follow</option>
+                                    <option>icon-user-following</option>
+                                    <option>icon-user-unfollow</option>
+                                      <option>icon-trophy</option>
+                                    <option>icon-screen-smartphone</option>
+                                    <option>icon-screen-desktop</option>
+                                  
+                                      <option>icon-plane</option>
+                                    <option>icon-notebook</option>
+                                    <option>icon-moustache</option>
+                                    <option>icon-mouse</option>
+                                    <option>icon-magnet</option>
                                 </select>
                                 </div>
                             </div>
@@ -259,6 +257,71 @@
     </div>
 </div>
 
+	
+<!--修改-->
+
+<div class="container" id="tree_Add">
+    <!-- Modal -->
+    <div class="modal fade" id="my_Modal_tree_Update" tabindex="-1" role="dialog"
+         aria-labelledby="my_Modal_tree_Add" aria-hidden="true" style="z-index: 2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+                    <h4 class="modal-title">列表项信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 text-right">名称：</label>
+
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="input_treeName_update"
+                                           placeholder="名称">
+                                </div>
+                            </div>
+                        </div>
+                              <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 text-right">图标：</label>
+
+                                <div class="col-md-9">
+                                   <select class="form-control" id="inputTree_Update">
+                                    <option>fa fa-folder icon-state-warning</option>
+                                    <option>fa fa-file icon-state-warning icon-lg</option>
+
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 text-right">网址：</label>
+
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="input_treeAddress_update"
+                                           placeholder="网址">
+                                </div>
+                            </div>
+                        </div>
+                      
+                       
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="save_inputTreeUpdate">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+	
   <div id="dialogalert" title="系统提示：">
         <p class="msgcontent" style="margin: 10px auto;
 text-align: center;">
