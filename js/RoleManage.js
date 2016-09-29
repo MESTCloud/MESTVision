@@ -5,7 +5,7 @@ var idIndexUpdate;
 function bindTable(datatable) {
 	if(datatable.length > 0) {
 		var str = "";
-		$.each(datatable, function(index, data) {
+		  $.each(datatable, function(index, data) {
 
 			if(parseInt(index) / 2 == 0) {
 				str += "<tr class='gradeX odd' role='row'>"

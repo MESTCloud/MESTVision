@@ -4,7 +4,7 @@ var $userId;/*保存点击用户时的id*/
 $("#userRole_Add").on("click", function() {
 		{
 			
-			var ckbs = $("input[name='role_list']:checked");
+			  var ckbs = $("input[name='role_list']:checked");
 			var roleId;
 			ckbs.each(function() {
 				roleId = $(this).parent().parent().find("label > input").attr("data-roldid");
