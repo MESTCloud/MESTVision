@@ -102,16 +102,16 @@ $(function() {
 			}
 			if($("#inputPassword_Update").val().trim() == "") {
 				shalert("密码不能为空！");
-				$("#inputPassword_Add").focus();
+				$("#inputPassword_Update").focus();
 				return false;
 			}
 			if($("#inputPassword_Update2").val().trim() == "") {
 				shalert("请再次填写密码！");
-				$("#inputPassword2_Add").focus();
+				$("#inputPassword_Update2").focus();
 				return false;
 			}
 
-			if($("#inputPassword_Add").val().trim() != $("#inputPassword2_Add").val().trim()) {
+			if($("#inputPassword_Update").val().trim() != $("#inputPassword_Update2").val().trim()) {
 				shalert("两次密码不一致，请重新填写");
 				$("#inputPassword2_Add").val("");
 				$("#inputPassword2_Add").focus();
