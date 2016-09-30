@@ -6,6 +6,8 @@
 		<link href="../css/index.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="../resource/datatables/datatables.min.css" />
         <link rel="stylesheet" href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" />
+           	<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css"/>
+    <link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
 		<link rel="stylesheet" href="../css/public.css" />
 		<link rel="stylesheet" href="../css/Manage.css" />
 	</head>
@@ -272,6 +274,19 @@
 			</div>
 
 		</div>
+		<div id="dialogalert" title="系统提示：">
+        <p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+
+        </p>
+    </div>
+
+    <div id="dialogconfirm" title="系统提示：">
+        <p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+        </p>
+    </div>
+
 	</body>
 
 </html>
@@ -282,6 +297,11 @@
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../js/app.min.js" type="text/javascript"></script>
 <script src="../js/jquery.cookie.js"></script>
+   <script src="../resource/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+        <script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
+    <script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+    <script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
+
 <script type="text/javascript" src="../js/socket.js"></script>
 <script src="../js/UserRoleManage.js"></script>
 <script src="../js/layout.js"></script>
