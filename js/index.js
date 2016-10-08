@@ -48,8 +48,7 @@ socket.onmessage = function(msg) {
 
 				$('#myModal_PassWordUpdate').modal('hide');
 				break;
-				case "ModuleListByMenu":
-				
+				case "ModuleListByMenu": 
 				$("#Menu").html('<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>'+result["data"]);
 				
 				$(".sub-menu > li").click(function () {

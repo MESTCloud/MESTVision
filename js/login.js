@@ -8,11 +8,11 @@ $(function() {
 		$("#username").val($.cookie("user"));
 		$("#password").val("");
 	}
-	   document.onkeydown = function(event) {
-		
+	document.onkeydown = function(event) {
+
 		var e = event || window.event || arguments.callee.caller.arguments[0];
 		if(e && e.keyCode == 13) { // enter 键
-			
+
 			login();
 		}
 	}
@@ -36,7 +36,11 @@ $(function() {
 		send(jsStr);
 
 	}
+	//连接成功
+	socket.onopen = function() {
+		//console.log("连接成功");
 
+	}
 	socket.onmessage = function(msg) {
 		var result = msg.data;
 		result = JSON.parse(result);
