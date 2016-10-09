@@ -28,17 +28,44 @@
 		    </button>          
         </div>
     </div>       
-    <div class="portlet-body">
-        <div class="row">
-            <div class="col-md-3 text-left" style="padding-left: 25px;">
-                    开始日期：<input type="text" id="txt_start" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+    <div class="portlet-body"> 
+    	
+    	<!--默认报表-->
+    	<div class="row" id="divTime">       	       	
+            <div class="col-md-4 text-left" style="padding-left: 20px;">
+                    开始日期：<input type="text" id="txt_start2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
             </div>
-            <div class="col-md-9 text-left" style="padding-left: 25px;">
-                    结束日期：<input type="text" id="txt_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+            <div class="col-md-8 text-left" style="padding-left: 20px;">
+                    结束日期：<input type="text" id="txt_end2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
+            </div>
+        </div>
+        
+        <!--日报表-->
+         <div class="row" id="divday" style="display: none;" >       	       	
+            <div class="col-md-4 text-left" style="padding-left: 20px;">
+                    开始日期：<input type="text" id="txt_start2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+            </div>
+            <!--<div class="col-md-8 text-left" style="padding-left: 20px;">
+                    结束日期：<input type="text" id="txt_end2" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
+            </div>-->
+        </div>
+        
+        <!-- 月报表-->
+         <div class="row" id="divmonth" style="display: none;" >
+           <!-- 月报表-->
+            <div class="col-md-4 text-left" style="padding-left: 20px;">
+                    日期：<input type="text" id="txt_start" onclick="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-MM' })" class="Wdate" size="24" />
+            </div>
+        </div>
+        
+        <!--年报表-->
+         <div class="row" id="divyear" style="display: none;">
+            <div class="col-md-4 text-left" style="padding-left: 20px;">
+                    日期：<input type="text" id="txt_start1" onclick="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy' })" class="Wdate" size="24" />
             </div>
         </div>
     </div>
-    <div id="ss" style="width: 100%; height: 500px; border: 1px solid gray;"></div>
+    <div id="ss" style="width: 100%; height: 550px; border: 1px solid gray;"></div>
 </div>
      <script src="../js/jquery.min.js"></script>
      <script src="../resource/bootstrap/js/bootstrap.min.js"></script>

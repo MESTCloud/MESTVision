@@ -8,6 +8,9 @@
 		return null;
 	}
 	
+	var pType=getQueryString("type");
+	//var pType="month";
+	
 	/*页面title赋值*/
 	var ptitle = getQueryString("path").split(",");
 

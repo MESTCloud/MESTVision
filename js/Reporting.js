@@ -1,5 +1,31 @@
 
 $(function () {
+	switch (pType) {
+        case "day":
+            $("#divday").show();
+            $("#divmonth").hide();
+            $("#divyear").hide();
+            $("#divTime").hide();
+            break;
+   		case "month":
+            $("#divmonth").show();
+            $("#divday").hide();
+            $("#divyear").hide();
+            $("#divTime").hide();
+            break;
+        case "year":
+            $("#divyear").show();
+            $("#divday").hide();
+            $("#divmonth").hide();
+            $("#divTime").hide();
+            break;
+        default:
+            $("#divday").hide();
+            $("#divmonth").hide();
+            $("#divyear").hide();
+            $("#divTime").show();
+            break
+    }
 	
 	/*获得Url参数值*/
 	/*function getQueryString(name) {
@@ -113,4 +139,60 @@ $(function () {
 //      }
 //  });
 });
+
+//连接成功
+/*socket.onopen = function() {
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+	}
+
+	send("userlist");
+
+}*/
+
+//收到消息
+/*socket.onmessage = function(msg) {
+	var result = msg.data;
+	result = JSON.parse(result);
+	if(result["error"]) {
+		shalert(result["error"]);
+	} else if(result["exception"]) {
+		shalert(result["exception"]);
+	} else {
+		switch(result["Function"]) {
+			case "AddUser":
+				shalert("添加成功");
+
+				var obj = {
+					"Id": result["info"],
+					"Mobile": $("#inputphone_Add").val().trim(),
+					"RealName": $("#name_Add").val().trim(),
+					"UserName": $("#login_Add").val().trim(),
+					"RoleName": $("#inputRole_Add  option:selected").text().trim()
+				};
+
+				UserData.push(obj);
+				$("tbody").append(AddUser(obj));
+				$('#myModal_Add').modal('hide');
+				break;
+		}
+
+	}
+}
+
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//location.href = "http://www.baidu.com";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
+}*/
 
