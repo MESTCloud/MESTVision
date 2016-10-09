@@ -1,70 +1,64 @@
 ﻿<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>系统菜单</title>
-    <link href="../css/index.css" rel="stylesheet" type="text/css" />
-    <link href="../resource/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="../resource/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
-     <link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css"/>
-    <link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
-    <link href="../css/Manage.css" rel="stylesheet" type="text/css" />
-    <link href="../css/public.css" rel="stylesheet" type="text/css" />
-</head>
-<body style="background-color:white; ">
-<div class="row_tree">
-  <div class="left_row pull-left">
 
-        <div class="portlet box blue">
-            <div class="portlet-title">
-                <div class="caption" id="divTitle" >
-                	<!--<a href="index.html">首页</a><span>-</span>-->
-                </div>
-                    <!--<i class="fa fa-cogs"></i>菜单管理 </div>-->
-            </div>
-            <div class="portlet-body">
-            	<div class="table-scrollable">
-                <div id="tree_3" class="tree-demo"> </div>
-</div>
-            </div>
-        </div>
-    </div>
-    <div class="right_row" >
-          <div class="portlet box blue">
-            <div class="portlet-title">
-                <div class="caption">
-                    详细信息
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>系统菜单</title>
+		<link href="../css/index.css" rel="stylesheet" type="text/css" />
+		<link href="../resource/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+		<link href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+		<link href="../resource/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css" />
+		<link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
+		<link href="../css/Manage.css" rel="stylesheet" type="text/css" />
+		<link href="../css/public.css" rel="stylesheet" type="text/css" />
+	</head>
 
-                    <div class="table-scrollable">
-                        <table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer"
-                               id="sample_3" role="grid" aria-describedby="sample_3_info">
-                            <thead>
-                            <tr role="row">
+	<body style="background-color:white; ">
+		<div class="row_tree">
+			<div class="left_row pull-left">
 
-                           
-                                <th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1"
-                                    aria-label=" Email : activate to sort column ascending"
-                                    style="width: 140px;">
-                                    名称
-                                </th>
-                                <th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1"
-                                    aria-label=" Number : activate to sort column ascending"
-                                    style="width: 68px;">
-                                    web地址
-                                </th>
-              
-                           
-                            </tr>
-                            </thead>
-                            <tbody>
+				<div class="portlet box blue">
+					<div class="portlet-title">
+						<div class="caption" id="divTitle">
+							<!--<a href="index.html">首页</a><span>-</span>-->
+						</div>
+						<!--<i class="fa fa-cogs"></i>菜单管理 </div>-->
+					</div>
+					<div class="portlet-body">
+						<div class="table-scrollable">
+							<div id="tree_3" class="tree-demo"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="right_row">
+				<div class="portlet box blue">
+					<div class="portlet-title">
+						<div class="caption">
+							详细信息
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
 
+							<div class="table-scrollable">
+								<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+									<thead>
+										<tr role="row">
 
-                      <!--      <tr class="gradeX odd" role="row">
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
+												名称
+											</th>
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
+												web地址
+											</th>
+
+										</tr>
+									</thead>
+									<tbody>
+
+										<!--      <tr class="gradeX odd" role="row">
 
 
                                 <td> test</td>
@@ -115,194 +109,472 @@
                         
                             </tr>
                           -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 
-    </div>
+			</div>
 
-</div>
+		</div>
 
-<!--右键功能的div 新增 begin-->
+		<!--右键功能的div 新增 begin-->
 
-<div class="container" id="tree_Add">
-    <!-- Modal -->
-    <div class="modal fade" id="my_Modal_tree_Add" tabindex="-1" role="dialog"
-         aria-labelledby="my_Modal_tree_Add" aria-hidden="true" style="z-index: 2">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-                    <h4 class="modal-title">列表项信息</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form">
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">名称：</label>
+		<div class="container" id="tree_Add">
+			<!-- Modal -->
+			<div class="modal fade" id="my_Modal_tree_Add" tabindex="-1" role="dialog" aria-labelledby="my_Modal_tree_Add" aria-hidden="true" style="z-index: 2">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+							<h4 class="modal-title">列表项信息</h4>
+						</div>
+						<div class="modal-body">
+							<form role="form">
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">名称：</label>
 
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="input_treeName"
-                                           placeholder="名称">
-                                </div>
-                            </div>
-                        </div>
-                              <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">图标：</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="input_treeName" placeholder="名称">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">图标：</label>
+										<div class="col-md-9">
+											<select class="form-control" id="inputTree_Add">
+												<option>icon-user-female</option>
+												<option>icon-user-follow</option>
+												<option>icon-user-following</option>
+												<option>icon-user-unfollow</option>
+												<option>icon-trophy</option>
+												<option>icon-screen-smartphone</option>
+												<option>icon-screen-desktop</option>
+												<option>icon-plane</option>
+												<option>icon-notebook</option>
+												<option>icon-moustache</option>
+												<option>icon-mouse</option>
+												<option>icon-magnet</option>
+												<option>icon-energy</option>
+												<option>icon-emoticon-smile</option>
+												<option>icon-disc</option>
+												<option>icon-cursor-move</option>
+												<option>icon-crop</option>
+												<option>icon-credit-card</option>
+												<option>icon-chemistry</option>
+												<option>icon-user</option>
+												<option>icon-speedometer</option>
+												<option>icon-social-youtube</option>
+												<option>icon-social-twitter</option>
+												<option>icon-social-tumblr</option>
+												<option>icon-social-facebook</option>
+												<option>icon-social-dropbox</option>
+												<option>icon-social-dribbble</option>
+												<option>icon-shield</option>
+												<option>icon-screen-tablet</option>
+												<option>icon-magic-wand</option>
+												<option>icon-hourglass</option>
+												<option>icon-graduation</option>
+												<option>icon-ghost</option>
+												<option>icon-game-controller</option>
+												<option>icon-fire</option>
+												<option>icon-eyeglasses</option>
+												<option>icon-envelope-open</option>
+												<option>icon-envelope-letter</option>
+												<option>icon-bell</option>
+												<option>icon-badge</option>
+												<option>icon-anchor</option>
+												<option>icon-wallet</option>
+												<option>icon-vector</option>
+												<option>icon-speech</option>
+												<option>icon-puzzle</option>
+												<option>icon-printer</option>
+												<option>icon-present</option>
+												<option>icon-playlist</option>
+												<option>icon-pin</option>
+												<option>icon-picture</option>
+												<option>icon-map</option>
+												<option>icon-layers</option>
+												<option>icon-handbag</option>
+												<option>icon-globe-alt</option>
+												<option>icon-globe</option>
+												<option>icon-frame</option>
+												<option>icon-folder-alt</option>
+												<option>icon-film</option>
+												<option>icon-feed</option>
+												<option>icon-earphones-alt</option>
+												<option>icon-earphones</option>
+												<option>icon-drop</option>
+												<option>icon-drawer</option>
+												<option>icon-docs</option>
+												<option>icon-directions</option>
+												<option>icon-direction</option>
+												<option>icon-diamond</option>
+												<option>icon-cup</option>
+												<option>icon-compass</option>
+												<option>icon-call-out</option>
+												<option>icon-call-in</option>
+												<option>icon-call-end</option>
+												<option>icon-calculator</option>
+												<option>icon-bubbles</option>
+												<option>icon-briefcase</option>
+												<option>icon-book-open</option>
+												<option>icon-basket-loaded</option>
+												<option>icon-basket</option>
+												<option>icon-bag</option>
+												<option>icon-action-undo</option>
+												<option>icon-action-redo</option>
+												<option>icon-wrench</option>
+												<option>icon-umbrella</option>
+												<option>icon-trash</option>
+												<option>icon-tag</option>
+												<option>icon-support</option>
+												<option>icon-size-fullscreen</option>
+												<option>icon-size-actual</option>
+												<option>icon-shuffle</option>
+												<option>icon-share-alt</option>
+												<option>icon-share</option>
+												<option>icon-rocket</option>
+												<option>icon-question</option>
+												<option>icon-pie-chart</option>
+												<option>icon-pencil</option>
+												<option>icon-note</option>
+												<option>icon-music-tone-alt</option>
+												<option>icon-music-tone</option>
+												<option>icon-microphone</option>
+												<option>icon-loop</option>
+												<option>icon-logout</option>
+												<option>icon-login</option>
+												<option>icon-list</option>
+												<option>icon-like</option>
+												<option>icon-home</option>
+												<option>icon-grid</option>
+												<option>icon-graph</option>
+												<option>icon-equalizer</option>
+												<option>icon-dislike</option>
+												<option>icon-cursor</option>
+												<option>icon-control-start</option>
+												<option>icon-control-rewind</option>
+												<option>icon-control-play</option>
+												<option>icon-control-pause</option>
+												<option>icon-control-forward</option>
+												<option>icon-control-end</option>
+												<option>icon-calendar</option>
+												<option>icon-bulb</option>
+												<option>icon-bar-chart</option>
+												<option>icon-arrow-up</option>
+												<option>icon-arrow-right</option>
+												<option>icon-arrow-left</option>
+												<option>icon-arrow-down</option>
+												<option>icon-ban</option>
+												<option>icon-bubble</option>
+												<option>icon-camcorder</option>
+												<option>icon-camera</option>
+												<option>icon-check</option>
+												<option>icon-clock</option>
+												<option>icon-close</option>
+												<option>icon-cloud-download</option>
+												<option>icon-cloud-upload</option>
+												<option>icon-doc</option>
+												<option>icon-envelope</option>
+												<option>icon-eye</option>
+												<option>icon-flag</option>
+												<option>icon-folder</option>
+												<option>icon-heart</option>
+												<option>icon-info</option>
+												<option>icon-key</option>
+												<option>icon-link</option>
+												<option>icon-lock</option>
+												<option>icon-lock-open</option>
+												<option>icon-magnifier</option>
+												<option>icon-magnifier-add</option>
+												<option>icon-magnifier-remove</option>
+												<option>icon-paper-clip</option>
+												<option>icon-paper-plane</option>
+												<option>icon-plus</option>
+												<option>icon-pointer</option>
+												<option>icon-power</option>
+												<option>icon-refresh</option>
+												<option>icon-reload</option>
+												<option>icon-settings</option>
+												<option>icon-star</option>
+												<option>icon-symbol-female</option>
+												<option>icon-symbol-male</option>
+												<option>icon-target</option>
+												<option>icon-volume-1</option>
+												<option>icon-volume-2</option>
+												<option>icon-volume-off</option>
+												<option>icon-users</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">网址：</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="input_treeAddress" placeholder="网址">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" id="save_inputTreeAdd">确定</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                                <div class="col-md-9">
-                                   <select class="form-control" id="inputTree_Add">
-                                   	<option>icon-bar-chart</option>
-                                    <option>icon-user-female</option>
-                                    <option>icon-user-follow</option>
-                                    <option>icon-user-following</option>
-                                    <option>icon-user-unfollow</option>
-                                      <option>icon-trophy</option>
-                                    <option>icon-screen-smartphone</option>
-                                    <option>icon-screen-desktop</option>
-                                  
-                                      <option>icon-plane</option>
-                                    <option>icon-notebook</option>
-                                    <option>icon-moustache</option>
-                                    <option>icon-mouse</option>
-                                    <option>icon-magnet</option>
-                                </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">网址：</label>
+		<!--修改-->
+		<div class="container" id="tree_Add">
+			<!-- Modal -->
+			<div class="modal fade" id="my_Modal_tree_Update" tabindex="-1" role="dialog" aria-labelledby="my_Modal_tree_Add" aria-hidden="true" style="z-index: 2">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+							<h4 class="modal-title">列表项信息</h4>
+						</div>
+						<div class="modal-body">
+							<form role="form">
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">名称：</label>
 
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="input_treeAddress"
-                                           placeholder="网址">
-                                </div>
-                            </div>
-                        </div>
-                      
-                       
-                    </form>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="input_treeName_update" placeholder="名称">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">图标：</label>
 
+										<div class="col-md-9">
+											<select class="form-control" id="inputTree_Update">
+												<option>icon-user-female</option>
+												<option>icon-user-follow</option>
+												<option>icon-user-following</option>
+												<option>icon-user-unfollow</option>
+												<option>icon-trophy</option>
+												<option>icon-screen-smartphone</option>
+												<option>icon-screen-desktop</option>
+												<option>icon-plane</option>
+												<option>icon-notebook</option>
+												<option>icon-moustache</option>
+												<option>icon-mouse</option>
+												<option>icon-magnet</option>
+												<option>icon-energy</option>
+												<option>icon-emoticon-smile</option>
+												<option>icon-disc</option>
+												<option>icon-cursor-move</option>
+												<option>icon-crop</option>
+												<option>icon-credit-card</option>
+												<option>icon-chemistry</option>
+												<option>icon-user</option>
+												<option>icon-speedometer</option>
+												<option>icon-social-youtube</option>
+												<option>icon-social-twitter</option>
+												<option>icon-social-tumblr</option>
+												<option>icon-social-facebook</option>
+												<option>icon-social-dropbox</option>
+												<option>icon-social-dribbble</option>
+												<option>icon-shield</option>
+												<option>icon-screen-tablet</option>
+												<option>icon-magic-wand</option>
+												<option>icon-hourglass</option>
+												<option>icon-graduation</option>
+												<option>icon-ghost</option>
+												<option>icon-game-controller</option>
+												<option>icon-fire</option>
+												<option>icon-eyeglasses</option>
+												<option>icon-envelope-open</option>
+												<option>icon-envelope-letter</option>
+												<option>icon-bell</option>
+												<option>icon-badge</option>
+												<option>icon-anchor</option>
+												<option>icon-wallet</option>
+												<option>icon-vector</option>
+												<option>icon-speech</option>
+												<option>icon-puzzle</option>
+												<option>icon-printer</option>
+												<option>icon-present</option>
+												<option>icon-playlist</option>
+												<option>icon-pin</option>
+												<option>icon-picture</option>
+												<option>icon-map</option>
+												<option>icon-layers</option>
+												<option>icon-handbag</option>
+												<option>icon-globe-alt</option>
+												<option>icon-globe</option>
+												<option>icon-frame</option>
+												<option>icon-folder-alt</option>
+												<option>icon-film</option>
+												<option>icon-feed</option>
+												<option>icon-earphones-alt</option>
+												<option>icon-earphones</option>
+												<option>icon-drop</option>
+												<option>icon-drawer</option>
+												<option>icon-docs</option>
+												<option>icon-directions</option>
+												<option>icon-direction</option>
+												<option>icon-diamond</option>
+												<option>icon-cup</option>
+												<option>icon-compass</option>
+												<option>icon-call-out</option>
+												<option>icon-call-in</option>
+												<option>icon-call-end</option>
+												<option>icon-calculator</option>
+												<option>icon-bubbles</option>
+												<option>icon-briefcase</option>
+												<option>icon-book-open</option>
+												<option>icon-basket-loaded</option>
+												<option>icon-basket</option>
+												<option>icon-bag</option>
+												<option>icon-action-undo</option>
+												<option>icon-action-redo</option>
+												<option>icon-wrench</option>
+												<option>icon-umbrella</option>
+												<option>icon-trash</option>
+												<option>icon-tag</option>
+												<option>icon-support</option>
+												<option>icon-size-fullscreen</option>
+												<option>icon-size-actual</option>
+												<option>icon-shuffle</option>
+												<option>icon-share-alt</option>
+												<option>icon-share</option>
+												<option>icon-rocket</option>
+												<option>icon-question</option>
+												<option>icon-pie-chart</option>
+												<option>icon-pencil</option>
+												<option>icon-note</option>
+												<option>icon-music-tone-alt</option>
+												<option>icon-music-tone</option>
+												<option>icon-microphone</option>
+												<option>icon-loop</option>
+												<option>icon-logout</option>
+												<option>icon-login</option>
+												<option>icon-list</option>
+												<option>icon-like</option>
+												<option>icon-home</option>
+												<option>icon-grid</option>
+												<option>icon-graph</option>
+												<option>icon-equalizer</option>
+												<option>icon-dislike</option>
+												<option>icon-cursor</option>
+												<option>icon-control-start</option>
+												<option>icon-control-rewind</option>
+												<option>icon-control-play</option>
+												<option>icon-control-pause</option>
+												<option>icon-control-forward</option>
+												<option>icon-control-end</option>
+												<option>icon-calendar</option>
+												<option>icon-bulb</option>
+												<option>icon-bar-chart</option>
+												<option>icon-arrow-up</option>
+												<option>icon-arrow-right</option>
+												<option>icon-arrow-left</option>
+												<option>icon-arrow-down</option>
+												<option>icon-ban</option>
+												<option>icon-bubble</option>
+												<option>icon-camcorder</option>
+												<option>icon-camera</option>
+												<option>icon-check</option>
+												<option>icon-clock</option>
+												<option>icon-close</option>
+												<option>icon-cloud-download</option>
+												<option>icon-cloud-upload</option>
+												<option>icon-doc</option>
+												<option>icon-envelope</option>
+												<option>icon-eye</option>
+												<option>icon-flag</option>
+												<option>icon-folder</option>
+												<option>icon-heart</option>
+												<option>icon-info</option>
+												<option>icon-key</option>
+												<option>icon-link</option>
+												<option>icon-lock</option>
+												<option>icon-lock-open</option>
+												<option>icon-magnifier</option>
+												<option>icon-magnifier-add</option>
+												<option>icon-magnifier-remove</option>
+												<option>icon-paper-clip</option>
+												<option>icon-paper-plane</option>
+												<option>icon-plus</option>
+												<option>icon-pointer</option>
+												<option>icon-power</option>
+												<option>icon-refresh</option>
+												<option>icon-reload</option>
+												<option>icon-settings</option>
+												<option>icon-star</option>
+												<option>icon-symbol-female</option>
+												<option>icon-symbol-male</option>
+												<option>icon-target</option>
+												<option>icon-volume-1</option>
+												<option>icon-volume-2</option>
+												<option>icon-volume-off</option>
+												<option>icon-users</option>
+												<option>fa fa-gear</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label class="col-md-3 text-right">网址：</label>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="save_inputTreeAdd">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="input_treeAddress_update" placeholder="网址">
+										</div>
+									</div>
+								</div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+							</form>
 
-	
-<!--修改-->
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" id="save_inputTreeUpdate">确定</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
-<div class="container" id="tree_Add">
-    <!-- Modal -->
-    <div class="modal fade" id="my_Modal_tree_Update" tabindex="-1" role="dialog"
-         aria-labelledby="my_Modal_tree_Add" aria-hidden="true" style="z-index: 2">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-                    <h4 class="modal-title">列表项信息</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form">
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">名称：</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="input_treeName_update"
-                                           placeholder="名称">
-                                </div>
-                            </div>
-                        </div>
-                              <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">图标：</label>
-
-                                <div class="col-md-9">
-                                   <select class="form-control" id="inputTree_Update">
-                                     	<option>icon-bar-chart</option>
-                                    <option>icon-user-female</option>
-                                    <option>icon-user-follow</option>
-                                    <option>icon-user-following</option>
-                                    <option>icon-user-unfollow</option>
-                                      <option>icon-trophy</option>
-                                    <option>icon-screen-smartphone</option>
-                                    <option>icon-screen-desktop</option>
-                                  
-                                      <option>icon-plane</option>
-                                    <option>icon-notebook</option>
-                                    <option>icon-moustache</option>
-                                    <option>icon-mouse</option>
-                                    <option>icon-magnet</option>
-
-                                </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label class="col-md-3 text-right">网址：</label>
-
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control" id="input_treeAddress_update"
-                                           placeholder="网址">
-                                </div>
-                            </div>
-                        </div>
-                      
-                       
-                    </form>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="save_inputTreeUpdate">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-	
-  <div id="dialogalert" title="系统提示：">
-        <p class="msgcontent" style="margin: 10px auto;
+		<div id="dialogalert" title="系统提示：">
+			<p class="msgcontent" style="margin: 10px auto;
 text-align: center;">
 
-        </p>
-    </div>
+			</p>
+		</div>
 
-    <div id="dialogconfirm" title="系统提示：">
-        <p class="msgcontent" style="margin: 10px auto;
+		<div id="dialogconfirm" title="系统提示：">
+			<p class="msgcontent" style="margin: 10px auto;
 text-align: center;">
-        </p>
-    </div>
+			</p>
+		</div>
 
+		<script src="../js/jquery.min.js" type="text/javascript"></script>
+		<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="../resource/jstree/dist/jstree.min.js" type="text/javascript"></script>
+		<script src="../js/app.min.js" type="text/javascript"></script>
+		<script src="../resource/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+		<script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
+		<script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+		<script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/socket.js"></script>
+		<script src="../js/Menu-tree.js" type="text/javascript"></script>
+		<script src="../js/public.js"></script>
+		<script src="../js/layout.js"></script>
+	</body>
 
-<script src="../js/jquery.min.js" type="text/javascript"></script>
-<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../resource/jstree/dist/jstree.min.js" type="text/javascript"></script>
-<script src="../js/app.min.js" type="text/javascript"></script>
-    <script src="../resource/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-        <script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
-    <script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
-    <script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
-     <script src="../js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../js/socket.js"></script>
-<script src="../js/Menu-tree.js" type="text/javascript"></script>
-<script src="../js/public.js"></script>
-<script src="../js/layout.js"></script>
-</body>
 </html>
