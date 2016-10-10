@@ -611,7 +611,7 @@
 						}
 					}, this))
 				.on("click.jstree", ".jstree-anchor", $.proxy(function (e) {
-					  
+					    console.log(e);
 						e.preventDefault();
 						if(e.currentTarget !== document.activeElement) { $(e.currentTarget).focus(); }
 						this.activate_node(e.currentTarget, e);
@@ -2312,7 +2312,7 @@
 				if(!is_callback) {
 					par = obj.parent !== $.jstree.root ? $('#' + obj.parent.replace($.jstree.idregex,'\\$&'), this.element)[0] : null;
 					if(par !== null && (!par || !m[obj.parent].state.opened)) {
-						//return false;
+						return false;
 					}
 					ind = $.inArray(obj.id, par === null ? m[$.jstree.root].children : m[obj.parent].children);
 				}
@@ -2438,7 +2438,7 @@
 			}
 
 
-			if(deep && obj.children.length &&obj.state.loaded) {
+			if(deep && obj.children.length && (obj.state.opened || force_render) && obj.state.loaded) {
 				k = d.createElement('UL');
 				k.setAttribute('role', 'group');
 				k.className = 'jstree-children';
@@ -2501,7 +2501,7 @@
 		 */
 		open_node : function (obj, callback, animation) {
 			var t1, t2, d, t;
-			
+			console.log(obj);
 			if($.isArray(obj)) {
 				obj = obj.slice();
 				for(t1 = 0, t2 = obj.length; t1 < t2; t1++) {
@@ -5091,18 +5091,12 @@
 						}
 					}
 				});
-				/*后期加上的*/
-          //  if(p.length>0)
-            //{
-            	this.element.find('.jstree-undetermined').removeClass('jstree-undetermined');
-           // }
-			
-			
+
+			this.element.find('.jstree-undetermined').removeClass('jstree-undetermined');
 			for(i = 0, j = p.length; i < j; i++) {
 				if(!m[p[i]].state[ t ? 'selected' : 'checked' ]) {
 					s = this.get_node(p[i], true);
 					if(s && s.length) {
-						console.log(s);
 						s.children('.jstree-anchor').children('.jstree-checkbox').addClass('jstree-undetermined');
 					}
 				}
