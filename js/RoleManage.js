@@ -213,16 +213,21 @@ socket.onmessage = function(msg) {
 				break;
 			case "AddRole": 
 				shalert("添加成功！");
+
 					var obj = {
 					"RoleId": result["info"],
 				
 					"RealName": $("#Name_Add").val().trim(),
 					
-				};
+				};				
 
 				UserData.push(obj);
 				$("tbody").append(AddRole(obj));
 				$('#myModal_Add').modal('hide');
+				
+								
+				$("#Name_Add").val("");
+				
 				break;
 			case "UpdateRole":
 				shalert("修改成功");
@@ -244,6 +249,9 @@ socket.onmessage = function(msg) {
 
 				});
 				$('#myModal_Update').modal('hide');
+				
+				$("#Name_Add").val("");
+				
 				break;
 			case "DeleteRole":
 			var ckbs = $("input[name='check_table']:checked");

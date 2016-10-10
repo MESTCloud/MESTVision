@@ -20,7 +20,7 @@ $(function() {
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
-			break
+			break;
 	}
 
 	/*显示excel*/
@@ -119,7 +119,7 @@ $(function() {
 
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
 		console.log(jsStr);
-		//send(jsStr);
+		send(jsStr);
 
 	});
 });

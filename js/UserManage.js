@@ -100,28 +100,10 @@ $(function() {
 					return false;
 				}
 			}
-			if($("#inputPassword_Update").val().trim() == "") {
-				shalert("密码不能为空！");
-				$("#inputPassword_Update").focus();
-				return false;
-			}
-			if($("#inputPassword_Update2").val().trim() == "") {
-				shalert("请再次填写密码！");
-				$("#inputPassword_Update2").focus();
-				return false;
-			}
 
-			if($("#inputPassword_Update").val().trim() != $("#inputPassword_Update2").val().trim()) {
-				shalert("两次密码不一致，请重新填写");
-				$("#inputPassword2_Add").val("");
-				$("#inputPassword2_Add").focus();
-				return false;
-			}
-
-			var jsStr = "UpdateUser {\"id\":\"" + userid + "\",\"realname\":\"" + $("#name_Update").val().trim() + "\",\"password\":\"" + $("#inputPassword_Update").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Update").val().trim() + "\",\"role\":\"" + $("#select_role_update").val().trim() + "\"}";
+			var jsStr = "UpdateUser {\"id\":\"" + userid + "\",\"realname\":\"" + $("#name_Update").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Update").val().trim() + "\",\"role\":\"" + $("#select_role_update").val().trim() + "\"}";
 
 			send(jsStr);
-
 		});
 
 	}
@@ -251,6 +233,8 @@ $(function() {
 		var jsStr = "AddUser {\"username\":\"" + $("#login_Add").val().trim() + "\",\"realname\":\"" + $("#name_Add").val().trim() + "\",\"password\":\"" + $("#inputPassword_Add").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Add").val().trim() + "\",\"role\":\"" + $("#inputRole_Add").val().trim() + "\"}";
 
 		send(jsStr);
+		
+		console.log(jsStr);
 
 	});
 
@@ -355,6 +339,15 @@ socket.onmessage = function(msg) {
 				UserData.push(obj);
 				$("tbody").append(AddUser(obj));
 				$('#myModal_Add').modal('hide');
+				
+				/* 清空栏位：登录名，姓名，手机号码，默认角色，密码，确认密码*/
+				$("#login_Add").val("");
+				$("#name_Add").val("");
+				$("#inputphone_Add").val("");
+				$("#inputPassword_Add").val("");
+				$("#inputPassword2_Add").val("");
+				$("#inputRole_Add").val("10000009");
+				
 				break;
 			case "UpdateUser":
 				shalert("修改成功");
