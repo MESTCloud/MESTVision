@@ -3,55 +3,55 @@ var $dataid;
 var UITree = function() {
 
 	var RoleMenu = function() {
-		var treeObj = {};
-		$('#tree_role').jstree({
-			'plugins': ["checkbox", "types"],
-			'core': {
-				"themes": {
-					"responsive": false
+			var treeObj = {};
+			$('#tree_role').jstree({
+				'plugins': ["checkbox", "types"],
+				'core': {
+					"themes": {
+						"responsive": false
+					},
+					'data': TreeData
 				},
-				'data': TreeData
-			},
-			"types": {
-				"default": {
-					"icon": "fa fa-folder icon-state-warning icon-lg"
-				},
-				"file": {
-					"icon": "fa fa-file icon-state-warning icon-lg"
+				"types": {
+					"default": {
+						"icon": "fa fa-folder icon-state-warning icon-lg"
+					},
+					"file": {
+						"icon": "fa fa-file icon-state-warning icon-lg"
+					}
 				}
-			}
-		});
-		$("#tree_role").bind("activate_node.jstree", function(obj, e) {
-			var currentNode = e.node;
-			treeObj = currentNode;
+			});
+			$("#tree_role").bind("activate_node.jstree", function(obj, e) {
+				var currentNode = e.node;
+				treeObj = currentNode;
 
-		});
-		$('#tree_role').on("click.jstree", function(e) {
-			console.log(treeObj);
-			console.log(treeObj.id);
-		});
-		$("#role_save").on(function() {
-			//点击保存时，将id 保存到库中
-		});
+			});
 
-	}
-
+		}
+		/*保存按钮*/
 	$("#role_save").on("click", function() {
-		console.log($dataid);
-		var Array = [];
-		//$("#tree_2").find("a").addClass("jstree-clicked");
-		/*	if($dataid!=undefined)
-			{
-				console.log($("#tree_2").find("a .jstree-clicked"));
-			}*/
-		$.each($("#tree_role").find(".jstree-clicked").parent(), function(index, item) {
-			Array.unshift(item.id);
-			console.log(item.id);
-		});
-		var module = Array.join(',');
-		var jsStr = "SetModuleForRole {\"id\":\"" + $dataid + "\",\"module\":\"" + module + "\"}";
 
-		send(jsStr);
+		var Array = [];
+		var UndaterArray = [];
+
+		if($dataid != undefined) {
+
+			$.each($("#tree_role").find(".jstree-undetermined").parent().parent(), function(index, item) {
+				UndaterArray.unshift(item.id)
+			});
+			$.each($("#tree_role").find(".jstree-clicked").parent(), function(index, item) {
+				Array.unshift(item.id);
+
+			});
+
+			var module = UndaterArray.concat(Array).join(',');
+			var jsStr = "SetModuleForRole {\"id\":\"" + $dataid + "\",\"module\":\"" + module + "\"}";
+
+			send(jsStr);
+		} else {
+			shalert("请选择角色");
+			return false;
+		}
 	});
 
 	//连接成功
@@ -96,29 +96,33 @@ if(App.isAngularJsApp() === false) {
 
 			return str;
 		}
-		/*点击角色列表 给菜单添加样式*/
-			var active = function($id) {
 
-			$("#" + $id).find("a:first").addClass("jstree-clicked");
-			var count = 0;
-			console.log($id);
-			var $alist_length = $("#" + $id).siblings().length+1;//获取选中节点父节点的子节点的个数
-			//console.log($alist_length);
-			//console.log($("#" + $id).siblings().find("li a").html());
-			for(var i = 0; i < $alist_length; i++) {
-			/*	console.log($("#" + $id).parent().parent().find("li a").eq(i).html());*/
-				if($("#" + $id).parent().parent().find("li a").eq(i).hasClass("jstree-clicked")) {
-					count++;
+		//首先判断当前这个id 是否有子集，如果没有子集  添加对勾样式；  如果有子集，判断子集的个数，和子集选中的个数，如果个数相等添加对勾的样式 ，不相等 半选中
+		/*点击用户列表 给菜单添加样式*/
+		var active = function($id) {
+
+			if($("#" + $id).find(">ul").length > 0) {
+				//获取当前元素中子集的个数
+				var childLength = $("#" + $id).find(">ul").children().length;
+				/*查找选中的个数*/
+				var count = 0;
+				for(var i = 0; i < childLength; i++) {
+					/*判断每个子集*/
+					if($("#" + $id).find(">ul").children().find("> a").eq(i).hasClass("jstree-clicked")) {
+						count++;
+
+					}
+
 				}
-			}
-			if(count == $alist_length) {
-				$("#" + $id).parent().parent().find("a").addClass("jstree-clicked");
+				if(count == childLength) {
+					$("#" + $id).find("a:first").addClass("jstree-clicked");
+				} else {
+					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
+				}
+
 			} else {
-
-				$("#" + $id).parent().parent().find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-
+				$("#" + $id).find("a:first").addClass("jstree-clicked");
 			}
-			
 
 		}
 
@@ -143,8 +147,9 @@ if(App.isAngularJsApp() === false) {
 						/*角色的点击事件*/
 						$(".RoleMenu_left  tbody tr").click(function() {
 							$dataid = $(this).attr("data_Rid");
-							console.log($dataid);
+							$("#tree_role").find('.jstree-undetermined').removeClass('jstree-undetermined');
 							$("#tree_role").find("a").removeClass("jstree-clicked");
+
 							var jsStr = "ModuleListByRole {\"id\":\"" + $dataid + "\"}";
 							send(jsStr);
 						});
@@ -152,20 +157,21 @@ if(App.isAngularJsApp() === false) {
 						break;
 
 					case "ModuleListByTree":
-					/*树绑定*/
+						/*树绑定*/
 						TreeData = result["data"];
 						UITree.init();
 						break;
 					case "ModuleListByRole":
-					/*获取角色集合*/
+						/*获取角色集合*/
 						var ary = result["info"].split(',');
+
 						for(var i = 0; i < ary.length; i++) {
+							$("#" + ary[i]).find("a:first").addClass("jstree-clicked");
 							active(ary[i]);
 						}
-
 						break;
 					case "SetModuleForRole":
-					/*保存*/
+						/*保存*/
 						shalert("保存成功");
 						break;
 				}

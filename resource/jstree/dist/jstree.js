@@ -5092,17 +5092,16 @@
 					}
 				});
 				/*后期加上的*/
-          //  if(p.length>0)
-            //{
+				
             	this.element.find('.jstree-undetermined').removeClass('jstree-undetermined');
-           // }
+           
 			
 			
 			for(i = 0, j = p.length; i < j; i++) {
 				if(!m[p[i]].state[ t ? 'selected' : 'checked' ]) {
 					s = this.get_node(p[i], true);
 					if(s && s.length) {
-						console.log(s);
+						
 						s.children('.jstree-anchor').children('.jstree-checkbox').addClass('jstree-undetermined');
 					}
 				}

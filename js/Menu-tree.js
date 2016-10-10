@@ -41,29 +41,29 @@ var UITree = function() {
 							var obj = inst.get_node(obj.reference);
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Add').modal('show');
-								$("#save_inputTreeAdd").on("click", function() {
-									alert("");
-									if($("#input_treeName").val().trim() == "") {
-										shalert("节点名称不能为空！");
-										return false;
-									}
-									if($("#inputTree_Add").val().trim() == "") {
-										shalert("请选择图标");
-										return false;
-									}
-									//New_node = new_node;
-									Inst = inst;
-									Obje=obj;
-									var jsStr = "AddModule {\"parent\":\"" + obj.id + "\",\"name\":\"" + $("#input_treeName").val().trim() + "\",\"image\":\"" + $("#inputTree_Add").val().trim() + "\",\"url\":\"" + $("#input_treeAddress").val().trim() + "\"}";
-									send(jsStr);
-									console.log(jsStr);
-									//alert(ChirdID);
-									$("#save_inputTreeAdd").unbind("click");
-								});
+							$("#save_inputTreeAdd").on("click", function() {
 								
-						    //inst.create_node(obj, {}, "last", function(new_node) {
-						    	//console.log(new_node);
-						    	
+								if($("#input_treeName").val().trim() == "") {
+									shalert("节点名称不能为空！");
+									return false;
+								}
+								if($("#inputTree_Add").val().trim() == "") {
+									shalert("请选择图标");
+									return false;
+								}
+								//New_node = new_node;
+								Inst = inst;
+								Obje = obj;
+								var jsStr = "AddModule {\"parent\":\"" + obj.id + "\",\"name\":\"" + $("#input_treeName").val().trim() + "\",\"image\":\"" + $("#inputTree_Add").val().trim() + "\",\"url\":\"" + $("#input_treeAddress").val().trim() + "\"}";
+								send(jsStr);
+
+								//alert(ChirdID);
+								$("#save_inputTreeAdd").unbind("click");
+							});
+
+							//inst.create_node(obj, {}, "last", function(new_node) {
+							//console.log(new_node);
+
 							/*	$(this).prop("data-toggle", "modal");
 								$('#my_Modal_tree_Add').modal('show');
 
@@ -117,7 +117,7 @@ var UITree = function() {
 									return false;
 								}
 
-								var imge = "icon-bar-chart";
+								
 								var jsStr = "UpdateModule {\"id\":\"" + obj.id + "\",\"parent\":\"" + obj.parent + "\",\"name\":\"" + $("#input_treeName_update").val().trim() + "\",\"image\":\"" + $("#inputTree_Update").val().trim() + "\",\"url\":\"" + $("#input_treeAddress_update").val().trim() + "\"}";
 
 								send(jsStr);
@@ -135,14 +135,18 @@ var UITree = function() {
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-							var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
-							send(jsStr);
-							if(inst.is_selected(obj)) {
-								inst.delete_node(inst.get_selected());
-							} else {
-								inst.delete_node(obj);
-							}
-							
+							shconfirm("确定要删除吗", function(result) {
+								if(result) {
+									var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
+									send(jsStr);
+									if(inst.is_selected(obj)) {
+										inst.delete_node(inst.get_selected());
+									} else {
+										inst.delete_node(obj);
+									}
+								}
+							})
+
 							/*alert("delete operation--clickedNode's id is:" + clickedNode.id);*/
 						}
 					}
@@ -243,27 +247,24 @@ if(App.isAngularJsApp() === false) {
 			} else {
 				switch(result["Function"]) {
 					case "ModuleListByTree":
-
 						TreeData = result["data"];
-
 						UITree.init();
 						break;
 					case "AddModule":
 
 						ChirdID = result["info"];
-
 						shalert("添加成功");
-						var new_node={};
+						var new_node = {};
 						new_node.id = ChirdID;
 						new_node.text = $("#input_treeName").val().trim();
 						new_node.icon = "fa fa-folder icon-state-warning icon-lg";
 						new_node.url = $("#input_treeAddress").val().trim();
-						
+
 						Inst.create_node(Obje, new_node, "last", function(new_node) {
-							
+
 							Inst.edit(new_node);
 						});
-					 
+
 						$('#my_Modal_tree_Add').modal('hide');
 						New_node = "";
 						Inst = "";
@@ -271,7 +272,7 @@ if(App.isAngularJsApp() === false) {
 					case "UpdateModule":
 						shalert("修改成功");
 						Obje.text = $("#input_treeName_update").val().trim();
-						Obje.icon ="fa fa-folder icon-state-warning icon-lg";;
+						Obje.icon = "fa fa-folder icon-state-warning icon-lg";;
 						Inst.edit(Obje);
 						$('#my_Modal_tree_Update').modal('hide');
 						Inst = "";
@@ -288,7 +289,6 @@ if(App.isAngularJsApp() === false) {
 						} else {
 							$(".right_row tbody").html("");
 						}
-
 						break;
 
 				}

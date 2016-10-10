@@ -3,48 +3,52 @@ var $dataid;
 var UITree = function() {
 
 	var handleSample2 = function() {
-		var treeObj = {};
+			var treeObj = {};
 
-		$('#tree_2').jstree({
+			$('#tree_2').jstree({
 
-			'plugins': ["checkbox", "types"],
+				'plugins': ["checkbox", "types"],
 
-			'core': {
-				"themes": {
-					"responsive": false
+				'core': {
+					"themes": {
+						"responsive": false
+					},
+					'data': TreeData
 				},
-				'data': TreeData
-			},
-			"types": {
-				"default": {
-					"icon": "fa fa-folder icon-state-warning icon-lg"
-				},
-				"file": {
-					"icon": "fa fa-file icon-state-warning icon-lg"
+				"types": {
+					"default": {
+						"icon": "fa fa-folder icon-state-warning icon-lg"
+					},
+					"file": {
+						"icon": "fa fa-file icon-state-warning icon-lg"
+					}
 				}
-			}
-		});
+			});
 
-	}
-
+		}
+		/*保存按钮*/
 	$("#usermenu_save").on("click", function() {
 
 		var Array = [];
-		//$("#tree_2").find("a").addClass("jstree-clicked");
-		/*	if($dataid!=undefined)
-			{
-				console.log($("#tree_2").find("a .jstree-clicked"));
-			}*/
+		var UndaterArray = [];
+
 		if($dataid != undefined) {
+			//console.log($("#tree_2").find(".jstree-undetermined").parent().parent());
+			$.each($("#tree_2").find(".jstree-undetermined").parent().parent(), function(index, item) {
+				UndaterArray.unshift(item.id)
+			});
 			$.each($("#tree_2").find(".jstree-clicked").parent(), function(index, item) {
 				Array.unshift(item.id);
 
 			});
-			
-			var module = Array.join(',');
+			var module = UndaterArray.concat(Array).join(',');
+			console.log(module.length);
 			var jsStr = "SetModuleForUser {\"id\":\"" + $dataid + "\",\"module\":\"" + module + "\"}";
-
+            console.log(jsStr);
 			send(jsStr);
+		} else {
+			shalert("请选择用户");
+			return false;
 		}
 
 	});
@@ -92,93 +96,35 @@ if(App.isAngularJsApp() === false) {
 
 			return str;
 		}
-		/*数组去重*/
-		Array.prototype.unique = function() {
-			this.sort(); //先排序
-			var res = [this[0]];
-			for(var i = 1; i < this.length; i++) {
-				if(this[i] !== res[res.length - 1]) {
-					res.push(this[i]);
-				}
-			}
-			return res;
-		}
-		/*var arr = [1, 'a', 'a', 'b', 'd', 'e', 'e', 1, 0]
-		alert(arr.unique2());*/
-		/*var active = function(ary) {
-			console.log(ary);
-			var arylist=[];
-			for(var i = 0; i < ary.length; i++) {
-				$("#" + ary[i]).find("a:first").addClass("jstree-clicked");*/
-				/*查出每个li 父节点集合*/
-				
-			  /*  arylist.push($("#" + ary[i]).parent().parent().attr('id'));	
-             */
-				/* this.element.find('.jstree-undetermined').removeClass('jstree-undetermined');
-			  alert("22");
-			 for(i = 0, j = p.length; i < j; i++) {
-				if(!m[p[i]].state[ t ? 'selected' : 'checked' ]) {
-					s = this.get_node(p[i], true);
-					if(s && s.length) {
-						s.children('.jstree-anchor').children('.jstree-checkbox').addClass('jstree-undetermined');
-					}
-				}
-			}*/
-			//}
-			/*获取所有选中元素的父节点*/
-            /* arylist=arylist.unique();
-             console.log(arylist);
-             for(var i=0;i<arylist.length;i++)
-             {
-             	
-             }*/
-             
-			/*	var count = 0;
-				var $alist_length = $("#" + $id).siblings().length+1;//获取选中节点父节点的子节点的个数	
-				if($("#" + $id).parent().html();
-				for(var i = 0; i < $alist_length; i++) {
-		
-					if($("#" + $id).parent().parent().find("li a").eq(i).hasClass("jstree-clicked")) {
+
+		//首先判断当前这个id 是否有子集，如果没有子集  添加对勾样式；  如果有子集，判断子集的个数，和子集选中的个数，如果个数相等添加对勾的样式 ，不相等 半选中
+		/*点击用户列表 给菜单添加样式*/
+		var active = function($id) {
+
+			if($("#" + $id).find(">ul").length > 0) {
+				//获取当前元素中子集的个数
+				var childLength = $("#" + $id).find(">ul").children().length;
+				/*查找选中的个数*/
+				var count = 0;
+				for(var i = 0; i < childLength; i++) {
+					/*判断每个子集*/
+					if($("#" + $id).find(">ul").children().find("> a").eq(i).hasClass("jstree-clicked")) {
 						count++;
+
 					}
+
 				}
-				if(count == $alist_length) {
-					$("#" + $id).parent().parent().find("a").addClass("jstree-clicked");
+				if(count == childLength) {
+					$("#" + $id).find("a:first").addClass("jstree-clicked");
 				} else {
-
-					$("#" + $id).parent().parent().find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-
-				}*/
-
-		//}
-
-
-	         /*点击用户列表 给菜单添加样式*/
-			var active = function($id) {
-
-			$("#" + $id).find("a:first").addClass("jstree-clicked");
-			var count = 0;
-			console.log($id);
-			var $alist_length = $("#" + $id).siblings().length+1;//获取选中节点父节点的子节点的个数
-			/*判定每个节点是否还有父节点*/
-
-			for(var i = 0; i < $alist_length; i++) {
-			
-				if($("#" + $id).parent().parent().find("li a").eq(i).hasClass("jstree-clicked")) {
-					count++;
+					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
 				}
-			}
-			if(count == $alist_length) {
-				$("#" + $id).parent().parent().find("a").addClass("jstree-clicked");
+				
 			} else {
-
-				$("#" + $id).parent().parent().find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-
+				$("#" + $id).find("a:first").addClass("jstree-clicked");
 			}
-			
 
 		}
-     
 
 		//收到消息
 		socket.onmessage = function(msg) {
@@ -213,14 +159,17 @@ if(App.isAngularJsApp() === false) {
 					case "ModuleListByTree":
 						/*获取树集合*/
 						TreeData = result["data"];
+
 						UITree.init();
-						$('#tree_2').jstree().open_all();
+
 						break;
 					case "ModuleListByUser":
-					  
+                     console.log( result["info"]);
 						var ary = result["info"].split(',');
-							for(var i = 0; i < ary.length; i++) {
-						    active(ary[i]);
+						console.log(ary);
+						for(var i = 0; i < ary.length; i++) {
+							$("#" + ary[i]).find("a:first").addClass("jstree-clicked");
+							active(ary[i]);
 						}
 
 						break;
