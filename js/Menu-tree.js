@@ -43,7 +43,7 @@ var UITree = function() {
 							$('#my_Modal_tree_Add').modal('show');
 							$("#save_inputTreeAdd").unbind("click");
 							$("#save_inputTreeAdd").on("click", function() {
-								
+
 								if($("#input_treeName").val().trim() == "") {
 									shalert("节点名称不能为空！");
 									return false;
@@ -59,10 +59,8 @@ var UITree = function() {
 								send(jsStr);
 
 								//alert(ChirdID);
-								$("#save_inputTreeAdd").unbind("click");
+								
 							});
-
-						
 
 						}
 					},
@@ -86,7 +84,7 @@ var UITree = function() {
 							$("#input_treeName_update").val(obj.text);
 							//console.log((obj.icon.split(' '))[2]);
 							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
-							
+
 							$("#input_treeAddress_update").val(obj.url);
 							$("#save_inputTreeUpdate").unbind("click");
 							$("#save_inputTreeUpdate").on("click", function() {
@@ -99,13 +97,12 @@ var UITree = function() {
 									return false;
 								}
 
-								
 								var jsStr = "UpdateModule {\"id\":\"" + obj.id + "\",\"parent\":\"" + obj.parent + "\",\"name\":\"" + $("#input_treeName_update").val().trim() + "\",\"image\":\"" + $("#inputTree_Update").val().trim() + "\",\"url\":\"" + $("#input_treeAddress_update").val().trim() + "\"}";
 
 								send(jsStr);
 								Obje = obj;
 								Inst = inst;
-								$("#save_inputTreeUpdate").unbind("click");
+								
 
 							});
 
@@ -121,11 +118,9 @@ var UITree = function() {
 								if(result) {
 									var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
 									send(jsStr);
-									if(inst.is_selected(obj)) {
-										inst.delete_node(inst.get_selected());
-									} else {
-										inst.delete_node(obj);
-									}
+									Inst = inst;
+									Obje = obj;
+
 								}
 							})
 
@@ -150,8 +145,6 @@ var UITree = function() {
 		});
 
 	}
-
-	
 
 	//连接成功
 	socket.onopen = function() {
@@ -250,6 +243,13 @@ if(App.isAngularJsApp() === false) {
 					case "DeleteModule":
 
 						shalert("删除成功");
+						if(Inst.is_selected(Obje)) {
+							Inst.delete_node(Inst.get_selected());
+						} else {
+							Inst.delete_node(Obje);
+						}
+						Inst="";
+						Obje="";
 						break;
 
 					case "ModuleListByParent":

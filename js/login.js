@@ -12,17 +12,22 @@ $(function() {
 
 		var e = event || window.event || arguments.callee.caller.arguments[0];
 		if(e && e.keyCode == 13) { // enter 键
-
-			login();
+          	login();
+		
 		}
 	}
+	
 	$("#loginClick").on("click", function() {
 		/*判定*/
 		login();
 
 	});
 
+	/*$("#loginClick").keydown(function(event){
+		alert(event.keyCode);
+	});*/
 	function login() {
+		
 		if($("#username").val().trim() == "") {
 			shalert('用户名不能为空');
 			return false;

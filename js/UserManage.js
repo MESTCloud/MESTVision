@@ -48,7 +48,7 @@ $(function() {
 					jsStr += "}";
 
 				}
-                console.log(jsStr);
+               
 				send(jsStr);
 
 			});
@@ -102,7 +102,7 @@ $(function() {
 			}
 
 			var jsStr = "UpdateUser {\"id\":\"" + userid + "\",\"realname\":\"" + $("#name_Update").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Update").val().trim() + "\",\"role\":\"" + $("#select_role_update").val().trim() + "\"}";
-console.log(jsStr);
+
 			send(jsStr);
 		});
 
@@ -143,7 +143,7 @@ console.log(jsStr);
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-            console.log(jsonStr);
+          
 			send(jsonStr);
 		});
 	}
@@ -333,7 +333,7 @@ socket.onmessage = function(msg) {
 					"Mobile": $("#inputphone_Add").val().trim(),
 					"RealName": $("#name_Add").val().trim(),
 					"UserName": $("#login_Add").val().trim(),
-					"RoleName": $("#inputRole_Add  option:selected").text().trim()
+					"RoleId": $("#inputRole_Add").val().trim()
 				};
 
 				UserData.push(obj);

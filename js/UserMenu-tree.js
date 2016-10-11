@@ -145,6 +145,7 @@ if(App.isAngularJsApp() === false) {
 						$(".userMenu_left tbody").html(bindUserTable(result["data"]));
 						/* 点击事件*/
 						$(".userMenu_left  tbody tr").click(function() {
+							
 							$dataid = $(this).attr("data_uid");
 
 							$("#tree_2").find('.jstree-undetermined').removeClass('jstree-undetermined');

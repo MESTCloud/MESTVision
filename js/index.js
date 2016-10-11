@@ -1,5 +1,5 @@
 $("#save_inputPassWordUpdate").click(function() {
-	
+
 	if($("#inputPassWordUpdateOld").val().trim() == "") {
 		shalert("旧密码不能为空");
 		return false;
@@ -39,97 +39,98 @@ socket.onmessage = function(msg) {
 		switch(result["Function"]) {
 
 			case "ChangePassword":
-				
+
 				if(result["info"].toString().trim() != "") {
 					shalert(result["info"]);
 				} else {
 					shalert("密码修改成功！");
 				}
-
+				$("#inputPassWordUpdateOld").val("");
+				$("#inputPassWordUpdate").val("");
+				$("#inputPassWordUpdate2").val("");
 				$('#myModal_PassWordUpdate').modal('hide');
 				break;
-				case "ModuleListByMenu": 
-				$("#Menu").html('<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>'+result["data"]);
-				
-				$(".sub-menu > li").click(function () {
-    var menu = $('.page-sidebar-menu');
+			case "ModuleListByMenu":
+				$("#Menu").html('<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>' + result["data"]);
 
-    var el = $(this);
+				$(".sub-menu > li").click(function() {
+					var menu = $('.page-sidebar-menu');
 
-    if (!el || el.size() == 0) {
-        return;
-    }
+					var el = $(this);
 
-    if (el.attr('href') == 'javascript:;' ||
-        el.attr('ui-sref') == 'javascript:;' ||
-        el.attr('href') == '#' ||
-        el.attr('ui-sref') == '#'
-        ) {
-        return;
-    }
+					if(!el || el.size() == 0) {
+						return;
+					}
 
-    // begin: handle active state
-    if (menu.hasClass('page-sidebar-menu-hover-submenu') === false) {
-        menu.find('li.nav-item.open').each(function () {
-            $(this).removeClass('open');
-            $(this).find('> a > .arrow.open').removeClass('open');
-            //$(this).find('> .sub-menu').slideUp();
-        });
-    } else {
-        menu.find('li.open').removeClass('open');
-    }
+					if(el.attr('href') == 'javascript:;' ||
+						el.attr('ui-sref') == 'javascript:;' ||
+						el.attr('href') == '#' ||
+						el.attr('ui-sref') == '#'
+					) {
+						return;
+					}
 
-    menu.find('li.active').removeClass('active');
-    menu.find('li > a > .selected').remove();
-    // end: handle active state
+					// begin: handle active state
+					if(menu.hasClass('page-sidebar-menu-hover-submenu') === false) {
+						menu.find('li.nav-item.open').each(function() {
+							$(this).removeClass('open');
+							$(this).find('> a > .arrow.open').removeClass('open');
+							//$(this).find('> .sub-menu').slideUp();
+						});
+					} else {
+						menu.find('li.open').removeClass('open');
+					}
 
-    el.parents('li').each(function () {
-        $(this).addClass('active');
-        $(this).find('> a > span.arrow').addClass('open');
-        
-        if ($(this).parent('ul.page-sidebar-menu').size() === 1) {
-            $(this).find('> a').append('<span class="selected"></span>');
-        }
+					menu.find('li.active').removeClass('active');
+					menu.find('li > a > .selected').remove();
+					// end: handle active state
 
-        if ($(this).children('ul.sub-menu').size() === 1) {
-            $(this).addClass('open');
-        }
-    });
-    
-    if ($(this).find('> a').attr('data-page')) {
-        var path = new Array();
+					el.parents('li').each(function() {
+						$(this).addClass('active');
+						$(this).find('> a > span.arrow').addClass('open');
 
-        while (true) {
-            if (el.parent('ul.page-sidebar-menu').size() === 1) {
-                path.push(el.find(' > a > span.title')[0].textContent);
-                break;
-            } else {
-                if (el.find(' > a > span.title')[0]) {
-                    path.push(el.find(' > a > span.title')[0].textContent);
-                }
-            }
+						if($(this).parent('ul.page-sidebar-menu').size() === 1) {
+							$(this).find('> a').append('<span class="selected"></span>');
+						}
 
-            el = el.parent();
-        }
-        
-        var url = $(this).find('> a').attr('data-page');
-        if (url.indexOf('?') > -1) {
-            url += "&path=" + escape(path.reverse());
-        } else {
-            url += "?path=" + escape(path.reverse());
-        }
+						if($(this).children('ul.sub-menu').size() === 1) {
+							$(this).addClass('open');
+						}
+					});
 
-       
-        $("#ShowPage").attr("src", url);
-    }
+					if($(this).find('> a').attr('data-page')) {
+						var path = new Array();
 
-    var resBreakpointMd = App.getResponsiveBreakpoint('md');
-    if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
-        $('.page-header .responsive-toggler').click();
-    }
-});
+						while(true) {
+							if(el.parent('ul.page-sidebar-menu').size() === 1) {
+								path.push(el.find(' > a > span.title')[0].textContent);
+								break;
+							} else {
+								if(el.find(' > a > span.title')[0]) {
+									path.push(el.find(' > a > span.title')[0].textContent);
+								}
+							}
 
-				
+							el = el.parent();
+						}
+
+						var url = $(this).find('> a').attr('data-page');
+						if(url.indexOf('?') > -1) {
+							url += "&path=" + escape(path.reverse());
+						} else {
+							url += "?path=" + escape(path.reverse());
+						}
+
+						$("#ShowPage").attr("src", url);
+					}
+
+					var resBreakpointMd = App.getResponsiveBreakpoint('md');
+					if(App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
+						
+						$('.page-header .responsive-toggler').click();
+					}
+				});
+
 				break;
 
 		}
@@ -151,5 +152,3 @@ function send(msg) {
 function disconnect() {
 	socket.close();
 }
-
-
