@@ -115,7 +115,7 @@ socket.onmessage = function(msg) {
 		} else {
 			switch(result["Function"]) {
 				case "RoleList":
-               console.log(result["data"]);
+              
 					$(".RoleCollector_left tbody").html(bindRoleTable(result["data"]));
 					/*获取采集器信息*/
 					$(".RoleCollector_left tbody tr").click(function() {
@@ -128,12 +128,12 @@ socket.onmessage = function(msg) {
 					});
 					break;
 				case "CollectorList":
-					console.log(result["data"]);
+				
 					$(".RoleCollector_right tbody").html(bindCollectorTable(result["data"]));
 	
 					break;
 				case "CollectorListByRole":
-				 console.log(result["data"]);
+				
 					$(":checkbox").prop('checked', false);
 					if(result["data"].length > 0) {
 

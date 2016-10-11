@@ -1,6 +1,6 @@
 var $UserCollectorId;
 $(function() {
-
+/*复选框的操作*/
 	$("#checkAll").click(
 		function() {
 			if(this.checked) {
@@ -32,7 +32,7 @@ $(function() {
 
 		});
 
-		var jsStr = "AddCollectorToUser {\"id\":\"" +$UserCollectorId + "\",\"CollectorIds\":\"" + CollectorArray.join(',') + "\"}";
+		var jsStr = "AddCollectorToUser {\"id\":\"" + $UserCollectorId + "\",\"CollectorIds\":\"" + CollectorArray.join(',') + "\"}";
 		send(jsStr);
 		//alert($RoleUserId);
 	});
@@ -47,14 +47,6 @@ function bindUserTable(datatable) {
 			str += "<span>" + data["RealName"] + "</span></td>";
 			str += "<td >" + data["UserName"] + "</td>";
 			str += "</tr>";
-			/*str += "<tr class='gradeX even' role='row'>"
-			str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-			str += "<input type='checkbox' class='checkboxes' data-userid ='" + data["Id"] + "' name='check_table'>";
-			str += "<span></span>";
-			str += "</label> </td>";
-			str += "<td >" + data["UserName"] + "</td>";
-			str += "<td>" + data["RealName"] + "</td>";
-			str += "</tr>";*/
 
 		});
 
@@ -110,9 +102,9 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 		var result = msg.data;
-		
+
 		result = JSON.parse(result);
-		
+
 		if(result["error"]) {
 			shalert(result["error"]);
 		} else if(result["exception"]) {
@@ -126,18 +118,18 @@ socket.onmessage = function(msg) {
 					$(".UserCollector_left tbody tr").click(function() {
 
 						$UserCollectorId = $(this).attr("data-userid");
-                        console.log($UserCollectorId);
+
 						var jsStr = "CollectorListByUser {\"id\":\"" + $UserCollectorId + "\"}";
 						send(jsStr);
 					});
 					break;
 				case "CollectorList":
-					console.log(result["data"]);
+
 					$(".UserCollector_right tbody").html(bindCollectorTable(result["data"]));
-	
+
 					break;
 				case "CollectorListByUser":
-				 console.log(result["data"]);
+
 					$(":checkbox").prop('checked', false);
 					if(result["data"].length > 0) {
 

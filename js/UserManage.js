@@ -65,7 +65,7 @@ $(function() {
 
 			//send("userlist");
 			var obj = UserData[idIndexUpdate];
-			console.log(obj);
+			
 			$("#login_Update").val(obj["UserName"]);
 			$("#name_Update").val(obj["RealName"]);
 			$("#inputphone_Update").val(obj["Mobile"]);
@@ -234,7 +234,7 @@ $(function() {
 
 		send(jsStr);
 		
-		console.log(jsStr);
+		
 
 	});
 
@@ -322,7 +322,7 @@ socket.onmessage = function(msg) {
 
 				UserData = result["data"]
 				$("tbody").html(bindTable(result["data"]));
-				console.log(result["data"]);
+				
 				break;
 
 			case "AddUser":

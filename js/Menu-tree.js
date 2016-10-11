@@ -61,29 +61,7 @@ var UITree = function() {
 								$("#save_inputTreeAdd").unbind("click");
 							});
 
-							//inst.create_node(obj, {}, "last", function(new_node) {
-							//console.log(new_node);
-
-							/*	$(this).prop("data-toggle", "modal");
-								$('#my_Modal_tree_Add').modal('show');
-
-								$("#save_inputTreeAdd").on("click", function() {
-									if($("#input_treeName").val().trim() == "") {
-										shalert("节点名称不能为空！");
-										return false;
-									}
-									if($("#inputTree_Add").val().trim() == "") {
-										shalert("请选择图标");
-										return false;
-									}
-									New_node = new_node;
-									Inst = inst;
-									var jsStr = "AddModule {\"parent\":\"" + obj.id + "\",\"name\":\"" + $("#input_treeName").val().trim() + "\",\"image\":\"" + $("#inputTree_Add").val().trim() + "\",\"url\":\"" + $("#input_treeAddress").val().trim() + "\"}";
-									send(jsStr);
-									//alert(ChirdID);
-									$("#my_Modal_tree_Add").unbind("click");
-								});*/
-							//});
+						
 
 						}
 					},
@@ -105,7 +83,9 @@ var UITree = function() {
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Update').modal('show');
 							$("#input_treeName_update").val(obj.text);
-							//$("#inputTree_Update").text(obj.icon);
+							//console.log((obj.icon.split(' '))[2]);
+							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
+							
 							$("#input_treeAddress_update").val(obj.url);
 							$("#save_inputTreeUpdate").on("click", function() {
 								if($("#input_treeName_update").val().trim() == "") {
@@ -169,26 +149,7 @@ var UITree = function() {
 
 	}
 
-	/*判定不能为空*/
-	function Mark() {
-
-		if($("#input_treeName").val().trim() == "") {
-			UITree.info("姓名不能为空");
-			$(".reminder").show();
-			$("#input_treeName").focus();
-			return false;
-		}
-
-		if($("#input_treeAddress").val().trim() == "") {
-			info("网址不能为空！");
-			$(".reminder").show();
-			$("#input_treeAddress").focus();
-			return false;
-		}
-
-		return true;
-
-	}
+	
 
 	//连接成功
 	socket.onopen = function() {
@@ -266,6 +227,9 @@ if(App.isAngularJsApp() === false) {
 						});
 
 						$('#my_Modal_tree_Add').modal('hide');
+						$("#input_treeName").val("");
+						$("#input_treeAddress").val("");
+						$("#inputTree_Add").val("icon-user-female");
 						New_node = "";
 						Inst = "";
 						break;
@@ -275,6 +239,9 @@ if(App.isAngularJsApp() === false) {
 						Obje.icon = "fa fa-folder icon-state-warning icon-lg";;
 						Inst.edit(Obje);
 						$('#my_Modal_tree_Update').modal('hide');
+						$("#input_treeName_update").val("");
+						$("#inputTree_Update").val("icon-user-female");
+						$("#input_treeAddress_update").val("input_treeAddress_update");
 						Inst = "";
 						Obje = "";
 						break;
