@@ -25,7 +25,7 @@
             modal: true,
             autoOpen: false,
             show: {
-                effect: "slide",
+                effect: "blind",
                 duration: 500
             },
             hide: {
