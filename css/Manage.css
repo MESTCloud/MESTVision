@@ -66,7 +66,8 @@
  
 }
 tbody tr{cursor: pointer}
-.userMenu_left,.userMenu_right,.RoleMenu_left,.RoleMenu_right,.userRole_left,.userRole_right,.Roleuser_left,.Roleuser_right{
+.userMenu_left,.userMenu_right,.RoleMenu_left,.RoleMenu_right,.userRole_left,.userRole_right,.Roleuser_left,.Roleuser_right,.UserCollector_left,.UserCollector_right,
+.RoleCollector_left,.RoleCollector_right{
 
     height: 800px;
     border: 1px solid #0088cc;
@@ -74,12 +75,12 @@ tbody tr{cursor: pointer}
     /*border-radius: 5px;*/
 
 }
-.userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left{
+.userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left,.UserCollector_left,.RoleCollector_left{
     width: 35%;
     margin-right: 1%;
      overflow-x: auto;
 }
-.userMenu_right,.RoleMenu_right,.userRole_right,.Roleuser_right{
+.userMenu_right,.RoleMenu_right,.userRole_right,.Roleuser_right,.UserCollector_right,.RoleCollector_right{
     width: 64%;
     overflow-x: auto;
 }
