@@ -164,7 +164,7 @@ if(App.isAngularJsApp() === false) {
 
 						break;
 					case "ModuleListByUser":
-                     console.log( result["info"]);
+                        console.log( result["info"]);
 						var ary = result["info"].split(',');
 						console.log(ary);
 						for(var i = 0; i < ary.length; i++) {

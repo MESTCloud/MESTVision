@@ -68,9 +68,7 @@ var UITree = function() {
 	return {
 		//main function to initiate the module
 		init: function() {
-
 			RoleMenu();
-
 		}
 
 	};
@@ -141,7 +139,7 @@ if(App.isAngularJsApp() === false) {
 			} else {
 				switch(result["Function"]) {
 					case "RoleList":
-						console.log(result["data"]);
+						
 						/*页面加载*/
 						$(".RoleMenu_left tbody").html(bindUserTable(result["data"]));
 						/*角色的点击事件*/

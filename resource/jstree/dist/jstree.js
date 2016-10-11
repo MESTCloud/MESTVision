@@ -2438,7 +2438,7 @@
 			}
 
 
-			if(deep && obj.children.length &&obj.state.loaded) {
+			if(deep && obj.children.length &&(obj.state.opened || force_render)&&obj.state.loaded) {
 				k = d.createElement('UL');
 				k.setAttribute('role', 'group');
 				k.className = 'jstree-children';
@@ -5091,7 +5091,7 @@
 						}
 					}
 				});
-				/*后期加上的*/
+				
 				
             	this.element.find('.jstree-undetermined').removeClass('jstree-undetermined');
            
