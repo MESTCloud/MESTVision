@@ -255,7 +255,7 @@ function bindTable(datatable) {
 			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table'>";
 			str += "<span></span>";
 			str += "</label> </td>";
-			str += "<td>" + data["UserName"] + "</td>";
+			str += "<td style='word-break: break-all; word-wrap:break-word;'>" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "<td>" + data["Mobile"] + "</td>";
 			str += "<td>" + data["RoleName"] + "</td>";

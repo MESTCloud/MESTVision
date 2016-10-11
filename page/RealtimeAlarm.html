@@ -2,7 +2,7 @@
 <html>
 	<head lang="en">
 		<meta charset="UTF-8">
-		<title>运行报表</title>
+		<title>实时报警</title>
 		<link href="../css/index.css" rel="stylesheet" type="text/css" />
 		<link href="../css/gcspread.sheets.excel2013white.9.40.20161.0.css" rel="stylesheet" type="text/css" />
 		<link href="../css/public.css" rel="stylesheet" type="text/css" />
@@ -37,27 +37,27 @@
 				<div class="caption" id="divTitle">
 				</div>
 				<div class="actions">
-					<button type="button" class="btn btn-warning" id="btnQuery">
+					<button type="button" class="btn green" id="btnQuery">
 			            <i class="fa fa-refresh"></i>
 		                <span>刷新</span>
 	        		</button>
-					<button type="button" class="btn btn-primary" id="btnOutputExcel">
+					<button type="button" class="btn green" id="btnOutputExcel">
 					    <i class="fa fa-search"></i>
 		                <span>查询</span>
 			    	</button>
-					<button type="button" class="btn btn-success" id="btnOutputPdf">
+					<button type="button" class="btn green" id="btnOutputPdf">
 					    <i class="fa fa-check-circle-o"></i>
 		                <span>确认选中</span>
 				    </button>
-					<button type="button" class="btn btn-warning" id="btnQuery">
+					<button type="button" class="btn green" id="btnQuery">
 			            <i class="fa fa-check-square"></i>
 		                <span>全部确认</span>
 	        		</button>
-					<button type="button" class="btn btn-primary" id="btnOutputExcel">
+					<button type="button" class="btn green" id="btnOutputExcel">
 					    <i class="fa fa-file-excel-o"></i>
 		                <span>导出</span>
 			    	</button>
-					<button type="button" class="btn btn-success" id="btnOutputPdf">
+					<button type="button" class="btn green" id="btnOutputPdf">
 					    <i class="fa fa-stop"></i>
 		                <span>停止</span>
 				    </button>
@@ -87,270 +87,270 @@
 					<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="tblList" role="grid" aria-describedby="sample_3_info">
 						<thead>
 							<tr role="row" style="background-color: white;">
-								<th  style="width: 150px;"> 标签名
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 160px;"> 标签名
 								</th>
-								<th  style="width: 150px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 150px;">
 									报警描述
 								</th>
-								<th  style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
 									报警级别
 								</th>
-								<th  style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
 									开始时间
 								</th>
-								<th  style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
 									结束时间
 								</th>
-								<th  style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
 									报警值
 								</th>
-								<th  style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
 									正常值
 								</th>
-								<th style="width: 68px;">
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
 									确认报警
 								</th>
 							</tr>
 						</thead>
-						<tbody>	
+						<tbody>
 							<tr class="gradeX" role="row">
-								<td class="sorting_1">AHHX_Connection</td>
-								<td class="sorting_1">演示平台OPC采集器</td>
-								<td class="sorting_1"></td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">
-									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
-						                <span>确认报警</span>
-								    </button>
-								</td>
-							</tr>
-							<tr class="gradeX" role="row">
-								<td class="sorting_1">AHHX_Connection</td>
-								<td class="sorting_1">演示平台OPC采集器</td>
-								<td class="sorting_1"></td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">
+								<td >AHHX_Connection</td>
+								<td >演示平台OPC采集器</td>
+								<td ></td>
+								<td >2016-09-25 18:46:55</td>
+								<td >2016-09-25 18:46:55</td>
+								<td >1</td>
+								<td >1</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
 							<tr class="gradeX" role="row">
-								<td class="sorting_1">AHHX_Connection</td>
-								<td class="sorting_1">演示平台OPC采集器</td>
-								<td class="sorting_1"></td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">
+								<td >AHHX_Connection</td>
+								<td >演示平台OPC采集器</td>
+								<td ></td>
+								<td >2016-09-25 18:46:55</td>
+								<td >2016-09-25 18:46:55</td>
+								<td >1</td>
+								<td >1</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
 							<tr class="gradeX" role="row">
-								<td class="sorting_1">AHHX_Connection</td>
-								<td class="sorting_1">演示平台OPC采集器</td>
-								<td class="sorting_1"></td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">2016-09-25 18:46:55</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">1</td>
-								<td class="sorting_1">
+								<td >AHHX_Connection</td>
+								<td >演示平台OPC采集器</td>
+								<td ></td>
+								<td >2016-09-25 18:46:55</td>
+								<td >2016-09-25 18:46:55</td>
+								<td >1</td>
+								<td >1</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: blue;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">高报</td>
-								<td class="sorting_1">2016-09-08 12:02:32</td>
-								<td class="sorting_1">2016-09-08 12:02:36</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX" role="row">
+								<td >AHHX_Connection</td>
+								<td >演示平台OPC采集器</td>
+								<td ></td>
+								<td >2016-09-25 18:46:55</td>
+								<td >2016-09-25 18:46:55</td>
+								<td >1</td>
+								<td >1</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: blue;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">高报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontblue" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >高报</td>
+								<td >2016-09-08 12:02:32</td>
+								<td >2016-09-08 12:02:36</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: blue;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">高报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontblue" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >高报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: red;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">高高报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontblue" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >高报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: red;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">高高报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontred" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >高高报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: violet;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontred" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >高高报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: violet;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontviolet" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX" role="row" style="background-color: green;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontviolet" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: green;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontgreen" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
-							<tr class="gradeX " role="row" style="background-color: green;">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+							<tr class="gradeX fontgreen" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
+									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
+						                <span>确认报警</span>
+								    </button>
+								</td>
+							</tr>
+							<tr class="gradeX fontgreen" role="row" >
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
 							<tr class="gradeX fontgreen" role="row">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
 							<tr class="gradeX fontgreen" role="row">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
 							</tr>
 							<tr class="gradeX fontgreen" role="row">
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">S7_200_Q00</td>
-								<td class="sorting_1">低低报</td>
-								<td class="sorting_1">2016-09-08 12:02:14</td>
-								<td class="sorting_1">2016-09-08 12:02:26</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">True</td>
-								<td class="sorting_1">
+								<td >S7_200_Q00</td>
+								<td >S7_200_Q00</td>
+								<td >低低报</td>
+								<td >2016-09-08 12:02:14</td>
+								<td >2016-09-08 12:02:26</td>
+								<td >True</td>
+								<td >True</td>
+								<td >
 									<button type="button" class="btn btn1 btn-success" id="btnOutputPdf">
 						                <span>确认报警</span>
 								    </button>
 								</td>
-							</tr>
+							</tr>							
 						</tbody>
 					</table>
 				</div>
