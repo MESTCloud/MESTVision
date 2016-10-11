@@ -41,6 +41,7 @@ var UITree = function() {
 							var obj = inst.get_node(obj.reference);
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Add').modal('show');
+							$("#save_inputTreeAdd").unbind("click");
 							$("#save_inputTreeAdd").on("click", function() {
 								
 								if($("#input_treeName").val().trim() == "") {
@@ -87,6 +88,7 @@ var UITree = function() {
 							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
 							
 							$("#input_treeAddress_update").val(obj.url);
+							$("#save_inputTreeUpdate").unbind("click");
 							$("#save_inputTreeUpdate").on("click", function() {
 								if($("#input_treeName_update").val().trim() == "") {
 									shalert("节点名称不能为空！");

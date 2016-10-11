@@ -119,7 +119,7 @@ socket.onmessage = function(msg) {
             url += "?path=" + escape(path.reverse());
         }
 
-        console.log(url);
+       
         $("#ShowPage").attr("src", url);
     }
 

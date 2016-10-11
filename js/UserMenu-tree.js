@@ -42,9 +42,9 @@ var UITree = function() {
 
 			});
 			var module = UndaterArray.concat(Array).join(',');
-			console.log(module.length);
+			
 			var jsStr = "SetModuleForUser {\"id\":\"" + $dataid + "\",\"module\":\"" + module + "\"}";
-            console.log(jsStr);
+          
 			send(jsStr);
 		} else {
 			shalert("请选择用户");
@@ -164,9 +164,9 @@ if(App.isAngularJsApp() === false) {
 
 						break;
 					case "ModuleListByUser":
-                        console.log( result["info"]);
+                        
 						var ary = result["info"].split(',');
-						console.log(ary);
+						
 						for(var i = 0; i < ary.length; i++) {
 							$("#" + ary[i]).find("a:first").addClass("jstree-clicked");
 							active(ary[i]);

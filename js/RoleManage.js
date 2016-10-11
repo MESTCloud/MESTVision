@@ -208,7 +208,7 @@ socket.onmessage = function(msg) {
 		switch(result["Function"]) {
 			case "RoleList":
 				UserData = result["data"];
-				console.log(UserData);
+				
 				$("tbody").html(bindTable(result["data"]));
 				break;
 			case "AddRole": 

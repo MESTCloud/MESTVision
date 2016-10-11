@@ -48,7 +48,7 @@ $(function() {
 					jsStr += "}";
 
 				}
-
+                console.log(jsStr);
 				send(jsStr);
 
 			});
@@ -102,7 +102,7 @@ $(function() {
 			}
 
 			var jsStr = "UpdateUser {\"id\":\"" + userid + "\",\"realname\":\"" + $("#name_Update").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Update").val().trim() + "\",\"role\":\"" + $("#select_role_update").val().trim() + "\"}";
-
+console.log(jsStr);
 			send(jsStr);
 		});
 
@@ -143,7 +143,7 @@ $(function() {
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-
+            console.log(jsonStr);
 			send(jsonStr);
 		});
 	}
@@ -389,7 +389,10 @@ socket.onmessage = function(msg) {
 
 			case "SetPassword":
 				shalert("密码修改成功！");
+				
 				$('#myModal_PassWordUpdate').modal('hide');
+				$("#inputPassWordUpdate").val("");
+				$("#inputPassWordUpdate2").val("");
 				break;
 
 		}
