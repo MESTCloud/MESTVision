@@ -54,6 +54,7 @@ socket.onmessage = function(msg) {
 				$("#Menu").html('<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>' + result["data"]);
 
 				$(".sub-menu > li").click(function() {
+				
 					var menu = $('.page-sidebar-menu');
 
 					var el = $(this);
@@ -123,12 +124,19 @@ socket.onmessage = function(msg) {
 
 						$("#ShowPage").attr("src", url);
 					}
+				
 
 					var resBreakpointMd = App.getResponsiveBreakpoint('md');
 					if(App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
-						
-						$('.page-header .responsive-toggler').click();
+					
+					 if($(this).find('> a').attr('data-page')!=undefined)
+					 {
+					 	 $('.page-header .responsive-toggler').click();
+					 }
+					
+					  
 					}
+					
 				});
 
 				break;
