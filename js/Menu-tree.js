@@ -270,8 +270,9 @@ if(App.isAngularJsApp() === false) {
 
 //连接断开
 socket.onclose = function(event) {
-	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//console.log("Socket状态:" + readyStatus[socket.readyState]);
 	//location.href = "http://www.baidu.com";
+	location.href = "../Login.html";
 }
 
 //发送
