@@ -95,13 +95,13 @@ $(function() {
 	/*添加*/
 	$("#user_Add").click(function() {
 
-		$("#user_Add").prop("data-toggle", "modal");
-
-		if(dataType == "DoubleFloat") {
-			$('#myModal_Add').modal('show')
-		} else {
-			$('#myModal_Add1').modal('show')
-		}
+//		$("#user_Add").prop("data-toggle", "modal");
+//
+//		if(dataType == "DoubleFloat") {
+//			$('#myModal_Add').modal('show')
+//		} else {
+//			$('#myModal_Add1').modal('show')
+//		}
 	});
 
 	/*修改*/
@@ -162,5 +162,66 @@ $(function() {
 			return true;
 		}
 	}
+	
+	/*查询按钮点击事件*/
+	$("#btnQuery").click(function() {
+		
+		/*userid*/
+		var pUserId = $.cookie("user");
 
+		/*模拟量，开关量*/
+		var pDataType = ;
+
+		/*点名*/
+		var pTagName = $("#txtDataType").val().trim();
+		
+		/*描述*/
+		var pDescription = $("#txtTagName").val().trim();
+
+		var jsStr = "AlarmTagInfo {\"id\":\"" + pUserId + "\",\"DataType\":\"" + pDataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}";
+		console.log(jsStr);
+		send(jsStr);
+
+	});
 });
+
+//连接成功
+	socket.onopen = function() {
+		if($.cookie("user") && $.cookie("password")) {
+			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+		}
+	}
+	
+	//收到消息
+	socket.onmessage = function(msg) {
+		var result = msg.data;
+	
+		result = JSON.parse(result);
+		if(result["error"]) {
+			shalert(result["error"]);
+		} else if(result["exception"]) {
+			shalert(result["exception"]);
+		} else {
+			switch(result["Function"]) {
+				case "Report":
+					console.log(result["data"])
+					break;
+			}
+		}
+	}
+	
+	//连接断开
+	socket.onclose = function(event) {
+		console.log("Socket状态:" + readyStatus[socket.readyState]);
+		//location.href = "http://www.baidu.com";
+	}
+	
+	//发送
+	function send(msg) {
+		socket.send(msg);
+	}
+	
+	//断开连接
+	function disconnect() {
+		socket.close();
+	}
