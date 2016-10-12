@@ -25,3 +25,21 @@ table  tr  td{
 	word-break: break-all; 
 	word-wrap:break-word;
 }
+/*对二维码div 的操作样式*/
+#QRcode_btn{
+
+	float: right;
+	margin:0 0 0 9px;
+	/*height: 30px;*/
+	position: relative;
+	
+}
+#div_QRcode{
+	width: 300px;
+	position: absolute;
+	z-index: 99;
+	top:30px;
+	right:0px;
+	display: none;
+	text-align: right;
+}

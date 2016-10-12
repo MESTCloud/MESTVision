@@ -30,4 +30,58 @@ $(function() {
 			svg.setAttribute("height", "100%");
 		}
 	);
+	/*二维码的点击事件*/
+	$("#QRcode").on("click",function(){
+		var pbody=window.parent.document.body;/*获得父页面的body*/
+		
+		var urlstr="http://www.proficyrtoi.com:82/Cloud/"+$(pbody).find("iframe").attr("src").split('&')[0];
+		var str= "BarCode {\"url\":\"" + urlstr +"\"}";
+		send(str);
+		
+	});
+	
 });
+
+//连接成功
+socket.onopen = function() {
+	
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+	}
+	
+}
+
+//收到消息
+socket.onmessage = function(msg) {
+	var result = msg.data;
+	result = JSON.parse(result);
+	if(result["error"]) {
+		alert(result["error"]);
+	} else if(result["exception"]) {
+		alert(result["exception"]);
+	} else {
+		switch(result["Function"]) {
+			case "BarCode":
+			$("#QRcodeImg").attr("src","data:image/png;base64,"+result["info"]);
+			$("#div_QRcode").toggle("slow");
+			break;
+		}
+
+	}
+}
+
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//location.href = "http://www.baidu.com";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
+}

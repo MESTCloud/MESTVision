@@ -26,45 +26,39 @@
 					<button type="button" class="btn btn-success" id="user_Return">
                     <i class="fa fa-file" ></i>
                     <span>还原</span>
+                    
                 </button>
-					<button type="button" data-toggle="modal" data-target="#myModal_Add" id="user_Add" class="btn btn-success">
+                <!--二维码按钮-->
+                <div id="QRcode_btn">
+                	<button type="button" id="QRcode" class="btn btn-success" style="height: 29px;" >
                     <i class="fa fa fa-qrcode" ></i>
-                </button>
+                    </button>
+                     <!--二维码-->
+			       <div  id="div_QRcode">
+					<img src="../img/QRCode.jpg"  id="QRcodeImg"  width="60%" height="60%" style="max-height:350px; max-width:350px;" />
+			       </div>
+                </div>
+					
+                  
+                 
+			<!--end-->
 				</div>
 			</div>
+			  
 			<div id="SVGBox" style="overflow-x:auto; background-color:white;"></div>
 
-			<!--添加用户层 begin-->
-
-			<div class="container" id="Add">
-				<div class="modal fade" id="myModal_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
-
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-								<h4 class="modal-title" id="myModalLabel_Add">Scan QR Code to view in Mobile</h4>
-							</div>
-							<div class="modal-body">
-								<form role="form">
-									<div class="form-group text-center">
-										<img src="../img/QRCode.jpg" width="100%" height="100%" style="max-height:350px; max-width:350px;"  />
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-									</div>
-								</form>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--end-->
+			<!--二维码-->
+			     <!--  <div  id="div_QRcode">
+			
+					<img src="../img/QRCode.jpg"  id="QRcodeImg"  width="60%" height="60%" style="max-height:350px; max-width:350px;" />
+			
+			       </div>-->
 		</div>
 		<script src="../js/jquery.min.js" type="text/javascript"></script>
 		<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+		
+		<script src="../js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../js/socket.js"></script>
 		<script src="../js/SVGAnalysis.js"></script>
 		<script src="../js/public.js"></script>
 		<script src="../js/layout.js"></script>
