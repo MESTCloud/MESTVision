@@ -56,9 +56,9 @@ socket.onmessage = function(msg) {
 	var result = msg.data;
 	result = JSON.parse(result);
 	if(result["error"]) {
-		alert(result["error"]);
+		shalert(result["error"]);
 	} else if(result["exception"]) {
-		alert(result["exception"]);
+		shalert(result["exception"]);
 	} else {
 		switch(result["Function"]) {
 			case "BarCode":
@@ -72,8 +72,8 @@ socket.onmessage = function(msg) {
 
 //连接断开
 socket.onclose = function(event) {
-	console.log("Socket状态:" + readyStatus[socket.readyState]);
-	//location.href = "http://www.baidu.com";
+	//console.log("Socket状态:" + readyStatus[socket.readyState]);
+	location.href = "../Login.html";
 }
 
 //发送

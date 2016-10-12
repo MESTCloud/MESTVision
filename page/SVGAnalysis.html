@@ -6,6 +6,10 @@
 		<title>气体站</title>
 		<link href="../css/index.css" rel="stylesheet" type="text/css" />
 		<link href="../css/public.css" rel="stylesheet" type="text/css" />
+		<!--弹出框-->
+		<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css" />
+		<link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
+		<!--end-->
 	</head>
 
 	<body>
@@ -47,13 +51,21 @@
 			  
 			<div id="SVGBox" style="overflow-x:auto; background-color:white;"></div>
 
-			<!--二维码-->
-			     <!--  <div  id="div_QRcode">
 			
-					<img src="../img/QRCode.jpg"  id="QRcodeImg"  width="60%" height="60%" style="max-height:350px; max-width:350px;" />
-			
-			       </div>-->
 		</div>
+			<div id="dialogalert" title="系统提示：">
+			<p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+
+			</p>
+		</div>
+
+		<div id="dialogconfirm" title="系统提示：">
+			<p class="msgcontent" style="margin: 10px auto;
+text-align: center;">
+			</p>
+		</div>
+
 		<script src="../js/jquery.min.js" type="text/javascript"></script>
 		<script src="../resource/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 		
@@ -62,6 +74,12 @@
 		<script src="../js/SVGAnalysis.js"></script>
 		<script src="../js/public.js"></script>
 		<script src="../js/layout.js"></script>
+		<!--弹出框-->
+		<script src="../resource/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+		<script src="../resource/bootstrap-modal/js/bootstrap-modal.js"></script>
+		<script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+		<script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
+		<!--end-->
 	</body>
 
 </html>
