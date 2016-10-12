@@ -1,8 +1,21 @@
-$(function() {
 
-	/*定义变量，模拟量：DoubleFloat，开关量：Boolean*/
+/*定义变量，模拟量：DoubleFloat，开关量：Boolean*/
 	var dataType = "DoubleFloat";
+	
+	var AlarmTagData;
+	
+	/*userid*/
+	var pUsername = $.cookie("user");
 
+	/*点名*/
+	var pTagName = "";
+	
+	/*描述*/
+	var pDescription ="";
+
+// 页面加载
+$(function() {
+	
 	$("[name='my-checkbox']").bootstrapSwitch();
 
 	$("#switchlight").bootstrapSwitch({
@@ -11,8 +24,7 @@ $(function() {
 	});
 	
 	$("#switchlight").on('switchChange.bootstrapSwitch', function(e, state) {
-		if(state) {
-			
+		if(state) {			
 			/*模拟量*/
 			dataType = "DoubleFloat";
 
@@ -22,6 +34,10 @@ $(function() {
 			$("#checkAll1").prop('checked', false);
 			$("input[name='check_table']").prop('checked', false);
 			$("input[name='check_table1']").prop('checked', false);
+			
+			Senddata();
+			
+			//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + "" + "\"}");
 
 		} else {
 			
@@ -34,6 +50,10 @@ $(function() {
 			$("#checkAll1").prop('checked', false);
 			$("input[name='check_table']").prop('checked', false);
 			$("input[name='check_table1']").prop('checked', false);
+			
+			Senddata();
+			//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + "" + "\"}");
+			
 		}
 	});
 
@@ -87,7 +107,7 @@ $(function() {
 				$("#checkAll1").prop("checked", true);
 			} else {
 				$("#checkAll1").prop("checked", false);
-			}
+			}		
 		}
 
 	});
@@ -105,21 +125,34 @@ $(function() {
 	});
 
 	/*修改*/
-	$("#user_update").click(function() {
+	$("#alarm_update").click(function() {
 		//当复选框已经被选中后
 		if(CheckedLength()) {
 			$("#user_update").prop("data-toggle", "modal");
 
 			//模拟量
 			if(dataType == "DoubleFloat") {
-				$('#myModal_Update').modal('show')
+				$('#myModal_Update').modal('show');
+				
+				idIndexUpdate = $("input[name='check_table']:checked").val();
+
+				var obj = AlarmTagData[idIndexUpdate];
+				
+				$("#txtTagNameU").val(obj["Tagname"]);
+				$("#txtDataTypeU").val(obj["DataType"]);
+				$("#txtDescriptionU").val(obj["Description"]);
+				$("#select_IsAlarmU").val(obj["IsAlarm"]);
+				$("#txtHHAlarm").val(obj["HHAlarm"]);
+				$("#txtHAlarm").val(obj["HAlarm"]);
+				$("#txtLAlarm").val(obj["LAlarm"]);
+				$("#txtLLAlarm").val(obj["LLAlarm"]);
+				UpdateAlarmData(obj["ID"]);
+			
 			} else // 开关量
 			{
 				$('#myModal_Update1').modal('show')
 			}
-
 		}
-
 	});
 
 	/*删除user_delete*/
@@ -135,93 +168,283 @@ $(function() {
 		}
 	});
 
-	/*对全选项的判定*/
-	function CheckedLength() {
-
-		var oChecked;
-		if(dataType == "DoubleFloat") {
-			oChecked = document.getElementsByName("check_table");
-		} else {
-			oChecked = document.getElementsByName("check_table1");
-		}
-
-		var total = 0;
-		for(var i = 0; i < oChecked.length; i++) {
-			if(oChecked[i].checked) {
-				total++;
-			}
-		}
-
-		if(total == 0) {
-			shalert('请选择操作项！');
-			return false;
-		} else if(total != 1) {
-			shalert('请选择一项进行操作！');
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	/*查询按钮点击事件*/
+	/*查询按钮点击事件（模糊查询）*/
 	$("#btnQuery").click(function() {
 		
-		/*userid*/
-		var pUserId = $.cookie("user");
-
-		/*模拟量，开关量*/
-		var pDataType = ;
-
 		/*点名*/
-		var pTagName = $("#txtDataType").val().trim();
+	 pTagName = $("#txtDataType").val().trim();
+	
+	/*描述*/
+	 pDescription = $("#txtTagName").val().trim();
 		
-		/*描述*/
-		var pDescription = $("#txtTagName").val().trim();
+		Senddata();
 
-		var jsStr = "AlarmTagInfo {\"id\":\"" + pUserId + "\",\"DataType\":\"" + pDataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}";
-		console.log(jsStr);
-		send(jsStr);
+		//var jsStr = "AlarmTagInfo {\"username\":\"" + pUsername + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}";
+		//console.log(jsStr);
+		//send(jsStr);
 
 	});
 });
 
-//连接成功
-	socket.onopen = function() {
-		if($.cookie("user") && $.cookie("password")) {
-			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+/*对全选项的判定*/
+function CheckedLength() {
+
+	var oChecked;
+	if(dataType == "DoubleFloat") {
+		oChecked = document.getElementsByName("check_table");
+	} else {
+		oChecked = document.getElementsByName("check_table1");
+	}
+
+	var total = 0;
+	for(var i = 0; i < oChecked.length; i++) {
+		if(oChecked[i].checked) {
+			total++;
 		}
 	}
-	
-	//收到消息
-	socket.onmessage = function(msg) {
-		var result = msg.data;
-	
-		result = JSON.parse(result);
-		if(result["error"]) {
-			shalert(result["error"]);
-		} else if(result["exception"]) {
-			shalert(result["exception"]);
-		} else {
-			switch(result["Function"]) {
-				case "Report":
-					console.log(result["data"])
-					break;
+
+	if(total == 0) {
+		shalert('请选择操作项！');
+		return false;
+	} else if(total != 1) {
+		shalert('请选择一项进行操作！');
+		return false;
+	} else {
+		return true;
+	}
+}
+
+/*修改*/
+function UpdateAlarmData(Alarmid) {
+	$("#save_UpdateDouble").click(function() {
+		var jsStr = "UpdateAlarmTagInfo {\"id\":\"" + Alarmid + "\",\"DataType\":\"" + $("#txtDataTypeU").val().trim() + "\",\"HHAlarm\":\"" + $("#txtHHAlarm").val().trim() + "\",\"HAlarm\":\"" + $("#txtHAlarm").val().trim() + "\",\"LAlarm\":\"" + $("#txtLAlarm").val().trim() + "\",\"LLAlarm\":\"" + $("#txtLLAlarm").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "" + "\",\"IsAlarm\":\"" + $("#select_IsAlarmU").val().trim() + "\"}";
+
+		send(jsStr);
+	});
+}
+
+// 发送消息
+function Senddata()
+{
+	send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
+}
+
+/*获取模拟量集合*/
+function bindAnalogTable(datatable) {
+	if(datatable.length > 0) {
+		var str = "";
+		$.each(datatable, function(index, data) {
+			
+			// 描述
+			var pDescription = data["Description"] == null ? "" : data["Description"];
+			
+			// 是否报警
+			var pIsAlarmName;
+			
+			if(data["IsAlarm"] == "0")
+			{
+				pIsAlarmName = "否";
 			}
+			else if(data["IsAlarm"] == "1")
+			{
+				pIsAlarmName = "是";
+			}
+			else
+			{
+				pIsAlarmName = "";
+			}
+			
+			// 高高限值
+			var pHHAlarm = data["HHAlarm"] == null ? "" : data["HHAlarm"];
+			
+			// 高限值
+			var pHAlarm = data["HAlarm"] == null ? "" : data["HAlarm"];
+			
+			// 低限值
+			var pLAlarm = data["LAlarm"] == null ? "" : data["LAlarm"];
+			
+			// 低低限值
+			var pLLAlarm = data["LLAlarm"] == null ? "" : data["LLAlarm"];
+			
+			str += "<tr role='row'>";
+			str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table'>";
+			str += "<span></span>";
+			str += "</label> </td>";
+			str += "<td>" + data["Tagname"]   + "</td>";
+			str += "<td>" + data["DataType"] + "</td>";
+			str += "<td>" + pDescription + "</td>";
+			str += "<td>" + pIsAlarmName + "</td>";
+			str += "<td>" + pHHAlarm + "</td>";
+			str += "<td>" + pHAlarm + "</td>";
+			str += "<td>" + pLAlarm + "</td>";
+			str += "<td>" + pLLAlarm + "</td>";
+			str += "</tr>";
+		});
+	}
+
+	return str;
+}
+
+function Addtr(datatable) {
+
+	// 描述
+	var pDescription = datatable["Description"] == null ? "" : datatable["Description"];
+	
+	// 是否报警
+	var pIsAlarm = datatable["IsAlarm"] == null ? "" : datatable["IsAlarm"];
+	
+	// 高高限值
+	var pHHAlarm = datatable["HHAlarm"] == null ? "" : datatable["HHAlarm"];
+	
+	// 高限值
+	var pHAlarm = datatable["HAlarm"] == null ? "" : datatable["HAlarm"];
+	
+	// 低限值
+	var pLAlarm = datatable["LAlarm"] == null ? "" : datatable["LAlarm"];
+	
+	// 低低限值
+	var pLLAlarm = datatable["LLAlarm"] == null ? "" : datatable["LLAlarm"];
+	
+	var str = "";
+	var length = parseInt(AlarmTagData.length) - 1;
+	str += "<tr role='row'>"
+	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+	str += "<span></span>";
+	str += "</label> </td>";
+	str += "<td>" + datatable["Tagname"]   + "</td>";
+	str += "<td>" + datatable["DataType"] + "</td>";
+	str += "<td>" + pDescription + "</td>";
+	str += "<td>" + pIsAlarm + "</td>";
+	str += "<td>" + pHHAlarm + "</td>";
+	str += "<td>" + pHAlarm + "</td>";
+	str += "<td>" + pLAlarm + "</td>";
+	str += "<td>" + pLLAlarm + "</td>";
+	str += "</tr>";
+	return str;
+}
+
+/*获取开关量集合*/
+function bindSwitchTable(datatable) {
+	if(datatable.length > 0) {
+		var str = "";
+		$.each(datatable, function(index, data) {
+			
+			// 描述
+			var pDescription = data["Description"] == null ? "" : data["Description"];
+			
+			// 是否报警
+			var pIsAlarm = data["IsAlarm"] == null ? "" : data["IsAlarm"];
+			
+			// 开关量
+			var pItemAlarmBoolValue = data["ItemAlarmBoolValue"] == null ? "" : data["ItemAlarmBoolValue"];
+						
+			str += "<tr role='row'>";
+			str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table1'>";
+			str += "<span></span>";
+			str += "</label> </td>";
+			str += "<td>" + data["Tagname"]   + "</td>";
+			str += "<td>" + data["DataType"] + "</td>";
+			str += "<td>" + pDescription + "</td>";
+			str += "<td>" + pIsAlarm + "</td>";
+			str += "<td>" + pItemAlarmBoolValue + "</td>";
+			str += "</tr>";
+		});
+	}
+
+	return str;
+}
+
+//连接成功
+socket.onopen = function() {
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+	}
+	Senddata();
+	//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + "" + "\",\"Description\":\"" + "" + "\"}");
+}
+
+//收到消息
+socket.onmessage = function(msg) {
+	var result = msg.data;
+
+	result = JSON.parse(result);
+	if(result["error"]) {
+		shalert(result["error"]);
+	} else if(result["exception"]) {
+		shalert(result["exception"]);
+	} else {
+		switch(result["Function"]) {
+			case "AlarmTagInfo":
+				AlarmTagData = result["data"];
+				console.log(AlarmTagData);
+				if(dataType == "DoubleFloat")
+				{
+					$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
+				}
+				else{
+
+					$("#tblSwitch tbody").html(bindSwitchTable(result["data"]));
+				}
+				break;
+			
+			case "UpdateAlarmTagInfo":
+				shalert("更新成功");
+				
+				var ckbs;
+				//模拟量
+				if(dataType == "DoubleFloat") {
+					ckbs = $("input[name='check_table']:checked");
+				} else // 开关量
+				{
+					ckbs = $("input[name='check_table1']:checked");
+				}
+
+				var obj = {
+					"Id": AlarmTagData[idIndexUpdate].ID,
+					"Tagname": $("#txtTagNameU").val().trim(),
+					"DataType": $("#txtDataTypeU").val().trim(),
+					"Description": $("#txtDescriptionU").val().trim(),
+					"IsAlarm": $("#select_IsAlarmU  option:selected").text().trim(),
+					"HHAlarm": $("#txtHHAlarm").val().trim(),
+					"HAlarm": $("#txtHAlarm").val().trim(),
+					"LAlarm": $("#txtLAlarm").val().trim(),
+					"LLAlarm": $("#txtLLAlarm").val().trim()
+				};
+
+				AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
+				AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
+				AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
+				AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
+				AlarmTagData[idIndexUpdate].HHAlarm = $("#txtHHAlarm").val().trim();
+				AlarmTagData[idIndexUpdate].HAlarm = $("#txtHAlarm").val().trim();
+				AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
+				AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
+				ckbs.each(function() {
+
+					$(this).parent().parent().parent().replaceWith(Addtr(obj));
+
+				});
+				$('#myModal_Update').modal('hide');
+				break;
 		}
 	}
-	
-	//连接断开
-	socket.onclose = function(event) {
-		console.log("Socket状态:" + readyStatus[socket.readyState]);
-		//location.href = "http://www.baidu.com";
-	}
-	
-	//发送
-	function send(msg) {
-		socket.send(msg);
-	}
-	
-	//断开连接
-	function disconnect() {
-		socket.close();
-	}
+}
+
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//location.href = "http://www.baidu.com";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
+}

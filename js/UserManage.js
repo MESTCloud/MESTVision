@@ -320,7 +320,7 @@ socket.onmessage = function(msg) {
 		switch(result["Function"]) {
 			case "UserList":
 
-				UserData = result["data"]
+				UserData = result["data"];
 				$("tbody").html(bindTable(result["data"]));
 				
 				break;
