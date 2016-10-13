@@ -77,10 +77,10 @@
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-3 text-left" style="padding-left: 20px;">
-						开始时间：<input type="text" id="startTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+						开始时间：<input type="text" id="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
 					</div>
 					<div class="col-md-3 text-left" style="padding-left: 20px;">
-						结束时间：<input type="text" id="endTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
+						结束时间：<input type="text" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
 					</div>
 					<div class="col-md-6 text-left" style="padding-left: 20px;">
 						刷新周期(秒):
@@ -98,7 +98,14 @@
 					<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="tblList" role="grid" aria-describedby="sample_3_info">
 						<thead>
 							<tr role="row" style="background-color: white;">
-								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 160px;"> 标签名
+								<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 46px;">
+									<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                    	<input type="checkbox" class="group-checkable" id="checkAll">
+                                    	<span></span>
+                                    </label>
+								</th>
+								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 160px;"> 
+									标签名
 								</th>
 								<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 150px;">
 									报警描述
@@ -124,7 +131,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="gradeX" role="row">
+				<!--			<tr class="gradeX" role="row">
 								<td >AHHX_Connection</td>
 								<td >演示平台OPC采集器</td>
 								<td ></td>
@@ -362,6 +369,7 @@
 								    </button>
 								</td>
 							</tr>							
+						-->
 						</tbody>
 					</table>
 				</div>

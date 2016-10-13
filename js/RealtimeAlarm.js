@@ -1,3 +1,6 @@
+
+var RealTimeAlarmData;
+
 $(document).ready(function() {
 /*二维码的点击事件*/
 	$("#QRcode").on("click",function(){
@@ -8,86 +11,103 @@ $(document).ready(function() {
 	/*	固定表头*/
 	$("#tblList").freezeHeader();
 	
+	/*全选 反选 模拟量*/
+	$("#checkAll").click(
+		function() {
+
+			if(this.checked) {
+
+				$("input[name='check_table']").prop('checked', true);
+
+			} else {
+				$("input[name='check_table']").prop('checked', false);
+			}
+		}
+	);
+	
 	/*查询按钮点击事件*/
 	$("#btnQuery").click(function() {
 		
 		/*报表名称*/
-		var pName = getQueryString("name");
+		var pUsername = $.cookie("user");
 
 		/*开始日期*/
-		var stime;
+		var pStime = $("#startTime").val().trim();
 
 		/*结束日期*/
-		var etime;
+		var pEtime = $("#endTime").val().trim();
 
-		switch(pType) {
-
-			case "day":
-				var startTime = $("#startTime1").val().trim();
-				var endTime = $("#endTime1").val().trim();
-				if(startTime == "") {
-					shalert("开始日期不能为空！");
-					return false;
-				}
-				if(endTime == "") {
-					shalert("结束日期不能为空！");
-					return false;
-				}
-				if(startTime != "" && endTime != "" && startTime > endTime) {
-					shalert("结束日期不能大于开始日期！");
-					return false;
-				}
-				stime = $("#startTime1").val();
-				etime = $("#endTime1").val();
-				break;
-			case "month":
-				if($("#startTime2").val().trim() == "") {
-
-					shalert("日期不能为空！");
-					return false;
-				}
-				stime = getCurrentMonthFirst($("#startTime2").val()) + " " + "08:00:00";
-				etime = getCurrentMonthLast($("#startTime2").val()) + " " + "08:00:00";
-				break;
-				
-			case "year":
-				if($("#startTime3").val().trim() == "") {
-					shalert("日期不能为空！");
-					return false;
-				}
-				stime = $("#startTime3").val() + "-01-01 08:00:00";
-				etime = $("#startTime3").val() + "-12-31 08:00:00";
-				break;
-			default:
-				stime = $("#startTime1").val();
-				etime = $("#endTime1").val();
-				break;
-		}
-		
-		console.log(stime);
-		console.log(etime);
-
-		var DataST = new Date(stime.replace(/-/g, '/'));
-		var DateS = new Date(DataST);
-
-		var DateEN = new Date(etime.replace(/-/g, '/'));
-		var DateE = new Date(DateEN);
-
-		console.log(DateS);
-		console.log(DateE);
-
-		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
+		var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + pUsername + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
 		console.log(jsStr);
 		send(jsStr);
 
 	});
+	
+	
 });
 	
+/*获取模拟量集合*/
+function bindTable(datatable) {
+	if(datatable.length > 0) {
+		var str = "";
+		$.each(datatable, function(index, data) {
+
+			// 结束时间
+			var pEndTime = data["EndTime"] == null ? "" : data["EndTime"];
+			
+			if(data["Severity"] == "高高报")
+			{
+				str += "<tr class='fontred' role='row'>";
+			}
+			else if(data["Severity"] == "高报")
+			{
+				str += "<tr class='fontblue' role='row'>";
+			}
+			else if(data["Severity"] == "低报")
+			{
+				str += "<tr class='fontviolet' role='row'>";
+			}
+			else if(data["Severity"] == "低低报")
+			{
+				str += "<tr class='fontgreen' role='row'>";
+			}
+			str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + index + "' name='check_table'>";
+			str += "<span></span>";
+			str += "</label> </td>";
+			str += "<td>" + data["TagName"]   + "</td>";
+			str += "<td>" + data["Description"] + "</td>";
+			str += "<td>" + data["Severity"] + "</td>";
+			str += "<td>" + data["StartTime"] + "</td>";
+			str += "<td>" + pEndTime + "</td>";
+			str += "<td>" + data["AlarmValue"] + "</td>";
+			str += "<td>" + data["AlarmStandard"] + "</td>";
+			str += "<td>";
+			str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='"+data["AlarmID"]+"'>";
+			str +="<span>确认报警</span>"			                
+			str +="</button></td>"
+			str += "</tr>";
+		});
+	}
+
+	return str;
+}	
+
+// 确认按钮点击事件
+function ConfirmAlarmData(pAlarmID)
+{
+	var jsStr = "ConfirmOneAlarmTagInfo {\"id\":\"" + pAlarmID + "\"}";
+	console.log(jsStr);
+	send(jsStr);
+}
+
 	//连接成功
 	socket.onopen = function() {
 		if($.cookie("user") && $.cookie("password")) {
 			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-		}	
+		}
+
+		send("RealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
 	}
 	
 	//收到消息
@@ -100,37 +120,50 @@ $(document).ready(function() {
 			shalert(result["exception"]);
 		} else {
 			switch(result["Function"]) {
-				case "UserList":
-	
-					UserData = result["data"]
-					$("tbody").html(bindTable(result["data"]));
+				case "RealTimeAlarmInfo":
+					RealTimeAlarmData = result["data"]
+					console.log(result["data"]);					
+					$("tbody").html(bindTable(result["data"]));		
+	                 
+	                 /*确认报警按钮点击事件*/
+					$(".btnConfirmAlarm").click(function() {
+						var pAlarmID = this.getAttribute("data-value");
+						console.log(pAlarmID);
+						ConfirmAlarmData(pAlarmID);
+					});
+					break;
+					
+				case "CheckRealTimeAlarmInfo":
+					console.log(result["data"]);					
+					$("tbody").html(bindTable(result["data"]));	
+					
+					/*确认报警按钮点击事件*/
+					$(".btnConfirmAlarm").click(function() {
+						var pAlarmID = this.getAttribute("data-value");
+						console.log(pAlarmID);
+						ConfirmAlarmData(pAlarmID);
+					});
 					
 					break;
+				case "ConfirmOneAlarmTagInfo":
+					shalert("确认成功");
+					break;	
 			}
 		}
 	}
 	
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	location.href = "../Login.html";
+}
 
-	/*获取集合*/
-	function bindTable(datatable) {
-		if(datatable.length > 0) {
-			var str = "";
-			$.each(datatable, function(index, data) {
-	
-				if(parseInt(index) / 2 == 0) {
-					str += "<tr class='gradeX odd' role='row'>"
-				} else {
-					str += "<tr class='gradeX even' role='row'>"
-				}
-				str += "<td style='word-break: break-all; word-wrap:break-word;'>" + data["UserName"] + "</td>";
-				str += "<td>" + data["RealName"] + "</td>";
-				str += "<td>" + data["Mobile"] + "</td>";
-				str += "<td>" + data["RoleName"] + "</td>";
-				str += "</tr>";
-	
-			});
-		}
-	
-		return str;
-	}
+//发送
+function send(msg) {
+	socket.send(msg);
+}
 
+//断开连接
+function disconnect() {
+	socket.close();
+}

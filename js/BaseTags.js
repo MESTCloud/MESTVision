@@ -471,13 +471,30 @@ socket.onmessage = function(msg) {
 			case "AlarmTagInfo":
 				AlarmTagData = result["data"];
 				console.log(AlarmTagData);
+				
+				
 				if(dataType == "DoubleFloat")
 				{
-					$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
+					if(result["data"].length == 0)
+					{
+						shalert("查无资料");
+						$("#tblAnalog tbody").html("");
+					}
+					else
+					{
+						$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
+					}					
 				}
 				else{
-
-					$("#tblSwitch tbody").html(bindSwitchTable(result["data"]));
+					if(result["data"].length == 0)
+					{
+						shalert("查无资料");
+						$("#tblSwitch tbody").html("");
+					}
+					else
+					{
+						$("#tblSwitch tbody").html(bindAnalogTable(result["data"]));
+					}
 				}
 				break;
 			
