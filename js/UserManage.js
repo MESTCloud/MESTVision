@@ -272,11 +272,11 @@ function bindTable(datatable) {
 
 function AddUser(datatable) {
 	var str = "";
-	var length = parseInt(UserData.length) - 1;
+	//var length = parseInt(UserData.length) - 1;
 	str += "<tr class='gradeX even' role='row'>"
 
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"]  + "' name='check_table'>";
 	str += "<span></span>";
 	str += "</label> </td>";
 	str += "<td class='sorting_1'>" + datatable["UserName"] + "</td>";
@@ -329,8 +329,9 @@ socket.onmessage = function(msg) {
 
 			case "AddUser":
 				shalert("添加成功");
-
+                 var valuel=parseInt(UserData.length);
 				var obj = {
+					"value":valuel,
 					"Id": result["info"],
 					"Mobile": $("#inputphone_Add").val().trim(),
 					"RealName": $("#name_Add").val().trim(),
@@ -354,21 +355,23 @@ socket.onmessage = function(msg) {
 			case "UpdateUser":
 				shalert("修改成功");
 				var ckbs = $("input[name='check_table']:checked");
-
+               
 				var obj = {
+					
 					"Id": UserData[idIndexUpdate].Id,
 					"Mobile": $("#inputphone_Update").val().trim(),
 					"RealName": $("#name_Update").val().trim(),
 					"UserName": $("#login_Update").val().trim(),
 					"RoleName": $("#select_role_update  option:selected").text().trim()
 				};
-
+                console.log(UserData[idIndexUpdate]);
 				UserData[idIndexUpdate].Mobile = $("#inputphone_Update").val().trim();
 				UserData[idIndexUpdate].RealName = $("#name_Update").val().trim();
 				UserData[idIndexUpdate].UserName = $("#login_Update").val().trim();
 				UserData[idIndexUpdate].RoleName = $("#select_role_update").text().trim();
+				
 				ckbs.each(function() {
-
+                   obj.value=$(this).val();
 					$(this).parent().parent().parent().replaceWith(AddUser(obj));
 
 				});

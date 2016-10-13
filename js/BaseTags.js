@@ -359,10 +359,10 @@ function AddtrAnalog(datatable) {
 	var pLLAlarm = datatable["LLAlarm"] == null ? "" : datatable["LLAlarm"];
 	
 	var str = "";
-	var length = parseInt(AlarmTagData.length) - 1;
+	
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+	str += "<input type='checkbox' class='checkboxes' value='" +  datatable["value"] + "' name='check_table'>";
 	str += "<span></span>";
 	str += "</label> </td>";
 	str += "<td>" + datatable["Tagname"]   + "</td>";
@@ -437,7 +437,7 @@ function AddtrSwitch(datatable){
 	var length = parseInt(AlarmTagData.length) - 1;
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table1'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table1'>";
 	str += "<span></span>";
 	str += "</label> </td>";
 	str += "<td>" + datatable["Tagname"]   + "</td>";
@@ -470,7 +470,7 @@ socket.onmessage = function(msg) {
 		switch(result["Function"]) {
 			case "AlarmTagInfo":
 				AlarmTagData = result["data"];
-				console.log(AlarmTagData);
+				
 				if(dataType == "DoubleFloat")
 				{
 					$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
@@ -488,7 +488,7 @@ socket.onmessage = function(msg) {
 				//模拟量
 				if(dataType == "DoubleFloat") {
 					ckbs = $("input[name='check_table']:checked");
-					
+					/*页面添加的一行数据集合*/
 					var obj = {
 					"Id": AlarmTagData[idIndexUpdate].ID,
 					"Tagname": $("#txtTagNameU").val().trim(),
@@ -500,17 +500,18 @@ socket.onmessage = function(msg) {
 					"LAlarm": $("#txtLAlarm").val().trim(),
 					"LLAlarm": $("#txtLLAlarm").val().trim()
 				};
-
+              /*返回的集合中修改*/
 				AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
 				AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
 				AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
-				AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
+				AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU").val().trim();
 				AlarmTagData[idIndexUpdate].HHAlarm = $("#txtHHAlarm").val().trim();
 				AlarmTagData[idIndexUpdate].HAlarm = $("#txtHAlarm").val().trim();
 				AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
 				AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
+				
 				ckbs.each(function() {
-
+                   obj.value=$(this).val();
 					$(this).parent().parent().parent().replaceWith(AddtrAnalog(obj));
 
 				});
@@ -528,13 +529,13 @@ socket.onmessage = function(msg) {
 					"ItemAlarmBoolValue": $("#select_Switch option:selected").text().trim()
 				};
 
-				AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
-				AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
-				AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
-				AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
+				AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU1").val().trim();
+				AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU1").val().trim();
+				AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU1").val().trim();
+				AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1").val().trim();
 				AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
 				ckbs.each(function() {
-
+                obj.value=$(this).val();
 					$(this).parent().parent().parent().replaceWith(AddtrSwitch(obj));
 
 				});

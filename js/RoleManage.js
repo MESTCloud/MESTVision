@@ -34,7 +34,7 @@ function AddRole(datatable) {
 	str += "<tr class='gradeX even' role='row'>"
 
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-			str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+			str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table'>";
 			str += "<span></span>";
 			str += "</label> </td>";
 			str += "<td>" + datatable["RoleId"] + "</td>";
@@ -85,7 +85,7 @@ $(function() {
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
-					console.log(jsStr);
+					
 
 				}
 				send(jsStr);
@@ -212,8 +212,9 @@ socket.onmessage = function(msg) {
 				break;
 			case "AddRole": 
 				shalert("添加成功！");
-
+                    var valuel=parseInt(UserData.length);
 					var obj = {
+					"value":valuel,
 					"RoleId": result["info"],
 				
 					"RealName": $("#Name_Add").val().trim(),
@@ -243,7 +244,7 @@ socket.onmessage = function(msg) {
 				 UserData[idIndexUpdate].RealName = $("#Name_update").val().trim();
 	
 				ckbs.each(function() {
-				
+				obj.value=$(this).val();
 					$(this).parent().parent().parent().replaceWith(AddRole(obj));
 
 				});
