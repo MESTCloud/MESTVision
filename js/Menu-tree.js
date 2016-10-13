@@ -114,9 +114,13 @@ var UITree = function() {
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
+							
 							shconfirm("确定要删除吗", function(result) {
 								if(result) {
-									var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
+								var obj1=obj.children_d;
+								 obj1.unshift(obj.id);
+								
+									var jsStr = "DeleteModule {\"id\":\"" + obj1.join(',') + "\"}";
 									send(jsStr);
 									
 									Inst = inst;
