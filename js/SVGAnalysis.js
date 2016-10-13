@@ -73,7 +73,7 @@ socket.onmessage = function(msg) {
 //连接断开
 socket.onclose = function(event) {
 	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送

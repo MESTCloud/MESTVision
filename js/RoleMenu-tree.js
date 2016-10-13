@@ -184,7 +184,7 @@ if(App.isAngularJsApp() === false) {
 socket.onclose = function(event) {
 	/*console.log("Socket状态:" + readyStatus[socket.readyState]);*/
 	//location.href = "http://www.baidu.com";
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送

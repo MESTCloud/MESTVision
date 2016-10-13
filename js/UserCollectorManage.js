@@ -65,8 +65,10 @@ function bindCollectorTable(datatable) {
 			str += "<span></span>";
 			str += "</label> </td>";
 
+		   data["CollectorDescription"]=data["CollectorDescription"]==null?"":data["CollectorDescription"];
+
 			str += "<td>" + data["CollectorName"] + "</td>";
-			str += "<td>" + data["CollectorDescription"] + "</td>";
+			str += "<td>" +data["CollectorDescription"] + "</td>";
 			str += "</tr>";
 
 		});
@@ -155,7 +157,7 @@ socket.onmessage = function(msg) {
 	//连接断开
 socket.onclose = function(event) {
 	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送

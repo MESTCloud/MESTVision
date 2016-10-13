@@ -3,8 +3,7 @@ var $userId;/*保存点击用户时的id*/
 /*保存*/
 $("#userRole_Add").on("click", function() {
 		{
-			
-			  var ckbs = $("input[name='role_list']:checked");
+			var ckbs = $("input[name='role_list']:checked");
 			var roleId;
 			ckbs.each(function() {
 				roleId = $(this).parent().parent().find("label > input").attr("data-roldid");
@@ -114,7 +113,7 @@ function checkedRido(RoleId) {
 //连接断开
 socket.onclose = function(event) {
 	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送
