@@ -36,7 +36,7 @@
 					    <i class="fa fa-file-excel-o"></i>
 		                <span>更新</span>
 			    	</button>
-					<button type="button" class="btn green" id="user_delete">
+					<button type="button" class="btn green" id="alarm_delete">
 					    <i class="fa fa-file-excel-o"></i>
 		                <span>删除</span>
 			    	</button>
@@ -406,7 +406,7 @@
 										<label for="login_Add" class="col-md-3 text-right">点名：</label>
 
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="login_Add" placeholder="点名" disabled="disabled">
+											<input type="text" class="form-control" id="txtTagNameU1" placeholder="点名" disabled="disabled">
 										</div>
 									</div>
 								</div>
@@ -414,7 +414,7 @@
 									<div class="row">
 										<label for="name_Add" class="col-md-3 text-right">类型：</label>
 
-										<div class="col-md-9"><input type="text" class="form-control" id="name_Add" placeholder="类型" disabled="disabled"></div>
+										<div class="col-md-9"><input type="text" class="form-control" id="txtDataTypeU1" placeholder="类型" disabled="disabled"></div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -422,7 +422,7 @@
 										<label for="inputphone_Add" class="col-md-3 text-right">描述：</label>
 
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="inputphone_Add" placeholder="描述" disabled="disabled">
+											<input type="text" class="form-control" id="txtDescriptionU1" placeholder="描述" disabled="disabled">
 										</div>
 									</div>
 								</div>
@@ -431,9 +431,9 @@
 										<label for="inputRole_Add" class="col-md-3 text-right">是否报警：</label>
 
 										<div class="col-md-9">
-											<select class="form-control" id="inputRole_Add">
-												<option>否</option>
-												<option>是</option>
+											<select class="form-control" id="select_IsAlarmU1">
+												<option value="0">否</option>
+												<option value="1">是</option>
 											</select>
 										</div>
 									</div>
@@ -443,7 +443,7 @@
 										<label for="inputRole_Add" class="col-md-3 text-right">开关量：</label>
 
 										<div class="col-md-9">
-											<select class="form-control" id="inputRole_Add">
+											<select class="form-control" id="select_Switch">
 												<option>0</option>
 												<option>1</option>
 											</select>
@@ -451,7 +451,7 @@
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" id="save_Add" data-dismiss="modal">确定</button>
+									<button type="button" class="btn btn-default" id="save_UpdateBoolean" data-dismiss="modal">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 								</div>
 							</form>
