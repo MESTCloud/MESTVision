@@ -1,4 +1,9 @@
 $(document).ready(function() {
+/*二维码的点击事件*/
+	$("#QRcode").on("click",function(){
+	
+		$("#div_QRcode").toggle("slow");
+	});
 
 	/*	固定表头*/
 	$("#tblList").freezeHeader();
@@ -104,6 +109,7 @@ $(document).ready(function() {
 			}
 		}
 	}
+	
 
 	/*获取集合*/
 	function bindTable(datatable) {
@@ -128,4 +134,3 @@ $(document).ready(function() {
 		return str;
 	}
 
-})

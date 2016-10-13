@@ -116,7 +116,7 @@ $(function() {
 	});
 
 	function UpdateRole(Roleid) {
-
+    $("#Rolesave_Update").unbind("click");
 		/*修改*/
 		$("#Rolesave_Update").click(function() {
 			if($("#Name_update").val().trim() == "") {
@@ -125,8 +125,7 @@ $(function() {
 				return false;
 			}
 
-			var jsStr = "UpdateRole {\"id\":\"" + Roleid + "\",\"realname\":\"" +  $("#Name_update").val().trim() + "\"}";
-			
+			var jsStr = "UpdateRole {\"id\":\"" + Roleid + "\",\"realname\":\"" +  $("#Name_update").val().trim() + "\"}";		
 			send(jsStr);
 
 		});

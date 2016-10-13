@@ -57,6 +57,7 @@ $(function() {
 
 	/*修改*/
 	$("#user_update").click(function() {
+		
 		//当复选框已经被选中后
 		if(CheckedLength()) {
 			$("#user_update").prop("data-toggle", "modal");
@@ -76,6 +77,7 @@ $(function() {
 	});
 	/*修改*/
 	function UpdateUser(userid) {
+		$("#save_Update").unbind("click");
 		$("#save_Update").click(function() {
 			if($("#login_Update").val().trim() == "") {
 				shalert("登录名不能为空！");
@@ -130,7 +132,7 @@ $(function() {
 
 	/*密码重置*/
 	function PassWordUpdate(ids) {
-
+        $("#save_inputPassWordUpdate").unbind("click");
 		$("#save_inputPassWordUpdate").click(function() {
 			if($("#inputPassWordUpdate").val().trim() == "" || $("#inputPassWordUpdate2").val().trim() == "") {
 				shalert("密码不能为空");
@@ -143,7 +145,7 @@ $(function() {
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-          
+            console.log(jsonStr);
 			send(jsonStr);
 		});
 	}

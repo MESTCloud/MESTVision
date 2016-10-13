@@ -78,13 +78,13 @@ var UITree = function() {
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-
+                             console.log(obj);
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Update').modal('show');
 							$("#input_treeName_update").val(obj.text);
 							//console.log((obj.icon.split(' '))[2]);
 							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
-
+                            $("#inputTree_Update").val("icon-bar-chart");
 							$("#input_treeAddress_update").val(obj.url);
 							$("#save_inputTreeUpdate").unbind("click");
 							$("#save_inputTreeUpdate").on("click", function() {
@@ -118,13 +118,14 @@ var UITree = function() {
 								if(result) {
 									var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
 									send(jsStr);
+									
 									Inst = inst;
 									Obje = obj;
-
+                       
 								}
 							})
 
-							/*alert("delete operation--clickedNode's id is:" + clickedNode.id);*/
+							
 						}
 					}
 				}
@@ -204,24 +205,27 @@ if(App.isAngularJsApp() === false) {
 				switch(result["Function"]) {
 					case "ModuleListByTree":
 						TreeData = result["data"];
+						console.log(TreeData);
 						UITree.init();
 						break;
 					case "AddModule":
 
 						ChirdID = result["info"];
 						shalert("添加成功");
+						/*节点内容*/
 						var new_node = {};
 						new_node.id = ChirdID;
 						new_node.text = $("#input_treeName").val().trim();
 						new_node.icon = "fa fa-folder icon-state-warning icon-lg";
 						new_node.url = $("#input_treeAddress").val().trim();
-
+                        /*创建节点*/
 						Inst.create_node(Obje, new_node, "last", function(new_node) {
 
 							Inst.edit(new_node);
 						});
 
 						$('#my_Modal_tree_Add').modal('hide');
+						/*初始化*/
 						$("#input_treeName").val("");
 						$("#input_treeAddress").val("");
 						$("#inputTree_Add").val("icon-user-female");
@@ -231,7 +235,8 @@ if(App.isAngularJsApp() === false) {
 					case "UpdateModule":
 						shalert("修改成功");
 						Obje.text = $("#input_treeName_update").val().trim();
-						Obje.icon = "fa fa-folder icon-state-warning icon-lg";;
+						Obje.icon = "fa fa-folder icon-state-warning icon-lg";
+						/*对页面树节点的修改*/
 						Inst.edit(Obje);
 						$('#my_Modal_tree_Update').modal('hide');
 						$("#input_treeName_update").val("");
