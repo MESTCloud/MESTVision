@@ -42,4 +42,12 @@ table  tr  td{
 	right:0px;
 	display: none;
 	text-align: right;
+	color:#000000;
+	font-weight:bold;
+}
+/*实时报警的二维码*/
+.RealtimeQRcode{
+	background-color: #fff;
+	padding-bottom: 10px;
+	
 }
