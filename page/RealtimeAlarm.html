@@ -37,19 +37,19 @@
 				<div class="caption" id="divTitle">
 				</div>
 				<div class="actions">
-					<button type="button" class="btn green" id="btnfresh">
+					<!--<button type="button" class="btn green" id="btnfresh">
 			            <i class="fa fa-refresh"></i>
 		                <span>刷新</span>
-	        		</button>
+	        		</button>-->
 					<button type="button" class="btn green" id="btnQuery">
 					    <i class="fa fa-search"></i>
 		                <span>查询</span>
 			    	</button>
-					<button type="button" class="btn green" id="btnOutputPdf">
+					<button type="button" class="btn green" id="btnConfirmationCheck">
 					    <i class="fa fa-check-circle-o"></i>
 		                <span>确认选中</span>
 				    </button>
-					<button type="button" class="btn green" id="btnQuery">
+					<button type="button" class="btn green" id="btnConfirmAllAlarmData">
 			            <i class="fa fa-check-square"></i>
 		                <span>全部确认</span>
 	        		</button>
@@ -57,10 +57,10 @@
 					    <i class="fa fa-file-excel-o"></i>
 		                <span>导出</span>
 			    	</button>
-					<button type="button" class="btn green" id="btnOutputPdf">
+					<!--<button type="button" class="btn green" id="btnOutputPdf">
 					    <i class="fa fa-stop"></i>
 		                <span>停止</span>
-				    </button>
+				    </button>-->
 				     <div id="QRcode_btn">
                 	<button type="button" id="QRcode" class="btn btn-success" style="height: 29px;" >
                     <i class="fa fa fa-qrcode" ></i>
@@ -84,13 +84,11 @@
 					</div>
 					<div class="col-md-6 text-left" style="padding-left: 20px;">
 						刷新周期(秒):
-						<select class="form-control" id="inputRole_Add" style="width: 80px;height:28px;display:inline;">
-							<option value="10000">10</option>
-							<option value="30000">30</option>
-							<option value="60000" selected="selected">60</option>
-							<option value="300000">300</option>
-							<option value="600000">600</option>
-							<option value="3000000">3000</option>
+						<select class="form-control" id="select_Refrash" style="width: 90px;height:28px;display:inline;">
+							<option value="1000" selected="selected">1000</option>
+							<option value="5000">5000</option>
+							<option value="30000" >30000</option>
+							<option value="60000">60000</option>
 						</select>
 					</div>
 				</div>
@@ -393,9 +391,10 @@
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/socket.js"></script>
 		<script src="../js/jquery.freezeheader.js"></script>
-		<script src="../js/RealtimeAlarm.js"></script>
-		<script src="../js/public.js"></script>
 		<script src="../js/layout.js"></script>
+		<script src="../js/RealtimeAlarm.js"></script>
+		<script src="../js/RealtimeAlarmRefrash.js"></script>
+		
 	</body>
 
 </html>
