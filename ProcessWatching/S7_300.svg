@@ -2970,7 +2970,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.809375"
      inkscape:cx="569.37398"
-     inkscape:cy="162.79188"
+     inkscape:cy="261.63358"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -3098,11 +3098,7 @@
        y="334.56104"
        id="text8088-15-8-0-1-00-06-1-9-5-0-9-1"
        sodipodi:linespacing="100%"
-       onclick="parent.WriteFloatValue(&quot;S7_200_VW1002&quot;)"><tspan
-         sodipodi:role="line"
-         id="tspan8090-8-8-2-6-5-1-9-0-6-9-6-1"
-         x="1105.2822"
-         y="334.56104">VW1002</tspan></text>
+       onclick="parent.WriteFloatValue(&quot;DLJZ_tag002&quot;)">VW1002</text>
     <text
        tag="S7_200_VB1000"
        sodipodi:linespacing="100%"
