@@ -1,7 +1,7 @@
 var RealTimeAlarmData;
 
 $(document).ready(function() {
-		
+
 	/*二维码的点击事件*/
 	$("#QRcode").on("click", function() {
 
@@ -80,34 +80,57 @@ $(document).ready(function() {
 			});
 		};
 	});
+	//导出功能
+	$("btnOutputExcel").on("click", function() {
+		/*开始日期*/
+	var pStime = $("#startTime").val().trim();
+
+	/*结束日期*/
+	var pEtime = $("#endTime").val().trim();
+
+	if(pStime == "") {
+		shalert("开始日期不能为空！");
+		return false;
+	}
+	if(pEtime == "") {
+		shalert("结束日期不能为空！");
+		return false;
+	}
+
+	if(pStime != "" && pEtime != "" && pStime > pEtime) {
+		shalert("结束日期不能大于开始日期！");
+		return false;
+	}
+      var jsStr = "OutputRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
+	send(jsStr);
+	});
 });
 
 // 获取指定时间段内实时报警数据
-function sendCheckTimeData()
-{
-		/*开始日期*/
-		var pStime = $("#startTime").val().trim();
+function sendCheckTimeData() {
+	/*开始日期*/
+	var pStime = $("#startTime").val().trim();
 
-		/*结束日期*/
-		var pEtime = $("#endTime").val().trim();
-		
-		if(pStime == "") {
-			shalert("开始日期不能为空！");
-			return false;
-		}
-		if(pEtime == "") {
-			shalert("结束日期不能为空！");
-			return false;
-		}
+	/*结束日期*/
+	var pEtime = $("#endTime").val().trim();
 
-		if(pStime != "" && pEtime != "" && pStime > pEtime) {
-			shalert("结束日期不能大于开始日期！");
-			return false;
-		}
+	if(pStime == "") {
+		shalert("开始日期不能为空！");
+		return false;
+	}
+	if(pEtime == "") {
+		shalert("结束日期不能为空！");
+		return false;
+	}
 
-		var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
-console.log(jsStr);
-		send(jsStr);
+	if(pStime != "" && pEtime != "" && pStime > pEtime) {
+		shalert("结束日期不能大于开始日期！");
+		return false;
+	}
+
+	var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
+	
+	send(jsStr);
 }
 
 /*对全选项的判定*/
@@ -200,8 +223,7 @@ socket.onopen = function() {
 }
 
 // 获取所有实时报警数据
-function senddata()
-{
+function senddata() {
 	console.log("RealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
 	send("RealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
 }
@@ -225,11 +247,11 @@ socket.onmessage = function(msg) {
 				$(".btnConfirmAlarm").click(function() {
 					var pAlarmID = this.getAttribute("data-value");
 					shconfirm("确认要确认报警吗?", function(result) {
-						if(result) {						
+						if(result) {
 							console.log(pAlarmID);
 							ConfirmAlarmData(pAlarmID);
 						};
-					});								
+					});
 				});
 				break;
 
@@ -253,24 +275,25 @@ socket.onmessage = function(msg) {
 				break;
 			case "ConfirmOneAlarmTagInfo":
 				shalert("确认成功");
-				
+
 				/*开始日期*/
-				var pStime = $("#startTime").val().trim(); 
-				
-				if(pStime == "")
-				{
+				var pStime = $("#startTime").val().trim();
+
+				if(pStime == "") {
 					// 获取所有实时报警数据
 					senddata();
-				}
-				else
-				{
+				} else {
 					// 获取指定时间段内实时报警数据
 					sendCheckTimeData();
 				}
-		
+
 				break;
 			case "ConfirmMultiAlarmTagInfo":
 				shalert("确认成功");
+				break;
+				/*导出*/
+				case "OutputRealTimeAlarmInfo":
+				console.log(result["data"]);
 				break;
 		}
 	}

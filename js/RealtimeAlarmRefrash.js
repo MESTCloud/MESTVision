@@ -73,18 +73,16 @@ realtimeSocket.onmessage = function (msg) {
     var result = msg.data;
     result = JSON.parse(result);
     if (result["error"]) {
-        console.log(result["error"]);
+        shalert(result["error"]);
     } else if (result["exception"]) {
-        console.log(result["exception"]);
+        shalert(result["exception"]);
     } else {
         switch (result["Function"]) {
             case "RealTimeAlarmInfo":
-                console.log(result["data"]);
+                
                 $("tbody").html(bindTable(result["data"]));
                 break;
-            default:
-                console.log(result);
-                break;
+            
         }
     }
 }
