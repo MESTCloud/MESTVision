@@ -33,7 +33,7 @@
 				<div class="caption" id="divTitle">
 				</div>
 				<div class="actions">
-					<button type="button" class="btn green" id="btnOutputExcel">
+					<button type="button" class="btn green" id="btn_check">
 					    <i class="fa fa-search"></i>
 		                <span>查询</span>
 			    	</button>
@@ -46,10 +46,10 @@
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-4 text-left" style="padding-left: 20px;">
-						开始时间：<input type="text" id="startTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
+						开始时间：<input type="text" id="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
 					</div>
 					<div class="col-md-8 text-left" style="padding-left: 20px;">
-						结束时间：<input type="text" id="endTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
+						结束时间：<input type="text" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
 					</div>
 				</div>
 				<div class="table-scrollable">
@@ -83,186 +83,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="gradeX" role="row">
-								<td >AHHX_Connection</td>
-								<td >演示平台OPC采集器</td>
-								<td ></td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-26 18:46:55</td>
-								<td >1</td>
-								<td >1</td>
-							</tr>
-							<tr class="gradeX" role="row">
-								<td >AHHX_Connection</td>
-								<td >演示平台OPC采集器</td>
-								<td ></td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-26 18:46:55</td>
-								<td >1</td>
-								<td >1</td>
-							</tr>
-							<tr class="gradeX" role="row">
-								<td >AHHX_Connection</td>
-								<td >演示平台OPC采集器</td>
-								<td ></td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:50:55</td>
-								<td >1</td>
-								<td >1</td>
-							</tr>
-							<tr class="gradeX" role="row">
-								<td >AHHX_Connection</td>
-								<td >演示平台OPC采集器</td>
-								<td ></td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:46:55</td>
-								<td >2016-09-25 18:50:55</td>
-								<td >1</td>
-								<td >1</td>
-							</tr>
-							<tr class="gradeX fontblue" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >高报</td>
-								<td >2016-09-08 12:02:32</td>
-								<td >2016-09-08 12:02:36</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontblue" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >高报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontblue" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >高报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontred" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >高高报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontred" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >高高报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontviolet" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontviolet" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row" >
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row">
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row">
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>
-							<tr class="gradeX fontgreen" role="row">
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>	
-							<tr class="gradeX fontgreen" role="row">
-								<td >S7_200_Q00</td>
-								<td >S7_200_Q00</td>
-								<td >低低报</td>
-								<td >2016-09-08 12:02:14</td>
-								<td >2016-09-08 12:02:26</td>
-								<td >2016-09-08 12:03:36</td>
-								<td >True</td>
-								<td >True</td>
-							</tr>		
+					
 						</tbody>
 					</table>
 				</div>
@@ -285,7 +106,7 @@
 		<script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/socket.js"></script>
-		<script src="../js/public.js"></script>
+		<script type="text/javascript" src="../js/HistoryAlarm.js"></script>
 		<script src="../js/layout.js"></script>
 	</body>
 
