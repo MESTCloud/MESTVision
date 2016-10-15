@@ -113,13 +113,15 @@ if(App.isAngularJsApp() === false) {
 
 				}
 				if(count == childLength) {
-					$("#" + $id).find("a:first").addClass("jstree-clicked");
-				} else {
+					$("#tree_role").jstree("check_node","#"+$id);
+					/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
+				} /*else {
 					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-				}
-
+				}*/
+				
 			} else {
-				$("#" + $id).find("a:first").addClass("jstree-clicked");
+				$("#tree_role").jstree("check_node","#"+$id);
+				/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
 			}
 
 		}
@@ -160,11 +162,12 @@ if(App.isAngularJsApp() === false) {
 						UITree.init();
 						break;
 					case "ModuleListByRole":
+					
 						/*获取角色集合*/
 						var ary = result["info"].split(',');
-
+                       $("#tree_role").jstree("uncheck_all");
 						for(var i = 0; i < ary.length; i++) {
-							$("#" + ary[i]).find("a:first").addClass("jstree-clicked");
+							
 							active(ary[i]);
 						}
 						break;

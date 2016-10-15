@@ -23,9 +23,14 @@ var UITree = function() {
 						"icon": "fa fa-file icon-state-warning icon-lg"
 					}
 				}
+				 
 			});
-
+　　　　
 		}
+	
+	
+　   
+	
 		/*保存按钮*/
 	$("#usermenu_save").on("click", function() {
 
@@ -115,13 +120,15 @@ if(App.isAngularJsApp() === false) {
 
 				}
 				if(count == childLength) {
-					$("#" + $id).find("a:first").addClass("jstree-clicked");
-				} else {
+					$("#tree_2").jstree("check_node","#"+$id);
+					/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
+				} /*else {
 					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-				}
+				}*/
 				
 			} else {
-				$("#" + $id).find("a:first").addClass("jstree-clicked");
+				$("#tree_2").jstree("check_node","#"+$id);
+				/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
 			}
 
 		}
@@ -143,14 +150,15 @@ if(App.isAngularJsApp() === false) {
 					case "UserList":
 						/*获取集合*/
 						$(".userMenu_left tbody").html(bindUserTable(result["data"]));
+						 
 						/* 点击事件*/
 						$(".userMenu_left  tbody tr").click(function() {
 							
 							$dataid = $(this).attr("data_uid");
-
+                          
 							$("#tree_2").find('.jstree-undetermined').removeClass('jstree-undetermined');
 							$("#tree_2").find("a").removeClass("jstree-clicked");
-
+ 
 							var jsStr = "ModuleListByUser {\"id\":\"" + $dataid + "\"}";
 							send(jsStr);
 						});
@@ -162,14 +170,14 @@ if(App.isAngularJsApp() === false) {
 						TreeData = result["data"];
 
 						UITree.init();
-
+ 　　　　　　　　　　　
 						break;
 					case "ModuleListByUser":
-                        
+                         $("#tree_2").jstree("uncheck_all");
 						var ary = result["info"].split(',');
 						
 						for(var i = 0; i < ary.length; i++) {
-							$("#" + ary[i]).find("a:first").addClass("jstree-clicked");
+							
 							active(ary[i]);
 						}
 

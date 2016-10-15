@@ -81,28 +81,17 @@ $(document).ready(function() {
 		};
 	});
 	//导出功能
-	$("btnOutputExcel").on("click", function() {
+	$("#btnOutputExcel").on("click", function() {
+		alert();
 		/*开始日期*/
-	var pStime = $("#startTime").val().trim();
+		var pStime = $("#startTime").val().trim();
 
-	/*结束日期*/
-	var pEtime = $("#endTime").val().trim();
+		/*结束日期*/
+		var pEtime = $("#endTime").val().trim();
+		var jsStr = "OutputRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
+		console.log(jsStr);
 
-	if(pStime == "") {
-		shalert("开始日期不能为空！");
-		return false;
-	}
-	if(pEtime == "") {
-		shalert("结束日期不能为空！");
-		return false;
-	}
-
-	if(pStime != "" && pEtime != "" && pStime > pEtime) {
-		shalert("结束日期不能大于开始日期！");
-		return false;
-	}
-      var jsStr = "OutputRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
-	send(jsStr);
+		send(jsStr);
 	});
 });
 
@@ -129,7 +118,7 @@ function sendCheckTimeData() {
 	}
 
 	var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
-	
+
 	send(jsStr);
 }
 
@@ -240,7 +229,7 @@ socket.onmessage = function(msg) {
 		switch(result["Function"]) {
 			case "RealTimeAlarmInfo":
 				RealTimeAlarmData = result["data"];
-				console.log(result["data"]);
+
 				$("tbody").html(bindTable(result["data"]));
 
 				/*确认报警按钮点击事件*/
@@ -248,8 +237,9 @@ socket.onmessage = function(msg) {
 					var pAlarmID = this.getAttribute("data-value");
 					shconfirm("确认要确认报警吗?", function(result) {
 						if(result) {
-							console.log(pAlarmID);
+
 							ConfirmAlarmData(pAlarmID);
+
 						};
 					});
 				});
@@ -257,7 +247,7 @@ socket.onmessage = function(msg) {
 
 			case "CheckRealTimeAlarmInfo":
 				RealTimeAlarmData = result["data"]
-				console.log(result["data"]);
+
 				$("tbody").html(bindTable(result["data"]));
 
 				/*确认报警按钮点击事件*/
@@ -292,13 +282,42 @@ socket.onmessage = function(msg) {
 				shalert("确认成功");
 				break;
 				/*导出*/
-				case "OutputRealTimeAlarmInfo":
-				console.log(result["data"]);
+			case "OutputRealTimeAlarmInfo":
+				console.log(result);
+				//window.open(result["info"]);
+				//window.location=result["info"];
+				//window.open(result["info"],"_blank", "width=0, height=0,status=0")
+				/*	 var a;
+                a =window.open(result["info"],"_blank", "width=0, height=0,status=0"); 
+                a.document.execCommand("SaveAs");     
+                a.close(); */
+
+				/* FileOutputStream fileOut = new FileOutputStream("C:/Users/Administrator/Desktop/测试ONG.xls");            
+				 wb.write(fileOut);            
+				 fileOut.close();*/
+				//location.href=result["info"];
+				//var test = window.open(result["info"]); //这个方法就直接把这个TXT以浏览器的方式打开了 
+				//console.log(test);
+				//test.document.execCommand("SaveAs");
+				//test.close();
 				break;
 		}
 	}
 }
-
+/* function   mm1()   
+    {   
+              
+          window.frames["hrong"].location.href   =  "D:\\MESTVison\\MESTSockect\\ReportFile\\RealtimeAlarmData.xls";   
+          sa();   
+ }   
+ function   sa()   
+ {   
+        if(window.frames["hrong"].document.readyState!="complete")   
+             setTimeout("sa()",   100);   
+       else   
+          window.frames["hrong"].document.execCommand('SaveAs');   
+  }   
+*/
 //连接断开
 socket.onclose = function(event) {
 	console.log("Socket状态:" + readyStatus[socket.readyState]);
