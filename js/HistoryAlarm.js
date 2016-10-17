@@ -1,82 +1,98 @@
-
 var RealTimeAlarmData;
+var fileName1;
 
 $(document).ready(function() {
-	
+
 	/*查询按钮点击事件*/
-	$("#btnQuery").click(function() {
-		
+	$("#btn_check").click(function() {
+
 		/*报表名称*/
 		var pUsername = $.cookie("user");
 
 		/*开始日期*/
+		var pStime = $("#startTime").val();
+
+		/*结束日期*/
+		var pEtime = $("#endTime").val();
+		/*判定事件*/
+		if(pStime == "" || pStime == null) {
+			shalert("开始时间不能为空！");
+			return false;
+		}
+		if(pEtime == "" || pEtime == null) {
+			shalert("结束时间不能为空！");
+			return false;
+		}
+		if(pStime != "" && pEtime != "" && pStime > pEtime) {
+			shalert("结束日期不能大于开始日期！");
+			return false;
+		}
+		var jsStr = "CheckHisAlarmInfo {\"username\":\"" + pUsername + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
+
+		send(jsStr);
+
+	});
+	/*导出功能*/
+	$("#btnOutputExcel").click(function() {
+		/*开始日期*/
+		alert();
 		var pStime = $("#startTime").val().trim();
 
 		/*结束日期*/
 		var pEtime = $("#endTime").val().trim();
+		var jsStr = "OutputHisAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
 
-		var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + pUsername + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
-		console.log(jsStr);
 		send(jsStr);
-
 	});
 });
-	
-/*获取模拟量集合*/
-/*function bindTable(datatable) {
+
+/*获取数据集合*/
+function bindTable(datatable) {
+	var str = "";
 	if(datatable.length > 0) {
-		var str = "";
+
 		$.each(datatable, function(index, data) {
 
 			// 结束时间
 			var pEndTime = data["EndTime"] == null ? "" : data["EndTime"];
-			
-			if(data["Severity"] == "高高报")
-			{
+
+			if(data["Severity"] == "高高报") {
 				str += "<tr class='fontred' role='row'>";
-			}
-			else if(data["Severity"] == "高报")
-			{
+			} else if(data["Severity"] == "高报") {
 				str += "<tr class='fontblue' role='row'>";
-			}
-			else if(data["Severity"] == "低报")
-			{
+			} else if(data["Severity"] == "低报") {
 				str += "<tr class='fontviolet' role='row'>";
-			}
-			else if(data["Severity"] == "低低报")
-			{
+			} else if(data["Severity"] == "低低报") {
 				str += "<tr class='fontgreen' role='row'>";
-			}		
-			str += "<td>" + data["TagName"]   + "</td>";
+			}
+			str += "<td>" + data["TagName"] + "</td>";
 			str += "<td>" + data["Description"] + "</td>";
 			str += "<td>" + data["Severity"] + "</td>";
 			str += "<td>" + data["StartTime"] + "</td>";
 			str += "<td>" + pEndTime + "</td>";
+			str += "<td>" + data["AckTime"] + "</td>";
 			str += "<td>" + data["AlarmValue"] + "</td>";
 			str += "<td>" + data["AlarmStandard"] + "</td>";
-			str += "<td>";
-			str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='"+data["AlarmID"]+"'>";
-			str +="<span>确认报警</span>"			                
-			str +="</button></td>"
+
 			str += "</tr>";
 		});
 	}
 
 	return str;
-}	
-	*/
-	//连接成功
-	socket.onopen = function() {
-		if($.cookie("user") && $.cookie("password")) {
-			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-		}
-
-		send("HisAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
+}
+//连接成功
+socket.onopen = function() {
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 	}
-	
-	//收到消息
-	socket.onmessage = function(msg) {
-		var result = msg.data;
+
+	send("HisAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
+}
+
+//收到消息
+socket.onmessage = function(msg) {
+	var result = msg.data;
+	if(typeof result == "string") {
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
@@ -85,22 +101,49 @@ $(document).ready(function() {
 		} else {
 			switch(result["Function"]) {
 				case "HisAlarmInfo":
-					console.log(result["data"]);					
-					//$("tbody").html(bindTable(result["data"]));		
+
+					$("tbody").html(bindTable(result["data"]));
 					break;
+
+				case "CheckHisAlarmInfo":
+
+					$("tbody").html(bindTable(result["data"]));
+
+					break;
+				case "OutputHisAlarmInfo":
 					
-//				case "CheckHisAlarmInfo":
-//				console.log(result["data"]);					
-//				$("tbody").html(bindTable(result["data"]));					
-//				break;
+					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
+					fileName1 = result["info"].replace("\\", "/");
+					send(jsStr);
+					break;
+
 			}
 		}
+
+	} else {
+		try {
+			var blob = new Blob([msg.data], {
+					type: "applicationnd.ms-excel"
+				}),
+				fileName = fileName1.split('/')[1];
+			var link = document.createElement('a');
+			link.href = window.URL.createObjectURL(blob);
+			link.download = fileName;
+			link.click();
+			window.URL.revokeObjectURL(link.href);
+		} catch(e) {
+			shalert("导出时出现问题，请联系管理员");
+			return false;
+		}
+
 	}
-	
+
+}
+
 //连接断开
 socket.onclose = function(event) {
 	console.log("Socket状态:" + readyStatus[socket.readyState]);
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送
