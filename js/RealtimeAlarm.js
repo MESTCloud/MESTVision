@@ -213,7 +213,7 @@ socket.onopen = function() {
 
 // 获取所有实时报警数据
 function senddata() {
-	
+
 	send("RealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
 }
 
@@ -223,7 +223,7 @@ socket.onmessage = function(msg) {
 	var result = msg.data;
 
 	if(typeof result == "string") {
-		
+
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
@@ -234,6 +234,9 @@ socket.onmessage = function(msg) {
 				case "RealTimeAlarmInfo":
 					RealTimeAlarmData = result["data"];
 
+					if(result["data"].length == 0) {
+						shalert("查无资料");
+					}
 					$("tbody").html(bindTable(result["data"]));
 
 					/*确认报警按钮点击事件*/
@@ -250,10 +253,11 @@ socket.onmessage = function(msg) {
 					break;
 
 				case "CheckRealTimeAlarmInfo":
-					RealTimeAlarmData = result["data"]
-
+					RealTimeAlarmData = result["data"];
+					if(result["data"].length == 0) {
+						shalert("查无资料");
+					}
 					$("tbody").html(bindTable(result["data"]));
-
 					/*确认报警按钮点击事件*/
 					$(".btnConfirmAlarm").click(function() {
 						var pAlarmID = this.getAttribute("data-value");

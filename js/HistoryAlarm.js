@@ -101,12 +101,18 @@ socket.onmessage = function(msg) {
 		} else {
 			switch(result["Function"]) {
 				case "HisAlarmInfo":
-
+	              if(result["data"].length == 0)
+					{
+						shalert("查无资料");
+					}
 					$("tbody").html(bindTable(result["data"]));
 					break;
 
 				case "CheckHisAlarmInfo":
-
+	              if(result["data"].length == 0)
+					{
+						shalert("查无资料");
+					}
 					$("tbody").html(bindTable(result["data"]));
 
 					break;
