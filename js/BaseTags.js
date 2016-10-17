@@ -15,7 +15,8 @@ var pTagName = "";
 
 /*描述*/
 var pDescription = "";
-
+/*导出时返回的文件地址*/
+	var fileName1;
 // 页面加载
 $(function() {
 
@@ -187,7 +188,21 @@ $(function() {
 		Senddata();
 
 	});
+	/*导出*/
+	$("#btnExcel").click(function(){
+	
+		/*点名*/
+	
+		var txt_name = $("#txtDataType").val().trim();
 
+		/*描述*/
+		var txt_describe = $("#txtTagName").val().trim();
+		//dataType == "DoubleFloat"
+		var jsStr = "OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + txt_name + "\",\"Description\":\"" + txt_describe + "\"}";
+         console.log(jsStr);
+		send(jsStr);
+	});
+	
 	/*删除user_delete*/
 	$("#alarm_delete").click(function() {
 		//当复选框已经被选中后
@@ -225,7 +240,9 @@ $(function() {
 	
 	/*导出模板按钮点击事件*/
 	$("#btnExportTemplate").click(function() {
+		fileName1="BaseTags.xls";
 		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
+		
 	});
 
 	$("#input_name").change(function(){
@@ -587,6 +604,14 @@ if(typeof result == "string")
 
 				shalert("删除成功");
 				break;
+				case "OutputAlarmInfo":
+			
+				var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
+				
+					fileName1 = result["info"].replace("\\", "/");
+					console.log(fileName1);
+					send(jsStr);
+			break;
 		}
 	}
 
@@ -594,7 +619,7 @@ if(typeof result == "string")
 else
 {
 	var blob = new Blob([msg.data], { type: "applicationnd.ms-excel" }),
-    fileName = 'BaseTags.xls';
+    fileName = fileName1;//'BaseTags.xls';
     var link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
