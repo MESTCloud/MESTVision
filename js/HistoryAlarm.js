@@ -35,7 +35,7 @@ $(document).ready(function() {
 	/*导出功能*/
 	$("#btnOutputExcel").click(function() {
 		/*开始日期*/
-		alert();
+	
 		var pStime = $("#startTime").val().trim();
 
 		/*结束日期*/
