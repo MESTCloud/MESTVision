@@ -126,6 +126,7 @@ $(function() {
 		} else {
 			$('#myModal_Add1').modal('show')
 		}
+		
 	});
 	/*添加模拟量*/
 	$("#save_Add").on("click", function() {
@@ -504,7 +505,18 @@ function AddtrSwitch(datatable) {
 	str += "</tr>";
 	return str;
 }
+/*采集器绑定*/
+function CollectorBind(data) {
+	var strCollector = "";
+	if(data.length > 0) {
+		$.each(data, function(index, item) {
+			strCollector += "<option value=" + item["ID"] + ">" + item["CollectorName"] + "</option>";
+		});
+	}
 
+	return strRole;
+
+}
 //连接成功
 socket.onopen = function() {
 	if($.cookie("user") && $.cookie("password")) {
