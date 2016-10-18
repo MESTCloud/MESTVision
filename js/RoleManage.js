@@ -85,8 +85,7 @@ $(function() {
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
-					console.log(jsStr);
-
+					
 				}
 				send(jsStr);
 			});

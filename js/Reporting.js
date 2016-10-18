@@ -144,7 +144,7 @@ $(function() {
 		$("#ss1").addClass("imgstyle");
 		$("#ss1").html('<img src="../img/default.gif">');
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
-		console.log(jsStr);
+		
 		send(jsStr);
 
 	});

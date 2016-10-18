@@ -34,7 +34,7 @@ $(function() {
 		});
 
 		var jsStr = "AddCollectorToRole {\"id\":\"" +$RoleCollectorId + "\",\"CollectorIds\":\"" + CollectorArray.join(',') + "\"}";
-		console.log(jsStr);
+		
 		send(jsStr);
 		//alert($RoleUserId);
 	});
@@ -121,7 +121,7 @@ socket.onmessage = function(msg) {
 					$(".RoleCollector_left tbody tr").click(function() {
 
 						$RoleCollectorId = $(this).attr("data-Roleid");
-                        console.log($RoleCollectorId);
+                       
 						var jsStr = "CollectorListByRole {\"id\":\"" + $RoleCollectorId + "\"}";
 					
 						send(jsStr);

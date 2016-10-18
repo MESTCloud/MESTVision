@@ -145,7 +145,7 @@ $(function() {
 				return false;
 			}
 			var jsonStr = "SetPassword {\"id\":\"" + ids + "\,\"password\":\"" + $("#inputPassWordUpdate").val().trim() + "\"}";
-            console.log(jsonStr);
+            
 			send(jsonStr);
 		});
 	}

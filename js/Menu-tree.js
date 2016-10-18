@@ -78,7 +78,7 @@ var UITree = function() {
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-                             console.log(obj);
+                            
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Update').modal('show');
 							$("#input_treeName_update").val(obj.text);
@@ -205,7 +205,7 @@ if(App.isAngularJsApp() === false) {
 				switch(result["Function"]) {
 					case "ModuleListByTree":
 						TreeData = result["data"];
-						console.log(TreeData);
+						
 						UITree.init();
 						break;
 					case "AddModule":
