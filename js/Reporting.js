@@ -1,62 +1,62 @@
 $(function() {
 	/*日历控件响应*/
-	
+
 	switch(pType) {
 		case "day":
-		$("#startTime1").val(getNowFormatDate(0,0,-1));
-		$("#endTime1").val(getNowFormatDate(0,0,0));
+			$("#startTime1").val(getNowFormatDate(0, 0, -1));
+			$("#endTime1").val(getNowFormatDate(0, 0, 0));
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 		case "month":
-		$("#startTime2").val(getNowFormatDate(0,0,0));
-		
+			$("#startTime2").val(getNowFormatDate(0, 0, 0));
+
 			$("#divmonth").show();
 			$("#divday").hide();
 			$("#divyear").hide();
 			break;
 		case "year":
-		$("#startTime3").val(getNowFormatDate(0,0,0));
-	
+			$("#startTime3").val(getNowFormatDate(0, 0, 0));
+
 			$("#divyear").show();
 			$("#divday").hide();
 			$("#divmonth").hide();
 			break;
 		default:
-		$("#startTime1").val(getNowFormatDate(0,0,-1));
-		$("#endTime1").val(getNowFormatDate(0,0,0));
+			$("#startTime1").val(getNowFormatDate(0, 0, -1));
+			$("#endTime1").val(getNowFormatDate(0, 0, 0));
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 	}
-/*获取当前系统时间*/
-function getNowFormatDate(gmonth,gdate,ghours) {
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1+gmonth;/*月*/
-    var strDate = date.getDate()+gdate;/*日*/
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var Hours=date.getHours()+ghours;
-     var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + " " + Hours + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds();
-    if(pType=="month")
-    {
-    	currentdate=date.getFullYear() + seperator1 + month;
-    }else if(pType=="year"){
-    	currentdate=date.getFullYear();
-    }
-   
-    return currentdate;
-}
+	/*获取当前系统时间*/
+	function getNowFormatDate(gmonth, gdate, ghours) {
+		var date = new Date();
+		var seperator1 = "-";
+		var seperator2 = ":";
+		var month = date.getMonth() + 1 + gmonth; /*月*/
+		var strDate = date.getDate() + gdate; /*日*/
+		var strHouse = date.getMinutes()
+		if(month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if(strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+		var Hours = date.getHours() + ghours;
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+			" " + Hours + seperator2 + " " + date.getMinutes(); +
+		seperator2 + date.getSeconds();
+		if(pType == "month") {
+			currentdate = date.getFullYear() + seperator1 + month;
+		} else if(pType == "year") {
+			currentdate = date.getFullYear();
+		}
+
+		return currentdate;
+	}
 
 	/*获取当前月的第一天*/
 	function getCurrentMonthFirst(st) {
@@ -64,7 +64,7 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 		date.setDate(1);
 		return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 	}
-	
+
 	/*获取当前月的最后一天*/
 	function getCurrentMonthLast(st) {
 		var date = new Date(st);
@@ -78,7 +78,7 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 
 	/*查询按钮点击事件*/
 	$("#btnQuery").click(function() {
-		
+
 		/*报表名称*/
 		var pName = getQueryString("name");
 
@@ -120,7 +120,7 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 				stime = getCurrentMonthFirst($("#startTime2").val()) + " " + "08:00:00";
 				etime = getCurrentMonthLast($("#startTime2").val()) + " " + "08:00:00";
 				break;
-				
+
 			case "year":
 				if($("#startTime3").val().trim() == "") {
 					shalert("日期不能为空！");
@@ -134,8 +134,6 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 				etime = $("#endTime1").val();
 				break;
 		}
-		
-
 
 		var DataST = new Date(stime.replace(/-/g, '/'));
 		var DateS = new Date(DataST);
@@ -143,8 +141,8 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 		var DateEN = new Date(etime.replace(/-/g, '/'));
 		var DateE = new Date(DateEN);
 
-	    $("#ss1").addClass("imgstyle");
-        $("#ss1").html('<img src="../img/default.gif">');
+		$("#ss1").addClass("imgstyle");
+		$("#ss1").html('<img src="../img/default.gif">');
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
 		console.log(jsStr);
 		send(jsStr);
@@ -162,27 +160,46 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-	
-	
-	if(result=="\{\"Function\":\"Login\",\"info\":\"执行成功。\"}")//初始化的时候返回的
+    var num=result.indexOf("exception");
+    if(num>0)
+    {
+    	shalert("未找到文件");
+    		$("#ss1").attr("style", "height: 650px");
+$("#ss1").removeClass("imgstyle");
+		var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+			sheetCount: 1
+		});
+    	return false;
+    }else
+    {
+    if(result == "\{\"Function\":\"Login\",\"info\":\"执行成功。\"}") //初始化的时候返回的
 	{
-			/*显示excel*/
-			$("#ss1").attr("style","height: 650px");
-		
-	 var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
-		sheetCount: 1
-	});
+		/*显示excel*/
+		$("#ss1").attr("style", "height: 650px");
+         $("#ss1").removeClass("imgstyle");
+		var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+			sheetCount: 1
+		});
 
-	}else
-	{
-		
-		$("#ss1").attr("style","");
-		 $("#ss1").removeClass("imgstyle");
-		$("#ss1").html(result);
-	}
+	} else {
+		//try {
+			$("#ss1").attr("style", "");
+			$("#ss1").removeClass("imgstyle");
+			$("#ss1").html(result);
+		/*} catch(e) {
+			shalert(result);
+			$("#ss1").attr("style", "height: 650px");
+			var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+				sheetCount: 1
+			});
+			
+		}*/
+
+	}	
+    }
 	
-	
-  /* console.log(result);
+
+	/* console.log(result);
 	result = JSON.parse(result);
 	if(result["error"]) {
 		shalert(result["error"]);
