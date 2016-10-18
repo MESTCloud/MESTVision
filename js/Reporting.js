@@ -1,17 +1,24 @@
 $(function() {
 	/*日历控件响应*/
+	
 	switch(pType) {
 		case "day":
+		$("#startTime1").val(getNowFormatDate(0,0,-1));
+		$("#endTime1").val(getNowFormatDate(0,0,0));
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 		case "month":
+		$("#startTime2").val(getNowFormatDate(0,0,0));
+		
 			$("#divmonth").show();
 			$("#divday").hide();
 			$("#divyear").hide();
 			break;
 		case "year":
+		$("#startTime3").val(getNowFormatDate(0,0,0));
+	
 			$("#divyear").show();
 			$("#divday").hide();
 			$("#divmonth").hide();
@@ -23,10 +30,31 @@ $(function() {
 			break;
 	}
 
-	/*显示excel*/
-	var spread = new GcSpread.Sheets.Spread(document.getElementById('ss'), {
-		sheetCount: 1
-	});
+function getNowFormatDate(gmonth,gdate,ghours) {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1+gmonth;/*月*/
+    var strDate = date.getDate()+gdate;/*日*/
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var Hours=date.getHours()+ghours;
+     var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + Hours + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+    if(pType=="month")
+    {
+    	currentdate=date.getFullYear() + seperator1 + month;
+    }else if(pType=="year"){
+    	currentdate=date.getFullYear();
+    }
+   
+    return currentdate;
+}
 
 	/*获取当前月的第一天*/
 	function getCurrentMonthFirst(st) {
@@ -105,8 +133,7 @@ $(function() {
 				break;
 		}
 		
-		console.log(stime);
-		console.log(etime);
+
 
 		var DataST = new Date(stime.replace(/-/g, '/'));
 		var DateS = new Date(DataST);
@@ -114,8 +141,7 @@ $(function() {
 		var DateEN = new Date(etime.replace(/-/g, '/'));
 		var DateE = new Date(DateEN);
 
-		console.log(DateS);
-		console.log(DateE);
+	
 
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
 		console.log(jsStr);
@@ -134,7 +160,25 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
+	
+	
+	if(result=="\{\"Function\":\"Login\",\"info\":\"执行成功。\"}")//初始化的时候返回的
+	{
+			/*显示excel*/
+			$("#ss1").attr("style","height: 650px");
+		
+	 var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+		sheetCount: 1
+	});
 
+	}else
+	{
+		$("#ss1").attr("style","");
+		$("#ss1").html(result);
+	}
+	
+	
+  /* console.log(result);
 	result = JSON.parse(result);
 	if(result["error"]) {
 		shalert(result["error"]);
@@ -143,10 +187,12 @@ socket.onmessage = function(msg) {
 	} else {
 		switch(result["Function"]) {
 			case "Report":
-				console.log(result["data"])
+			console.log(result["data"])
+				$("#ss").html(result["data"]);
+				
 				break;
 		}
-	}
+	}*/
 }
 
 //连接断开

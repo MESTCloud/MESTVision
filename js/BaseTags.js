@@ -16,7 +16,7 @@ var pTagName = "";
 /*描述*/
 var pDescription = "";
 /*导出时返回的文件地址*/
-	var fileName1;
+var fileName1;
 // 页面加载
 $(function() {
 
@@ -117,17 +117,41 @@ $(function() {
 	});
 
 	/*添加*/
-	$("#user_Add").click(function() {
+	$("#Base_Add").click(function() {
 
-		//		$("#user_Add").prop("data-toggle", "modal");
-		//
-		//		if(dataType == "DoubleFloat") {
-		//			$('#myModal_Add').modal('show')
-		//		} else {
-		//			$('#myModal_Add1').modal('show')
-		//		}
+		$("#Base_Add").prop("data-toggle", "modal");
+
+		if(dataType == "DoubleFloat") {
+			$('#myModal_Add').modal('show')
+		} else {
+			$('#myModal_Add1').modal('show')
+		}
 	});
+	/*添加模拟量*/
+	$("#save_Add").on("click", function() {
+		if($("#dot_Add_D").val().trim() == "") {
+			shalert("点名不能为空");
+			return false;
+		}
+		if($("#type_Add_D").val().trim() == "") {
+			shalert("类型不能为空！");
+			return false;
+		}
+		if($("#inputdes_Add_D").val().trim() == "") {
+			shalert("描述不能为空！");
+			return false;
+		}
+		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
+		console.log(jsStr);
+		send(jsStr);
+	});
+	/*添加开关量*/
+	$("#save_Add_1").on("click", function() {
+		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_B").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_B").val().trim() + "\",\"DataType\":\"" + $("#type_Add_B").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#ItemAlarmBoolValue_B").val().trim() + "\",\"IsAlarm\":\"" + $("#inputcall_Add_B").val().trim() + "\"}";
 
+		console.log(jsStr);
+		send(jsStr);
+	});
 	/*修改*/
 	$("#alarm_update").click(function() {
 		//当复选框已经被选中后
@@ -189,20 +213,20 @@ $(function() {
 
 	});
 	/*导出*/
-	$("#btnExcel").click(function(){
-	
+	$("#btnExcel").click(function() {
+
 		/*点名*/
-	
+
 		var txt_name = $("#txtDataType").val().trim();
 
 		/*描述*/
 		var txt_describe = $("#txtTagName").val().trim();
 		//dataType == "DoubleFloat"
 		var jsStr = "OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + txt_name + "\",\"Description\":\"" + txt_describe + "\"}";
-         console.log(jsStr);
+		console.log(jsStr);
 		send(jsStr);
 	});
-	
+
 	/*删除user_delete*/
 	$("#alarm_delete").click(function() {
 		//当复选框已经被选中后
@@ -230,26 +254,26 @@ $(function() {
 	$("#btnExportTemplate").click(function() {
 		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
 	});
-	
+
 	/*导入按钮点击事件*/
-	
+
 	/*$("#input_file").click(function() {
 		/*var fileinput=new
       fileinput.prototype.change();	
 	});*/
-	
+
 	/*导出模板按钮点击事件*/
 	$("#btnExportTemplate").click(function() {
-		fileName1="BaseTags.xls";
+		fileName1 = "BaseTags.xls";
 		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
-		
+
 	});
 
-	$("#input_name").change(function(){
+	$("#input_name").change(function() {
 		alert(1);
 		//send("InputAlarmInfo {\"filepath\":\"" + "BaseTags.xls" + "\"}");
 	});
-	
+
 	/*导出按钮点击事件*/
 	$("#btnOutputExcel").click(function() {
 		send("OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
@@ -492,147 +516,188 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-console.log(typeof result);
-if(typeof result == "string")
-{
-	result = JSON.parse(result);
-	
+	console.log(typeof result);
+	if(typeof result == "string") {
+		result = JSON.parse(result);
+
 		if(result["error"]) {
-		shalert(result["error"]);
-	} else if(result["exception"]) {
-		shalert(result["exception"]);
-	} else {
-		switch(result["Function"]) {
-			case "AlarmTagInfo":
-				AlarmTagData = result["data"];
-				console.log(AlarmTagData);
+			shalert(result["error"]);
+		} else if(result["exception"]) {
+			shalert(result["exception"]);
+		} else {
+			switch(result["Function"]) {
+				case "AlarmTagInfo":
+					AlarmTagData = result["data"];
+					console.log(AlarmTagData);
 
-				if(dataType == "DoubleFloat") {
-					if(result["data"].length == 0) {
-						shalert("查无资料");
-						$("#tblAnalog tbody").html("");
+					if(dataType == "DoubleFloat") {
+						if(result["data"].length == 0) {
+							shalert("查无资料");
+							$("#tblAnalog tbody").html("");
+						} else {
+							$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
+						}
 					} else {
-						$("#tblAnalog tbody").html(bindAnalogTable(result["data"]));
+						if(result["data"].length == 0) {
+							shalert("查无资料");
+							$("#tblSwitch tbody").html("");
+						} else {
+							$("#tblSwitch tbody").html(bindSwitchTable(result["data"]));
+						}
 					}
-				} else {
-					if(result["data"].length == 0) {
-						shalert("查无资料");
-						$("#tblSwitch tbody").html("");
+					break;
+
+				case "UpdateAlarmTagInfo":
+					shalert("更新成功");
+
+					var ckbs;
+					//模拟量
+					if(dataType == "DoubleFloat") {
+						ckbs = $("input[name='check_table']:checked");
+
+						var obj = {
+							"Id": AlarmTagData[idIndexUpdate].ID,
+							"Tagname": $("#txtTagNameU").val().trim(),
+							"DataType": $("#txtDataTypeU").val().trim(),
+							"Description": $("#txtDescriptionU").val().trim(),
+							"IsAlarm": $("#select_IsAlarmU  option:selected").text().trim(),
+							"HHAlarm": $("#txtHHAlarm").val().trim(),
+							"HAlarm": $("#txtHAlarm").val().trim(),
+							"LAlarm": $("#txtLAlarm").val().trim(),
+							"LLAlarm": $("#txtLLAlarm").val().trim()
+						};
+
+						AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
+						AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
+						AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
+						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
+						AlarmTagData[idIndexUpdate].HHAlarm = $("#txtHHAlarm").val().trim();
+						AlarmTagData[idIndexUpdate].HAlarm = $("#txtHAlarm").val().trim();
+						AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
+						AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
+						ckbs.each(function() {
+
+							$(this).parent().parent().parent().replaceWith(AddtrAnalog(obj));
+
+						});
+						$('#myModal_Update').modal('hide');
+					} else // 开关量
+					{
+						ckbs = $("input[name='check_table1']:checked");
+
+						var obj = {
+							"Id": AlarmTagData[idIndexUpdate].ID,
+							"Tagname": $("#txtTagNameU1").val().trim(),
+							"DataType": $("#txtDataTypeU1").val().trim(),
+							"Description": $("#txtDescriptionU1").val().trim(),
+							"IsAlarm": $("#select_IsAlarmU1  option:selected").text().trim(),
+							"ItemAlarmBoolValue": $("#select_Switch option:selected").text().trim()
+						};
+
+						AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU1").val().trim();
+						AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU1").val().trim();
+						AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU1").val().trim();
+						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1  option:selected").text().trim();
+						AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
+						ckbs.each(function() {
+
+							$(this).parent().parent().parent().replaceWith(AddtrSwitch(obj));
+
+						});
+						$('#myModal_Update1').modal('hide');
+					}
+
+					break;
+
+				case "DeleteAlarmTagInfo":
+
+					var ckbs;
+
+					//模拟量
+					if(dataType == "DoubleFloat") {
+						ckbs = $("input[name='check_table']:checked");
 					} else {
-						$("#tblSwitch tbody").html(bindAnalogTable(result["data"]));
+						ckbs = $("input[name='check_table1']:checked");
 					}
-				}
-				break;
 
-			case "UpdateAlarmTagInfo":
-				shalert("更新成功");
-
-				var ckbs;
-				//模拟量
-				if(dataType == "DoubleFloat") {
-					ckbs = $("input[name='check_table']:checked");
-
-					var obj = {
-						"Id": AlarmTagData[idIndexUpdate].ID,
-						"Tagname": $("#txtTagNameU").val().trim(),
-						"DataType": $("#txtDataTypeU").val().trim(),
-						"Description": $("#txtDescriptionU").val().trim(),
-						"IsAlarm": $("#select_IsAlarmU  option:selected").text().trim(),
-						"HHAlarm": $("#txtHHAlarm").val().trim(),
-						"HAlarm": $("#txtHAlarm").val().trim(),
-						"LAlarm": $("#txtLAlarm").val().trim(),
-						"LLAlarm": $("#txtLLAlarm").val().trim()
-					};
-
-					AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
-					AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
-					AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
-					AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
-					AlarmTagData[idIndexUpdate].HHAlarm = $("#txtHHAlarm").val().trim();
-					AlarmTagData[idIndexUpdate].HAlarm = $("#txtHAlarm").val().trim();
-					AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
-					AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
 					ckbs.each(function() {
-
-						$(this).parent().parent().parent().replaceWith(AddtrAnalog(obj));
+						$(this).parent().parent().parent().remove();
 
 					});
-					$('#myModal_Update').modal('hide');
-				} else // 开关量
-				{
-					ckbs = $("input[name='check_table1']:checked");
 
-					var obj = {
-						"Id": AlarmTagData[idIndexUpdate].ID,
-						"Tagname": $("#txtTagNameU1").val().trim(),
-						"DataType": $("#txtDataTypeU1").val().trim(),
-						"Description": $("#txtDescriptionU1").val().trim(),
-						"IsAlarm": $("#select_IsAlarmU1  option:selected").text().trim(),
-						"ItemAlarmBoolValue": $("#select_Switch option:selected").text().trim()
-					};
-
-					AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
-					AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
-					AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
-					AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
-					AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
-					ckbs.each(function() {
-
-						$(this).parent().parent().parent().replaceWith(AddtrSwitch(obj));
-
-					});
-					$('#myModal_Update1').modal('hide');
-				}
-
-				break;
-
-			case "DeleteAlarmTagInfo":
-
-				var ckbs;
-
-				//模拟量
-				if(dataType == "DoubleFloat") {
-					ckbs = $("input[name='check_table']:checked");
-				} else {
-					ckbs = $("input[name='check_table1']:checked");
-				}
-
-				ckbs.each(function() {
-					$(this).parent().parent().parent().remove();
-
-				});
-
-				shalert("删除成功");
-				break;
+					shalert("删除成功");
+					break;
 				case "OutputAlarmInfo":
-			
-				var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
-				
+
+					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
+
 					fileName1 = result["info"].replace("\\", "/");
 					console.log(fileName1);
 					send(jsStr);
-			break;
-		}
-	}
+					break;
+				case "AddAlarmTagInfo":
+					console.log(result);
+					shalert("添加成功！");
+					//模拟量
+					if(dataType == "DoubleFloat") {
+						/*修改保存的集合*/
+						var obj = {
+							//"ID": result["info"],
+							"Tagname": $("#dot_Add_D").val().trim(),
+							"Description": $("#inputdes_Add_D").val().trim(),
+							"IsAlarm": $("#inputcall_Add_D").val().trim(),
+							"HHAlarm": $("#inputHighAlarm_Add_D").val().trim(),
+							"HAlarm": $("#inputHighAlarm_Add_D_2").val().trim(),
+							"LAlarm": $("#inputLowAlarm_Add_D_2").val().trim(),
+							"LLAlarm": $("#inputLowAlarm_Add_D").val().trim(),
+							"DataType": $("#type_Add_D").val().trim()
+						};
+                        console.log(obj);
+						AlarmTagData.push(obj);
+						/*动态的添加到页面*/
+						$("#tblAnalog tbody").append(AddtrAnalog(obj));
+                 
+					} else {
+						/*修改保存的集合*/
+						var obj = {
+							//"ID": result["info"],
+							"Tagname": $("#dot_Add_B").val().trim(),
+							"Description": $("#inputdes_Add_B").val().trim(),
+							"IsAlarm": $("#inputcall_Add_B").val().trim(),
+							"HHAlarm": "",
+							"HAlarm": "",
+							"LAlarm": "",
+							"LLAlarm": "",
+							"ItemAlarmBoolValue":$("ItemAlarmBoolValue_B").val().trim(),
+							"DataType": $("#type_Add_B").val().trim()
+						};
 
-}
-else
-{
-	var blob = new Blob([msg.data], { type: "applicationnd.ms-excel" }),
-    fileName = fileName1;//'BaseTags.xls';
-    var link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-    window.URL.revokeObjectURL(link.href);
-}
+						AlarmTagData.push(obj);
+						/*动态的添加到页面*/
+						$("#tblSwitch tbody").append(AddtrSwitch(obj));
+					}
+					return false;
+			}
+		}
+
+	} else {
+		var blob = new Blob([msg.data], {
+				type: "applicationnd.ms-excel"
+			}),
+			fileName = fileName1; //'BaseTags.xls';
+		var link = document.createElement('a');
+		link.href = window.URL.createObjectURL(blob);
+		link.download = fileName;
+		link.click();
+		window.URL.revokeObjectURL(link.href);
+	}
 
 }
 
 //连接断开
 socket.onclose = function(event) {
 	console.log("Socket状态:" + readyStatus[socket.readyState]);
-	location.href = "../Login.html";
+	window.parent.location.href = "../Login.html";
 }
 
 //发送

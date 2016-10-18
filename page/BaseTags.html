@@ -29,7 +29,7 @@
 					    <i class="fa fa-search"></i>
 		                <span>查询</span>
 			    	</button>
-					<button type="button" class="btn green" id="user_Add">
+					<button type="button" class="btn green" id="Base_Add">
 					    <i class="fa fa-file-excel-o"></i>
 		                <span>添加</span>
 			    	</button>
@@ -185,33 +185,50 @@
 							<form role="form">
 								<div class="form-group">
 									<div class="row">
-										<label for="login_Add" class="col-md-3 text-right">点名：</label>
+										<label for="dot_Add_D" class="col-md-3 text-right">点名：</label>
 
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="login_Add" placeholder="点名">
+											<input type="text" class="form-control" id="dot_Add_D" placeholder="点名">
+										</div>
+									</div>
+								</div>
+						
+									<div class="form-group">
+									<div class="row">
+										<label for="inputcall_Add_D" class="col-md-3 text-right">类型：</label>
+										<div class="col-md-9">
+											<select class="form-control" id="type_Add_D">
+												<option value="DoubleFloat">DoubleFloat</option>
+												<option value="Boolean">Boolean</option>
+											</select>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="name_Add" class="col-md-3 text-right">类型：</label>
-										<div class="col-md-9"><input type="text" class="form-control" id="name_Add" placeholder="类型"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="row">
-										<label for="inputphone_Add" class="col-md-3 text-right">描述：</label>
-
+										<label for="type_Collector_D" class="col-md-3 text-right">采集器：</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="inputphone_Add" placeholder="描述">
+											<select class="form-control" id="type_Collector_D">
+												<option value="DoubleFloat">DoubleFloat</option>
+												<option value="Boolean">Boolean</option>
+											</select>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputRole_Add" class="col-md-3 text-right">是否报警：</label>
+										<label for="inputdes_Add_D" class="col-md-3 text-right">描述：</label>
+
 										<div class="col-md-9">
-											<select class="form-control" id="inputRole_Add">
+											<input type="text" class="form-control" id="inputdes_Add_D" placeholder="描述">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label for="inputcall_Add_D" class="col-md-3 text-right">是否报警：</label>
+										<div class="col-md-9">
+											<select class="form-control" id="inputcall_Add_D">
 												<option>否</option>
 												<option>是</option>
 											</select>
@@ -220,33 +237,33 @@
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputPassword_Add" class="col-md-3 text-right">高高限：</label>
+										<label for="inputHighAlarm_Add_D" class="col-md-3 text-right">高高限：</label>
 										<div class="col-md-9">
-											<input type="number" value="" name="number" class="form-control" max="90000000" min="3">
+											<input type="number" value="" id="inputHighAlarm_Add_D" name="number" class="form-control" max="90000000" min="3">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputPassword2_Add" class="col-md-3 text-right">高限：</label>
+										<label for="inputHighAlarm_Add_D_2" class="col-md-3 text-right">高限：</label>
 										<div class="col-md-9">
-											<input type="number" value="" name="number" class="form-control">
+											<input type="number" value="" name="number" class="form-control" id="inputHighAlarm_Add_D_2">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputPassword2_Add" class="col-md-3 text-right">低低限：</label>
+										<label for="inputLowroot_Add_D" class="col-md-3 text-right">低低限：</label>
 										<div class="col-md-9">
-											<input type="number" value="" name="number" class="form-control">
+											<input type="number" value="" name="number" class="form-control" id="inputLowAlarm_Add_D">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputPassword2_Add" class="col-md-3 text-right">低限：</label>
+										<label for="inputLowroot_Add_D_2" class="col-md-3 text-right">低限：</label>
 										<div class="col-md-9">
-											<input type="number" value="" name="number" class="form-control">
+											<input type="number" value="" name="number" class="form-control" id="inputLowAlarm_Add_D_2">
 										</div>
 									</div>
 								</div>
@@ -272,31 +289,45 @@
 							<form role="form">
 								<div class="form-group">
 									<div class="row">
-										<label for="login_Add" class="col-md-3 text-right">点名：</label>
+										<label for="dot_Add_B" class="col-md-3 text-right">点名：</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="login_Add" placeholder="点名">
+											<input type="text" class="form-control" id="dot_Add_B" placeholder="点名">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="name_Add" class="col-md-3 text-right">类型：</label>
-										<div class="col-md-9"><input type="text" class="form-control" id="name_Add" placeholder="类型"></div>
+										<label for="type_Add_B" class="col-md-3 text-right">类型：</label>
+										<div class="col-md-9">
+											<select class="form-control" id="type_Add_B">
+												<option value="Boolean">Boolean</option>
+												<option value="DoubleFloat">DoubleFloat</option>
+												
+											</select>
+											</div>
 									</div>
 								</div>
+								
+							<!--	<div class="col-md-9">
+											<select class="form-control" id="select_IsAlarmU1">
+												<option value="0">否</option>
+												<option value="1">是</option>
+											</select>
+										</div>-->
+								
 								<div class="form-group">
 									<div class="row">
-										<label for="inputphone_Add" class="col-md-3 text-right">描述：</label>
+										<label for="inputdes_Add_B" class="col-md-3 text-right">描述：</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="inputphone_Add" placeholder="描述">
+											<input type="text" class="form-control" id="inputdes_Add_B" placeholder="描述">
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputRole_Add" class="col-md-3 text-right">是否报警：</label>
+										<label for="inputcall_Add_B" class="col-md-3 text-right">是否报警：</label>
 										<div class="col-md-9">
-											<select class="form-control" id="inputRole_Add">
+											<select class="form-control" id="inputcall_Add_B">
 												<option>否</option>
 												<option>是</option>
 											</select>
@@ -305,9 +336,9 @@
 								</div>
 								<div class="form-group">
 									<div class="row">
-										<label for="inputRole_Add" class="col-md-3 text-right">开关量：</label>
+										<label for="ItemAlarmBoolValue_B" class="col-md-3 text-right">开关量：</label>
 										<div class="col-md-9">
-											<select class="form-control" id="inputRole_Add">
+											<select class="form-control" id="ItemAlarmBoolValue_B">
 												<option>0</option>
 												<option>1</option>
 											</select>
@@ -315,7 +346,7 @@
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" id="save_Add" data-dismiss="modal">确定</button>
+									<button type="button" class="btn btn-default" id="save_Add_1" data-dismiss="modal">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 								</div>
 							</form>
