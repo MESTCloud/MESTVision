@@ -142,15 +142,13 @@ $(function() {
 			shalert("描述不能为空！");
 			return false;
 		}
-		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
-		console.log(jsStr);
+		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"collectorId\":\"" + $("#Collector_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
+		
 		send(jsStr);
 	});
 	/*添加开关量*/
 	$("#save_Add_1").on("click", function() {
-		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_B").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_B").val().trim() + "\",\"DataType\":\"" + $("#type_Add_B").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#ItemAlarmBoolValue_B").val().trim() + "\",\"IsAlarm\":\"" + $("#inputcall_Add_B").val().trim() + "\"}";
-
-		console.log(jsStr);
+		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_B").val().trim() + "\",\"collectorId\":\"" + $("#Collector_B").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_B").val().trim() + "\",\"DataType\":\"" + $("#type_Add_B").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#ItemAlarmBoolValue_B").val().trim() + "\",\"IsAlarm\":\"" + $("#inputcall_Add_B").val().trim() + "\"}";
 		send(jsStr);
 	});
 	/*修改*/
@@ -224,7 +222,7 @@ $(function() {
 		var txt_describe = $("#txtTagName").val().trim();
 		//dataType == "DoubleFloat"
 		var jsStr = "OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + txt_name + "\",\"Description\":\"" + txt_describe + "\"}";
-		console.log(jsStr);
+		
 		send(jsStr);
 	});
 
@@ -327,7 +325,7 @@ function UpdateAlarmData(Alarmid) {
 	$("#save_UpdateDouble").unbind("click");
 	$("#save_UpdateDouble").click(function() {
 
-		var jsStr1 = "UpdateAlarmTagInfo {\"id\":\"" + Alarmid + "\",\"DataType\":\"" + $("#txtDataTypeU").val().trim() + "\",\"HHAlarm\":\"" + $("#txtHHAlarm").val().trim() + "\",\"HAlarm\":\"" + $("#txtHAlarm").val().trim() + "\",\"LAlarm\":\"" + $("#txtLAlarm").val().trim() + "\",\"LLAlarm\":\"" + $("#txtLLAlarm").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "" + "\",\"IsAlarm\":\"" + $("#select_IsAlarmU").val().trim() + "\"}";
+		var jsStr1 = "UpdateAlarmTagInfo {\"id\":\"" + Alarmid + "\",\"DataType\":\"" + $("#txtDataTypeU").val().trim() + "\",\"HHAlarm\":\"" + $("#txtHHAlarm").val().trim() + "\",\"HAlarm\":\"" + $("#txtHAlarm").val().trim() + "\",\"LAlarm\":\"" + $("#txtLAlarm").val().trim() + "\",\"LLAlarm\":\"" + $("#txtLLAlarm").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#select_IsAlarmU").val().trim() + "\"}";
 
 		send(jsStr1);
 	});
@@ -346,6 +344,7 @@ function UpdateAlarmData(Alarmid) {
 function Senddata() {
 	send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
 }
+
 
 /*获取模拟量集合*/
 function bindAnalogTable(datatable) {
@@ -399,7 +398,7 @@ function bindAnalogTable(datatable) {
 	return str;
 }
 
-/*模拟量,重新赋值一行*/
+/*模拟量strCollector,重新赋值一行*/
 function AddtrAnalog(datatable) {
 
 	// 描述
@@ -512,23 +511,37 @@ function CollectorBind(data) {
 		$.each(data, function(index, item) {
 			strCollector += "<option value=" + item["ID"] + ">" + item["CollectorName"] + "</option>";
 		});
+
 	}
 
-	return strRole;
+	return strCollector;
 
+}
+/*采集器数据绑定*/
+function Collectorsend()
+{
+	
+	var jsStr = "CollectorListByUsername {\"username\":\"" + $.cookie("user") + "\"}";
+	
+	send(jsStr);
+	
+	
 }
 //连接成功
 socket.onopen = function() {
 	if($.cookie("user") && $.cookie("password")) {
 		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 	}
+	//数据绑定
 	Senddata();
+	/*采集器数据*/
+	Collectorsend();
 }
 
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-	console.log(typeof result);
+	
 	if(typeof result == "string") {
 		result = JSON.parse(result);
 
@@ -540,7 +553,7 @@ socket.onmessage = function(msg) {
 			switch(result["Function"]) {
 				case "AlarmTagInfo":
 					AlarmTagData = result["data"];
-					console.log(AlarmTagData);
+					
 
 					if(dataType == "DoubleFloat") {
 						if(result["data"].length == 0) {
@@ -644,11 +657,11 @@ socket.onmessage = function(msg) {
 					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
 
 					fileName1 = result["info"].replace("\\", "/");
-					console.log(fileName1);
+					
 					send(jsStr);
 					break;
 				case "AddAlarmTagInfo":
-					console.log(result);
+					
 					shalert("添加成功！");
 					//模拟量
 					if(dataType == "DoubleFloat") {
@@ -662,16 +675,17 @@ socket.onmessage = function(msg) {
 							"HAlarm": $("#inputHighAlarm_Add_D_2").val().trim(),
 							"LAlarm": $("#inputLowAlarm_Add_D_2").val().trim(),
 							"LLAlarm": $("#inputLowAlarm_Add_D").val().trim(),
+							"ItemAlarmBoolValue":"1",
 							"DataType": $("#type_Add_D").val().trim()
 						};
-                        console.log(obj);
+                        
 						AlarmTagData.push(obj);
 						/*动态的添加到页面*/
 						$("#tblAnalog tbody").append(AddtrAnalog(obj));
                  
 					} else {
 						/*修改保存的集合*/
-						var obj = {
+						var obj = { 
 							//"ID": result["info"],
 							"Tagname": $("#dot_Add_B").val().trim(),
 							"Description": $("#inputdes_Add_B").val().trim(),
@@ -680,7 +694,7 @@ socket.onmessage = function(msg) {
 							"HAlarm": "",
 							"LAlarm": "",
 							"LLAlarm": "",
-							"ItemAlarmBoolValue":$("ItemAlarmBoolValue_B").val().trim(),
+							"ItemAlarmBoolValue":$("#ItemAlarmBoolValue_B").val().trim(),
 							"DataType": $("#type_Add_B").val().trim()
 						};
 
@@ -688,7 +702,20 @@ socket.onmessage = function(msg) {
 						/*动态的添加到页面*/
 						$("#tblSwitch tbody").append(AddtrSwitch(obj));
 					}
-					return false;
+					break;
+					case "CollectorListByUsername":
+					
+					if(result["data"].length==0)
+					{
+						$("#Base_Add").hide();
+					}else
+					{
+						
+						$("#Collector_D").html(CollectorBind(result["data"]));
+						$("#Collector_B").html(CollectorBind(result["data"]));
+						
+					}
+					break;
 			}
 		}
 
