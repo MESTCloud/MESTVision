@@ -81,6 +81,15 @@ realtimeSocket.onmessage = function (msg) {
             case "RealTimeAlarmInfo":
                 
                 $("tbody").html(bindTable(result["data"]));
+                	/*确认报警按钮点击事件*/
+					$(".btnConfirmAlarm").click(function() {
+						var pAlarmID = this.getAttribute("data-value");
+						shconfirm("确认要确认报警吗?", function(result) {
+							if(result) {
+								ConfirmAlarmData(pAlarmID);
+							};
+						});
+					});
                 break;
             
         }

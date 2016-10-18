@@ -236,6 +236,7 @@ socket.onmessage = function(msg) {
 
 					if(result["data"].length == 0) {
 						shalert("查无资料");
+						$("tbody").html("");
 					}
 					$("tbody").html(bindTable(result["data"]));
 
@@ -256,6 +257,7 @@ socket.onmessage = function(msg) {
 					RealTimeAlarmData = result["data"];
 					if(result["data"].length == 0) {
 						shalert("查无资料");
+						$("tbody").html("");
 					}
 					$("tbody").html(bindTable(result["data"]));
 					/*确认报警按钮点击事件*/
@@ -263,8 +265,6 @@ socket.onmessage = function(msg) {
 						var pAlarmID = this.getAttribute("data-value");
 						shconfirm("确认要确认报警吗?", function(result) {
 							if(result) {
-								var pAlarmID = this.getAttribute("data-value");
-
 								ConfirmAlarmData(pAlarmID);
 							};
 						});

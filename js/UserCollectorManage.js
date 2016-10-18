@@ -43,9 +43,11 @@ function bindUserTable(datatable) {
 		var str = "";
 		$.each(datatable, function(index, data) {
 			str += "<tr class='gradeX even' role='row' data-userid='" + data["Id"] + "'>"
-			str += "<td>";
-			str += "<span>" + data["RealName"] + "</span></td>";
 			str += "<td >" + data["UserName"] + "</td>";
+			str += "<td>";
+			
+			str += "<span>" + data["RealName"] + "</span></td>";
+			
 			str += "</tr>";
 
 		});
