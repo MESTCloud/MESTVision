@@ -54,7 +54,7 @@ $(function() {
 			$("#checkAll1").prop('checked', false);
 			$("input[name='check_table']").prop('checked', false);
 			$("input[name='check_table1']").prop('checked', false);
-
+            $("#tblSwitch tbody").html('<tr><td colspan="9"><img src="../img/default.gif"></td></tr>');
 			Senddata();
 			//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + "" + "\"}");
 
@@ -342,6 +342,9 @@ function UpdateAlarmData(Alarmid) {
 
 // 发送消息
 function Senddata() {
+	
+	$("#tblAnalog tbody").html('<tr><td colspan="9"><img src="../img/default.gif"></td></tr>');
+	
 	send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
 }
 
