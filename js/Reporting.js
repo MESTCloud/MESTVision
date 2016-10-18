@@ -24,12 +24,14 @@ $(function() {
 			$("#divmonth").hide();
 			break;
 		default:
+		$("#startTime1").val(getNowFormatDate(0,0,-1));
+		$("#endTime1").val(getNowFormatDate(0,0,0));
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 	}
-
+/*获取当前系统时间*/
 function getNowFormatDate(gmonth,gdate,ghours) {
     var date = new Date();
     var seperator1 = "-";
@@ -141,8 +143,8 @@ function getNowFormatDate(gmonth,gdate,ghours) {
 		var DateEN = new Date(etime.replace(/-/g, '/'));
 		var DateE = new Date(DateEN);
 
-	
-
+	    $("#ss1").addClass("imgstyle");
+        $("#ss1").html('<img src="../img/default.gif">');
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
 		console.log(jsStr);
 		send(jsStr);
@@ -173,7 +175,9 @@ socket.onmessage = function(msg) {
 
 	}else
 	{
+		
 		$("#ss1").attr("style","");
+		 $("#ss1").removeClass("imgstyle");
 		$("#ss1").html(result);
 	}
 	
