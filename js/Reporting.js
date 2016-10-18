@@ -3,29 +3,29 @@ $(function() {
 
 	switch(pType) {
 		case "day":
-			$("#startTime1").val(getNowFormatDate(0, 0, -1));
-			$("#endTime1").val(getNowFormatDate(0, 0, 0));
+			/*$("#startTime1").val(getNowFormatDate(0, 0, -1));
+			$("#endTime1").val(getNowFormatDate(0, 0, 0));*/
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 		case "month":
-			$("#startTime2").val(getNowFormatDate(0, 0, 0));
+			/*$("#startTime2").val(getNowFormatDate(0, 0, 0));*/
 
 			$("#divmonth").show();
 			$("#divday").hide();
 			$("#divyear").hide();
 			break;
 		case "year":
-			$("#startTime3").val(getNowFormatDate(0, 0, 0));
+			/*$("#startTime3").val(getNowFormatDate(0, 0, 0));*/
 
 			$("#divyear").show();
 			$("#divday").hide();
 			$("#divmonth").hide();
 			break;
 		default:
-			$("#startTime1").val(getNowFormatDate(0, 0, -1));
-			$("#endTime1").val(getNowFormatDate(0, 0, 0));
+			/*$("#startTime1").val(getNowFormatDate(0, 0, -1));
+			$("#endTime1").val(getNowFormatDate(0, 0, 0));*/
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
