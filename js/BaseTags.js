@@ -250,9 +250,9 @@ $(function() {
 	});
 
 	/*导出模板按钮点击事件*/
-	$("#btnExportTemplate").click(function() {
+/*	$("#btnExportTemplate").click(function() {
 		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
-	});
+	});*/
 
 	/*导入按钮点击事件*/
 

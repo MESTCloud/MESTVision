@@ -81,6 +81,10 @@ realtimeSocket.onmessage = function (msg) {
             case "RealTimeAlarmInfo":
                 
                 $("tbody").html(bindTable(result["data"]));
+                
+                // 刷新后去掉checkbox勾选
+                $("#checkAll").prop("checked", false);
+                
                 	/*确认报警按钮点击事件*/
 					$(".btnConfirmAlarm").click(function() {
 						var pAlarmID = this.getAttribute("data-value");

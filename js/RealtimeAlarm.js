@@ -8,7 +8,7 @@ $(document).ready(function() {
 		$("#div_QRcode").toggle("slow");
 	});
 
-	/*	固定表头*/
+	/*固定表头*/
 	//$("#tblList").freezeHeader();
 
 	/*全选 反选*/
@@ -276,8 +276,11 @@ socket.onmessage = function(msg) {
 
 					/*开始日期*/
 					var pStime = $("#startTime").val().trim();
+					
+					/*结束日期*/
+					var pEtime = $("#endTime").val().trim();
 
-					if(pStime == "") {
+					if(pStime == "" && pEtime == "") {
 						// 获取所有实时报警数据
 						senddata();
 					} else {

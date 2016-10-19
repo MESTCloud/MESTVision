@@ -20,7 +20,7 @@ function bindUserTable(datatable) {
 		var str = "";
 		$.each(datatable, function(index, data) {
 
-			str += "<tr class='gradeX even' role='row' data-userid='" + data["Id"] + "'>"
+			str += "<tr  role='row' data-userid='" + data["Id"] + "'>"
 			str += "<td >" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "</tr>";
@@ -37,7 +37,7 @@ function bindRoleTable(datatable) {
 		var str = "";
 		$.each(datatable, function(index, data) {
 
-			str += "<tr class='gradeX even' role='row'>"
+			str += "<tr  role='row'>"
 			str += "<td> <label class='mt-radio mt-radio-outline'><input type='radio' name='role_list' value='success' data-roldId='" + data["RoleId"] + "'><span></span></label>";
 			str += "<span>" + data["RealName"] + "</span></td>";
 			str += "</tr>";
@@ -74,6 +74,7 @@ socket.onmessage = function(msg) {
 					
 					$(".userRole_left tbody").html(bindUserTable(result["data"]));
 					$(".userRole_left tbody tr").click(function() {
+						$(this).addClass("backcolor");
 						$userId = $(this).attr("data-userid");
 						var jsStr = "RoleListByUser {\"id\":\"" + $userId + "\"}";
 

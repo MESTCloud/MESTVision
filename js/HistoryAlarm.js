@@ -40,6 +40,21 @@ $(document).ready(function() {
 
 		/*结束日期*/
 		var pEtime = $("#endTime").val().trim();
+		
+		if(pStime == "") {
+			shalert("开始日期不能为空！");
+			return false;
+		}
+		if(pEtime == "") {
+			shalert("结束日期不能为空！");
+			return false;
+		}
+	
+		if(pStime != "" && pEtime != "" && pStime > pEtime) {
+			shalert("结束日期不能大于开始日期！");
+			return false;
+		}
+	
 		var jsStr = "OutputHisAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
 
 		send(jsStr);
