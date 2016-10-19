@@ -16,8 +16,10 @@ var pTagName = "";
 
 /*描述*/
 var pDescription = "";
+
 /*导出时返回的文件地址*/
 var fileName1;
+
 // 页面加载
 $(function() {
 
@@ -140,8 +142,8 @@ $(function() {
 			shalert("描述不能为空！");
 			return false;
 		}
-		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"collectorId\":\"" + $("#Collector_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() +...(line truncated)...
 		
+		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"collectorId\":\"" + $("#Collector_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
 		send(jsStr);
 	});
 	/*添加开关量*/
