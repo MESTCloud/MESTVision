@@ -117,7 +117,7 @@ socket.onmessage = function(msg) {
 
 					$(".Roleuser_left tbody").html(bindRoleTable(result["data"]));
 					$(".Roleuser_left tbody tr").click(function() {
-
+                    $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 						$RoleUserId = $(this).attr("data-roldId");
 
 						var jsStr = "UserListByRole {\"id\":\"" + $RoleUserId + "\"}";

@@ -146,6 +146,7 @@ if(App.isAngularJsApp() === false) {
 						$(".RoleMenu_left tbody").html(bindUserTable(result["data"]));
 						/*角色的点击事件*/
 						$(".RoleMenu_left  tbody tr").click(function() {
+							 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 							$dataid = $(this).attr("data_Rid");
 							$("#tree_role").find('.jstree-undetermined').removeClass('jstree-undetermined');
 							$("#tree_role").find("a").removeClass("jstree-clicked");

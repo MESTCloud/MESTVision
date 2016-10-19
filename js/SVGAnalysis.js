@@ -89,7 +89,7 @@ function WriteFloatValue(tag) {
 function WriteBoolValue(tag) {
 
 	 $("#Dialog").attr("style", "height:100px; width: 200px; position: absolute; left: 50%; top: 50%; margin-left: -100px; margin-top:-50px; z-index: 1000; background-color: #fff;")
-	var content = "<div class='d_title'>开关量:" + tag + "<button type='button' id='close' class='btn btn-default pull-right btn-sm'>X</button></div><div style='text-align:center; width:160px; height:50px;'>" +
+	var content = "<div class='d_title'>&nbsp;开关量:" + tag + "<div type='button' id='close' class='btn btn-default pull-right btn-sm transparent'><i class='fa fa-times'></i></div></div><div style='text-align:center; width:160px; height:50px;'>" +
 		"<button id='yesFormWrite' >开</button>" +
 		"<button id='noFormWrite' >关</button>" +
 		"</div>";

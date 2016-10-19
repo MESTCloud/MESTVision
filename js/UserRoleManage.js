@@ -74,7 +74,7 @@ socket.onmessage = function(msg) {
 					
 					$(".userRole_left tbody").html(bindUserTable(result["data"]));
 					$(".userRole_left tbody tr").click(function() {
-						$(this).addClass("backcolor");
+						 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 						$userId = $(this).attr("data-userid");
 						var jsStr = "RoleListByUser {\"id\":\"" + $userId + "\"}";
 

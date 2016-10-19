@@ -70,3 +70,5 @@ table  tr  td{
   margin-left: 10px;
 }
 /*----------------------end----------------------------*/
+/*透明*/
+.transparent{background-color: transparent; border: 0;}

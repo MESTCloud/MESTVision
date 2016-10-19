@@ -42,7 +42,7 @@ function bindUserTable(datatable) {
 	if(datatable.length > 0) {
 		var str = "";
 		$.each(datatable, function(index, data) {
-			str += "<tr class='gradeX even' role='row' data-userid='" + data["Id"] + "'>"
+			str += "<tr role='row' data-userid='" + data["Id"] + "'>"
 			str += "<td >" + data["UserName"] + "</td>";
 			str += "<td>";
 			
@@ -120,7 +120,7 @@ socket.onmessage = function(msg) {
 					$(".UserCollector_left tbody").html(bindUserTable(result["data"]));
 					/*获取采集器信息*/
 					$(".UserCollector_left tbody tr").click(function() {
-
+                        $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 						$UserCollectorId = $(this).attr("data-userid");
 
 						var jsStr = "CollectorListByUser {\"id\":\"" + $UserCollectorId + "\"}";

@@ -119,7 +119,7 @@ socket.onmessage = function(msg) {
 					$(".RoleCollector_left tbody").html(bindRoleTable(result["data"]));
 					/*获取采集器信息*/
 					$(".RoleCollector_left tbody tr").click(function() {
-
+                    $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 						$RoleCollectorId = $(this).attr("data-Roleid");
                        
 						var jsStr = "CollectorListByRole {\"id\":\"" + $RoleCollectorId + "\"}";

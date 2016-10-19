@@ -153,7 +153,7 @@ if(App.isAngularJsApp() === false) {
 						 
 						/* 点击事件*/
 						$(".userMenu_left  tbody tr").click(function() {
-							
+							 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 							$dataid = $(this).attr("data_uid");
                           
 							$("#tree_2").find('.jstree-undetermined').removeClass('jstree-undetermined');
