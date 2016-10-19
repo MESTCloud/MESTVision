@@ -54,7 +54,7 @@ $(function() {
 			$("#checkAll1").prop('checked', false);
 			$("input[name='check_table']").prop('checked', false);
 			$("input[name='check_table1']").prop('checked', false);
-            $("#tblSwitch tbody").html('<tr><td colspan="9"><img src="../img/default.gif"></td></tr>');
+            $("#tblSwitch tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 			Senddata();
 			//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + "" + "\"}");
 
@@ -220,7 +220,7 @@ $(function() {
 
 		/*描述*/
 		var txt_describe = $("#txtTagName").val().trim();
-		//dataType == "DoubleFloat"
+	
 		var jsStr = "OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + txt_name + "\",\"Description\":\"" + txt_describe + "\"}";
 		
 		send(jsStr);
@@ -249,17 +249,6 @@ $(function() {
 		}
 	});
 
-	/*导出模板按钮点击事件*/
-/*	$("#btnExportTemplate").click(function() {
-		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
-	});*/
-
-	/*导入按钮点击事件*/
-
-	/*$("#input_file").click(function() {
-		/*var fileinput=new
-      fileinput.prototype.change();	
-	});*/
 
 	/*导出模板按钮点击事件*/
 	$("#btnExportTemplate").click(function() {
@@ -268,10 +257,6 @@ $(function() {
 
 	});
 
-	$("#input_name").change(function() {
-		alert(1);
-		//send("InputAlarmInfo {\"filepath\":\"" + "BaseTags.xls" + "\"}");
-	});
 
 	/*导出按钮点击事件*/
 	$("#btnOutputExcel").click(function() {
@@ -343,7 +328,7 @@ function UpdateAlarmData(Alarmid) {
 // 发送消息
 function Senddata() {
 	
-	$("#tblAnalog tbody").html('<tr><td colspan="9"><img src="../img/default.gif"></td></tr>');
+	$("#tblAnalog tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 	
 	send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
 }
@@ -658,9 +643,7 @@ socket.onmessage = function(msg) {
 				case "OutputAlarmInfo":
 
 					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
-
-					fileName1 = result["info"].replace("\\", "/").split('/')[1];;
-					
+					fileName1 = result["info"].replace("\\", "/").split('/')[1];;			
 					send(jsStr);
 					break;
 				case "AddAlarmTagInfo":
