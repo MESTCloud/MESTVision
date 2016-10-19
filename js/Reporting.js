@@ -1,3 +1,4 @@
+var fileName1;
 $(function() {
 	/*日历控件响应*/
 
@@ -144,15 +145,27 @@ $(function() {
 		$("#ss1").addClass("imgstyle");
 		$("#ss1").html('<img src="../img/default.gif">');
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
-		
+
 		send(jsStr);
 
 	});
 
-    /*导出execl*/
-   $("#btnOutputExcel").on("click",function(){
-   	console.log($("#ss1"));
-   })
+	/*导出execl*/
+	$("#btnOutputExcel").on("click", function() {
+		var rurl = $("link[rel=File-List]").attr("href").split('_');
+		fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
+		var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
+		send(jsStr);
+
+	});
+	/*导出pdf*/
+	$("#btnOutputPdf").on("click", function() {
+		var rurl = $("link[rel=File-List]").attr("href").split('_');
+		fileName1 = rurl[0] + "_" + rurl[1] + ".pdf";
+		var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
+		send(jsStr);
+
+	});
 });
 
 //连接成功
@@ -165,61 +178,61 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-    var num=result.indexOf("exception");
-    if(num>0)
-    {
-    	shalert("未找到文件");
-    		$("#ss1").attr("style", "height: 650px");
-          $("#ss1").removeClass("imgstyle");
-          $('#ss1 img').remove();  
-		var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
-			sheetCount: 1
-		});
-    	return false;
-    }else
-    {
-    if(result == "\{\"Function\":\"Login\",\"info\":\"执行成功。\"}") //初始化的时候返回的
-	{
-		/*显示excel*/
-		$("#ss1").attr("style", "height: 650px");
-         $("#ss1").removeClass("imgstyle");
-		var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
-			sheetCount: 1
-		});
-
-	} else {
-		//try {
-			$("#ss1").attr("style", "");
-			$("#ss1").removeClass("imgstyle");
-			$("#ss1").html(result);
-		/*} catch(e) {
-			shalert(result);
+	
+	if(typeof result == "string") {
+		var num = result.indexOf("exception");
+		if(num > 0) {
+			shalert("未找到文件");
 			$("#ss1").attr("style", "height: 650px");
+			$("#ss1").removeClass("imgstyle");
+			$('#ss1 img').remove();
 			var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
 				sheetCount: 1
 			});
-			
-		}*/
+			return false;
+		} else {
+			if(result == "\{\"Function\":\"Login\",\"info\":\"执行成功。\"}") //初始化的时候返回的
+			{
+				/*显示excel*/
+				$("#ss1").attr("style", "height: 650px");
+				$("#ss1").removeClass("imgstyle");
+				var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+					sheetCount: 1
+				});
 
-	}	
-    }
-	
+			} else {
+				//try {
+				$("#ss1").attr("style", "");
+				$("#ss1").removeClass("imgstyle");
+				$("#ss1").html(result);
+				/*} catch(e) {
+					shalert(result);
+					$("#ss1").attr("style", "height: 650px");
+					var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
+						sheetCount: 1
+					});
+					
+				}*/
 
-	/* console.log(result);
-	result = JSON.parse(result);
-	if(result["error"]) {
-		shalert(result["error"]);
-	} else if(result["exception"]) {
-		shalert(result["exception"]);
-	} else {
-		switch(result["Function"]) {
-			case "Report":
-			console.log(result["data"])
-				$("#ss").html(result["data"]);
-				
-				break;
+			}
 		}
-	}*/
+	} else {
+		try {
+			var blob = new Blob([msg.data], {
+					type: "applicationnd.ms-excel"
+				}),
+				fileName = fileName1;
+			var link = document.createElement('a');
+			link.href = window.URL.createObjectURL(blob);
+			link.download = fileName;
+			link.click();
+			window.URL.revokeObjectURL(link.href);
+		} catch(e) {
+			shalert("导出时出现问题，请联系管理员");
+			return false;
+		}
+	}
+
 }
 
 //连接断开
