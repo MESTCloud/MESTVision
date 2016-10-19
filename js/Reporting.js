@@ -152,19 +152,29 @@ $(function() {
 
 	/*导出execl*/
 	$("#btnOutputExcel").on("click", function() {
-		var rurl = $("link[rel=File-List]").attr("href").split('_');
-		fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
-		var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
-		send(jsStr);
+		console.log($("link[rel=File-List]").attr("href"));
+		if($("link[rel=File-List]").attr("href")!= undefined) {
+			var rurl = $("link[rel=File-List]").attr("href").split('_');
+			fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
+			var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
+			send(jsStr);
+		} else {
+			shalert("请查询后再导出");
+			return false;
+		}
 
 	});
 	/*导出pdf*/
 	$("#btnOutputPdf").on("click", function() {
-		var rurl = $("link[rel=File-List]").attr("href").split('_');
-		fileName1 = rurl[0] + "_" + rurl[1] + ".pdf";
-		var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
-		send(jsStr);
-
+		if($("link[rel=File-List]").attr("href")!= undefined) {
+			var rurl = $("link[rel=File-List]").attr("href").split('_');
+			fileName1 = rurl[0] + "_" + rurl[1] + ".pdf";
+			var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
+			send(jsStr);
+		} else {
+			shalert("请查询后再导出");
+			return false;
+		}
 	});
 });
 
@@ -178,7 +188,7 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-	
+
 	if(typeof result == "string") {
 		var num = result.indexOf("exception");
 		if(num > 0) {
