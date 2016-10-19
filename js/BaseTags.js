@@ -168,11 +168,12 @@ $(function() {
 
 				/*是否报警,如果为空,默认为是*/
 				var pIsAlarm = obj["IsAlarm"] == null ? "1" : obj["IsAlarm"];
-
+                console.log(pIsAlarm);
 				$("#txtTagNameU").val(obj["Tagname"]);
 				$("#txtDataTypeU").val(obj["DataType"]);
 				$("#txtDescriptionU").val(obj["Description"]);
 				$("#select_IsAlarmU").val(pIsAlarm);
+				
 				$("#txtHHAlarm").val(obj["HHAlarm"]);
 				$("#txtHAlarm").val(obj["HAlarm"]);
 				$("#txtLAlarm").val(obj["LAlarm"]);
@@ -394,7 +395,7 @@ function AddtrAnalog(datatable) {
 	var pDescription = datatable["Description"] == null ? "" : datatable["Description"];
 
 	// 是否报警
-	var pIsAlarm = datatable["IsAlarm"] == null ? "" : datatable["IsAlarm"];
+	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"]=="0"?"否":"是");
 
 	// 高高限值
 	var pHHAlarm = datatable["HHAlarm"] == null ? "" : datatable["HHAlarm"];
@@ -473,7 +474,7 @@ function AddtrSwitch(datatable) {
 	var pDescription = datatable["Description"] == null ? "" : datatable["Description"];
 
 	// 是否报警
-	var pIsAlarm = datatable["IsAlarm"] == null ? "" : datatable["IsAlarm"];
+	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"]=="0"?"否":"是");
 
 	// 开关量
 	var pItemAlarmBoolValue = datatable["ItemAlarmBoolValue"] == null ? "" : datatable["ItemAlarmBoolValue"];
@@ -574,7 +575,7 @@ socket.onmessage = function(msg) {
 							"Tagname": $("#txtTagNameU").val().trim(),
 							"DataType": $("#txtDataTypeU").val().trim(),
 							"Description": $("#txtDescriptionU").val().trim(),
-							"IsAlarm": $("#select_IsAlarmU  option:selected").text().trim(),
+							"IsAlarm": $("#select_IsAlarmU").val().trim(),
 							"HHAlarm": $("#txtHHAlarm").val().trim(),
 							"HAlarm": $("#txtHAlarm").val().trim(),
 							"LAlarm": $("#txtLAlarm").val().trim(),
@@ -584,7 +585,7 @@ socket.onmessage = function(msg) {
 						AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU").val().trim();
 						AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU").val().trim();
 						AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU").val().trim();
-						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU  option:selected").text().trim();
+						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU").val().trim();
 						AlarmTagData[idIndexUpdate].HHAlarm = $("#txtHHAlarm").val().trim();
 						AlarmTagData[idIndexUpdate].HAlarm = $("#txtHAlarm").val().trim();
 						AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
@@ -604,14 +605,14 @@ socket.onmessage = function(msg) {
 							"Tagname": $("#txtTagNameU1").val().trim(),
 							"DataType": $("#txtDataTypeU1").val().trim(),
 							"Description": $("#txtDescriptionU1").val().trim(),
-							"IsAlarm": $("#select_IsAlarmU1  option:selected").text().trim(),
+							"IsAlarm": $("#select_IsAlarmU1").val().trim(),
 							"ItemAlarmBoolValue": $("#select_Switch option:selected").text().trim()
 						};
 
 						AlarmTagData[idIndexUpdate].Tagname = $("#txtTagNameU1").val().trim();
 						AlarmTagData[idIndexUpdate].DataType = $("#txtDataTypeU1").val().trim();
 						AlarmTagData[idIndexUpdate].Description = $("#txtDescriptionU1").val().trim();
-						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1  option:selected").text().trim();
+						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1").val().trim();
 						AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
 						ckbs.each(function() {
                         obj.value=$(this).val();
@@ -669,6 +670,7 @@ socket.onmessage = function(msg) {
 						};
                         
 						AlarmTagData.push(obj);
+						console.log(obj);
 						/*动态的添加到页面*/
 						$("#tblAnalog tbody").prepend(AddtrAnalog(obj));
                  
