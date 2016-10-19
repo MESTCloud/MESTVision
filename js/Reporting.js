@@ -143,7 +143,7 @@ $(function() {
 		var DateE = new Date(DateEN);
 
 		$("#ss1").addClass("imgstyle");
-		$("#ss1").html('<img src="../img/default.gif">');
+		$("#ss1").html('<span>正在加载中...</span>');
 		var jsStr = "Report {\"name\":\"" + pName + "\",\"start\":\"" + stime + "\",\"end\":\"" + etime + "\"}";
 
 		send(jsStr);
@@ -195,7 +195,7 @@ socket.onmessage = function(msg) {
 			shalert("未找到文件");
 			$("#ss1").attr("style", "height: 650px");
 			$("#ss1").removeClass("imgstyle");
-			$('#ss1 img').remove();
+			$('#ss1 span').remove();
 			var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
 				sheetCount: 1
 			});
