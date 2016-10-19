@@ -418,7 +418,7 @@ var myid = 0;
 //连接至服务器
 function connect(tags) {
     var readyStatus = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
-    var host = "ws://36.110.66.3:29000";
+    var host = "ws://36.110.66.3:29001";
 
     //尝试连接至服务器
     try {

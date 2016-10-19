@@ -192,7 +192,7 @@ socket.onmessage = function(msg) {
 	if(typeof result == "string") {
 		var num = result.indexOf("exception");
 		if(num > 0) {
-			shalert("未找到文件");
+			shalert("未找到模板文件");
 			$("#ss1").attr("style", "height: 650px");
 			$("#ss1").removeClass("imgstyle");
 			$('#ss1 span').remove();

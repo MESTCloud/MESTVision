@@ -144,6 +144,7 @@ $(function() {
 		}
 		
 		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"collectorId\":\"" + $("#Collector_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
+		 
 		send(jsStr);
 	});
 	/*添加开关量*/
@@ -408,10 +409,10 @@ function AddtrAnalog(datatable) {
 	var pLLAlarm = datatable["LLAlarm"] == null ? "" : datatable["LLAlarm"];
 
 	var str = "";
-	var length = parseInt(AlarmTagData.length) - 1;
+	//var length = parseInt(AlarmTagData.length) - 1;
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table'>";
 	str += "<span></span>";
 	str += "</label> </td>";
 	str += "<td>" + datatable["Tagname"] + "</td>";
@@ -478,10 +479,10 @@ function AddtrSwitch(datatable) {
 	var pItemAlarmBoolValue = datatable["ItemAlarmBoolValue"] == null ? "" : datatable["ItemAlarmBoolValue"];
 
 	var str = "";
-	var length = parseInt(AlarmTagData.length) - 1;
+	//var length = parseInt(AlarmTagData.length) - 1;
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-	str += "<input type='checkbox' class='checkboxes' value='" + length + "' name='check_table1'>";
+	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table1'>";
 	str += "<span></span>";
 	str += "</label> </td>";
 	str += "<td>" + datatable["Tagname"] + "</td>";
@@ -589,7 +590,7 @@ socket.onmessage = function(msg) {
 						AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
 						AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
 						ckbs.each(function() {
-
+                           obj.value=$(this).val();
 							$(this).parent().parent().parent().replaceWith(AddtrAnalog(obj));
 
 						});
@@ -613,7 +614,7 @@ socket.onmessage = function(msg) {
 						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1  option:selected").text().trim();
 						AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
 						ckbs.each(function() {
-
+                        obj.value=$(this).val();
 							$(this).parent().parent().parent().replaceWith(AddtrSwitch(obj));
 
 						});
@@ -649,11 +650,13 @@ socket.onmessage = function(msg) {
 				case "AddAlarmTagInfo":
 					
 					shalert("添加成功！");
+					 var valuel=parseInt(AlarmTagData.length);
 					//模拟量
 					if(dataType == "DoubleFloat") {
 						/*修改保存的集合*/
 						var obj = {
-							//"ID": result["info"],
+							"ID": result["info"],
+							"value":valuel,
 							"Tagname": $("#dot_Add_D").val().trim(),
 							"Description": $("#inputdes_Add_D").val().trim(),
 							"IsAlarm": $("#inputcall_Add_D").val().trim(),
@@ -667,12 +670,13 @@ socket.onmessage = function(msg) {
                         
 						AlarmTagData.push(obj);
 						/*动态的添加到页面*/
-						$("#tblAnalog tbody").append(AddtrAnalog(obj));
+						$("#tblAnalog tbody").prepend(AddtrAnalog(obj));
                  
 					} else {
 						/*修改保存的集合*/
 						var obj = { 
-							//"ID": result["info"],
+							"ID": result["info"],
+							"value":valuel,
 							"Tagname": $("#dot_Add_B").val().trim(),
 							"Description": $("#inputdes_Add_B").val().trim(),
 							"IsAlarm": $("#inputcall_Add_B").val().trim(),
@@ -686,7 +690,7 @@ socket.onmessage = function(msg) {
 
 						AlarmTagData.push(obj);
 						/*动态的添加到页面*/
-						$("#tblSwitch tbody").append(AddtrSwitch(obj));
+						$("#tblSwitch tbody").prepend(AddtrSwitch(obj));
 					}
 					break;
 					case "CollectorListByUsername":
