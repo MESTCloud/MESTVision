@@ -148,6 +148,11 @@ $(function() {
 		send(jsStr);
 
 	});
+
+    /*导出execl*/
+   $("#btnOutputExcel").on("click",function(){
+   	console.log($("#ss1"));
+   })
 });
 
 //连接成功
@@ -165,7 +170,8 @@ socket.onmessage = function(msg) {
     {
     	shalert("未找到文件");
     		$("#ss1").attr("style", "height: 650px");
-$("#ss1").removeClass("imgstyle");
+          $("#ss1").removeClass("imgstyle");
+          $('#ss1 img').remove();  
 		var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
 			sheetCount: 1
 		});
