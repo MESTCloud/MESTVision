@@ -19,7 +19,7 @@ $("#save_inputPassWordUpdate").click(function() {
 	send(jsonStr);
 });
 /*登录用户加载*/
-$("#userLoginName").html($.cookie("user"));
+$("#userLoginName").html($.cookie("realName"));
 //连接成功
 socket.onopen = function() {
 		if($.cookie("user") && $.cookie("password")) {

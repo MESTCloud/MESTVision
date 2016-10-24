@@ -56,6 +56,8 @@ $(function() {
 			switch(result["Function"]) {
 				case "Login":
 					//shalert("Login:" + result["info"]);
+					console.log(result["info"]);
+					$.cookie("realName", result["info"]);
 					$.cookie("user", $("#username").val().trim());
 					$.cookie("password", $("#password").val().trim());
 					window.location.href = "Index.html";
