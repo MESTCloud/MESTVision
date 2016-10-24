@@ -2,7 +2,7 @@
 		//全局Socket对象
 		var socket;
 		var readyStatus = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
-		var host = "ws:/36.110.66.3:3000";
+		var host = "ws://36.110.66.3:3000";
  	//尝试连接至服务器
 	try {
 		socket = new WebSocket(host);

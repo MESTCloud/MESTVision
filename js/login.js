@@ -38,7 +38,6 @@ $(function() {
 		}
 		var jsStr = "Login {\"username\":\"" + $("#username").val().trim() + "\",\"password\":\"" + $("#password").val().trim() + "\"}";
 		send(jsStr);
-
 	}
 	//连接成功
 	socket.onopen = function() {
