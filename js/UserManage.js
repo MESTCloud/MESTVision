@@ -315,9 +315,11 @@ socket.onmessage = function(msg) {
 	result = JSON.parse(result);
 	if(result["error"]) {
 		shalert(result["error"]);
-	} else if(result["exception"]) {
+	}
+	/*else if(result["exception"]) {
 		shalert(result["exception"]);
-	} else {
+	} */
+	else {
 		switch(result["Function"]) {
 			case "UserList":
 

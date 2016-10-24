@@ -48,11 +48,13 @@ $(function() {
 		var result = msg.data;
 		result = JSON.parse(result);
 		if(result["error"]) {
-			console.log(result["error"]);
+			
 			shalert(result["error"]);
-		} else if(result["exception"]) {
+		} 
+		/*else if(result["exception"]) {
 			shalert(result["exception"]);
-		} else {
+		} */
+		else {
 			switch(result["Function"]) {
 				case "Login":
 					//shalert("Login:" + result["info"]);
@@ -72,9 +74,9 @@ $(function() {
 
 					$('#myModal_PassWordUpdate').modal('hide');
 					break;
-				default:
+				/*default:
 					shalert(result);
-					break;
+					break;*/
 			}
 		}
 	}
