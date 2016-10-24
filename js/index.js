@@ -34,7 +34,7 @@ socket.onmessage = function(msg) {
 	result = JSON.parse(result);
 	if(result["error"]) {
 		// shalert(result["error"]);
-		 if(result["error"].indexOf("无操作权限")>=0)
+		if(result["error"].indexOf("无操作权限")>=0)
 	    {
 	    	location.href = "Login.html";
 	    }else
@@ -42,12 +42,12 @@ socket.onmessage = function(msg) {
 	    	shalert(result["error"]);
 		
 	    }
-	  
+	
 
-	} else if(result["exception"]) {
+	} /*else if(result["exception"]) {
 	
 		shalert(result["exception"]);
-	} else {
+	}*/ else {
 		switch(result["Function"]) {
 
 			case "ChangePassword":
