@@ -22,6 +22,7 @@ $("#save_inputPassWordUpdate").click(function() {
 $("#userLoginName").html($.cookie("realName"));
 //连接成功
 socket.onopen = function() {
+	   
 		if($.cookie("user") && $.cookie("password")) {
 			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 		}
@@ -32,8 +33,19 @@ socket.onmessage = function(msg) {
 	var result = msg.data;
 	result = JSON.parse(result);
 	if(result["error"]) {
-		shalert(result["error"]);
+		// shalert(result["error"]);
+		 if(result["error"].indexOf("无操作权限")>=0)
+	    {
+	    	location.href = "Login.html";
+	    }else
+	    {
+	    	shalert(result["error"]);
+		
+	    }
+	  
+
 	} else if(result["exception"]) {
+	
 		shalert(result["exception"]);
 	} else {
 		switch(result["Function"]) {
@@ -147,7 +159,8 @@ socket.onmessage = function(msg) {
 
 socket.onclose = function(event) {
 	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	//  location.href = "Login.html";
+
+	  location.href = "Login.html";
 }
 
 //发送
