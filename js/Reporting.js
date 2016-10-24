@@ -214,6 +214,7 @@ socket.onmessage = function(msg) {
 				$("#ss1").attr("style", "");
 				$("#ss1").removeClass("imgstyle");
 				$("#ss1").html(result);
+				$("#ss1").height("550px");
 				/*} catch(e) {
 					shalert(result);
 					$("#ss1").attr("style", "height: 650px");
