@@ -33,16 +33,18 @@ socket.onmessage = function(msg) {
 	var result = msg.data;
 	result = JSON.parse(result);
 	if(result["error"]) {
-		// shalert(result["error"]);
-		if(result["error"].indexOf("无操作权限")>=0)
-	    {
-	    	location.href = "Login.html";
-	    }else
-	    {
-	    	shalert(result["error"]);
-		
-	    }
-	
+
+	if($.cookie("user") == ""||$.cookie("user") == null) {
+			shconfirm1(result["error"], function(result) {
+				if(result) {
+					location.href = "Login.html";
+				}
+			});
+		}
+		else
+		{
+			shalert(result["error"]);
+		}
 
 	} /*else if(result["exception"]) {
 	

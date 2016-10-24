@@ -21,6 +21,7 @@
                 }
             }
         });
+        
         $("#dialogconfirm").dialog({
             modal: true,
             autoOpen: false,
@@ -38,13 +39,38 @@
                     $(this).dialog("close");
                 },
 
-                取消: function () {
+               取消: function () {
                     _shconfirm.shconfirmCallBack(false);
                     $(this).dialog("close");
 
                 }
             }
         });
+         $("#dialogconfirm1").dialog({
+            modal: true,
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 500
+            },
+            hide: {
+                effect: "drop",
+                duration: 500
+            },
+            buttons: {
+                确定: function () {
+                    _shconfirm.shconfirmCallBack(true);
+                    $(this).dialog("close");
+                },
+
+           /*    取消: function () {
+                    _shconfirm.shconfirmCallBack(false);
+                    $(this).dialog("close");
+
+                }*/
+            }
+        });
+        
         $("#dialogprompt").dialog({
             modal: true,
             autoOpen: false,
@@ -88,6 +114,12 @@
     window.shconfirm = function (message, callback) {
         $("#dialogconfirm .msgcontent").html(message);
         $("#dialogconfirm").dialog("open");
+        _shconfirm.shconfirmCallBack = callback;
+    };
+      //message 提示的信息 ,callback(true/false)回调函数 无 取消按钮
+    window.shconfirm1 = function (message, callback) {
+        $("#dialogconfirm1 .msgcontent").html(message);
+        $("#dialogconfirm1").dialog("open");
         _shconfirm.shconfirmCallBack = callback;
     };
     //message 提示的信息 ,callback(msg)回调函数（用户输入的消息）, param：regex 输入的 正则验证，regexmsg 正则验证不通过的提示
