@@ -26,7 +26,6 @@ var UITree = function() {
 				treeObj = currentNode;
 
 			});
-
 		}
 		/*保存按钮*/
 	$("#role_save").on("click", function() {

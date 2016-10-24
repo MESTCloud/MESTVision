@@ -24,7 +24,6 @@ function bindTable(datatable) {
 		});
 
 	}
-
 	return str;
 }
 

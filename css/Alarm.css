@@ -1,0 +1,78 @@
+.fontblue {
+	color: blue;
+}
+
+.fontred {
+	color: red;
+}
+
+.fontviolet {
+	color: darkviolet;
+}
+
+.fontgreen {
+	color: green;
+}
+
+.btn1 {
+	padding: 3px 7px;
+}
+
+.rowcolor {
+	width: 100%;
+}
+
+body {-webkit-overflow-scrolling:
+ touch; overflow-scrolling: touch;}
+/*iphone5*/
+/*横屏*/
+
+@media screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: landscape) {
+	.rowcolor {
+		width: 500px;
+	}
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: portrait) {
+	.rowcolor {
+		width: 315px;
+	}
+	.portlet-title {
+		width: 315px;
+	}
+}
+
+
+/*iphone6 6s*/
+/*横屏*/
+
+@media screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) {
+	.rowcolor {
+		width: 600px;
+	}
+}
+
+@media screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
+	.rowcolor {
+		width: 355px;
+	}
+	.portlet-title {
+		width: 360px;
+	}
+}
+
+
+/*iphone 6 Plus, 6s Plus*/
+/*横屏*/
+
+@media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
+	.rowcolor {
+		width: 600px;
+	}
+}
+
+@media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: portrait) {
+	.rowcolor {
+		width: 414px;
+	}
+}

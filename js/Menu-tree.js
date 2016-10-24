@@ -33,7 +33,6 @@ var UITree = function() {
 			},
 			"contextmenu": {
 				"items": {
-
 					"create": {
 						"label": "添加",
 						"action": function(obj) {

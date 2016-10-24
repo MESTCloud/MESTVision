@@ -29,8 +29,6 @@ var UITree = function() {
 		}
 	
 	
-　   
-	
 		/*保存按钮*/
 	$("#usermenu_save").on("click", function() {
 

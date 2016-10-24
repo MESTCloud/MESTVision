@@ -124,8 +124,7 @@ socket.onmessage = function(msg) {
 
 						$("#ShowPage").attr("src", url);
 					}
-				
-
+			
 					var resBreakpointMd = App.getResponsiveBreakpoint('md');
 					if(App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
 					

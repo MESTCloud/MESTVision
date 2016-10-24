@@ -21,7 +21,6 @@ $(document).ready(function() {
 			$("input[name='check_table']").prop('checked', false);
 		}
 	});
-
 	/*单选全选后,全选按钮选中*/
 	$("tbody").bind("click", function() {
 

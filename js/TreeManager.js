@@ -28,9 +28,7 @@
 
 				}
 
-			}
-
-	  	
+			} 	
 	  }
     //->扩展jQuery插件
     jQuery.fn.extend({

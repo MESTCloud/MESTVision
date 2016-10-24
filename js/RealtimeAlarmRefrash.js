@@ -20,7 +20,6 @@ $(document).ready(function() {
 	realtimeSocket.send("{\"username\":\"" + $.cookie("user") + "\",\"updatetime\":\"" + pRefrash + "\"}");
 	});	
 });
-
 /*获取table集合*/
 function bindTable(datatable) {
 	if(datatable.length > 0) {

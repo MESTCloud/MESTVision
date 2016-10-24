@@ -28,7 +28,6 @@ function bindUserTable(datatable) {
 		});
 
 	}
-
 	return str;
 }
 /*角色数据绑定*/

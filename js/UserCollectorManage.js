@@ -53,7 +53,6 @@ function bindUserTable(datatable) {
 		});
 
 	}
-
 	return str;
 }
 /*采集器数据绑定*/

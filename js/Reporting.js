@@ -58,7 +58,6 @@ $(function() {
 
 		return currentdate;
 	}
-
 	/*获取当前月的第一天*/
 	function getCurrentMonthFirst(st) {
 		var date = new Date(st);

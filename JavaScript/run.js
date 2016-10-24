@@ -1,4 +1,5 @@
-﻿var timerId = null;
+﻿
+var timerId = null;
 var firstExecuteAnimate = true;
 //原始的矩阵信息
 var orignTransform = new Array();

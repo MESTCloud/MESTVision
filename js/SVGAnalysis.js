@@ -43,7 +43,6 @@ $(function() {
 
 function WriteFloatValue(tag) {
 
-
 	$("#Dialog").attr("style", "height:150px; width: 250px; position: absolute; left: 50%; top: 50%; margin-left: -125px; margin-top:-75px; z-index: 1000; background-color: #fff;")
 	var content = "<div class='d_title'>&nbsp;<b>写入数据:</b>" + tag + "</div><div style='width:250px; text-align:center;' id='myForm'>" +
 		"<div class='formDialogLayout'>" +
@@ -67,7 +66,7 @@ function WriteFloatValue(tag) {
 			return false;
 		} else {
 			//var reg=/^[0-9]*\.?[0-9]*}$/;
-			var reg = /^[0-9]+([.]{1}[0-9]{1,2})?$/;
+			var reg=/^[-+]?\d+(\.\d+)?$/;
 			if(!reg.test(inputval)) {
 				$("#inputValue").val("");
 				shalert("请写入数字，小数点后最多保留两位小数！");
@@ -88,7 +87,7 @@ function WriteFloatValue(tag) {
 
 function WriteBoolValue(tag) {
 
-	 $("#Dialog").attr("style", "height:100px; width: 200px; position: absolute; left: 50%; top: 50%; margin-left: -100px; margin-top:-50px; z-index: 1000; background-color: #fff;")
+	 $("#Dialog").attr("style", "height:100px; width: 250px; position: absolute; left: 50%; top: 50%; margin-left: -100px; margin-top:-50px; z-index: 1000; background-color: #fff;")
 	var content = "<div class='d_title'>&nbsp;开关量:" + tag + "<div type='button' id='close' class='btn btn-default pull-right btn-sm transparent'><i class='fa fa-times'></i></div></div><div style='text-align:center; width:160px; height:50px;'>" +
 		"<button id='yesFormWrite' >开</button>" +
 		"<button id='noFormWrite' >关</button>" +

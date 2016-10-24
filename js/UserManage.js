@@ -27,7 +27,6 @@ $(function() {
 			$("#checkAll").prop("checked", false);
 		}
 	});
-
 	/*删除user_delete*/
 	$("#user_delete").click(function() {
 		//当复选框已经被选中后

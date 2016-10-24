@@ -97,7 +97,6 @@ socket.onopen = function() {
 	send("RoleList");
 
 }
-
 //收到消息
 socket.onmessage = function(msg) {
 		var result = msg.data;

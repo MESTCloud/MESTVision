@@ -1,23 +1,26 @@
 ﻿<!DOCTYPE html>
 <html>
+
 	<head lang="en">
 		<meta charset="UTF-8">
 		<title>运行报表</title>
 		<link href="../css/index.css" rel="stylesheet" type="text/css" />
 		<link href="../css/gcspread.sheets.excel2013white.9.40.20161.0.css" rel="stylesheet" type="text/css" />
-	     <link href="../css/public.css" rel="stylesheet" type="text/css" />
+		<link href="../css/public.css" rel="stylesheet" type="text/css" />
+		<link href="../css/Alarm.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css" />
 		<link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
 		<style type="text/css">
-			#ss1{ background: #fff;
-			   overflow :auto;
-			   border: 1px solid #EDF1F5;
-			  
+			#ss1 {
+				background: #fff;
+				overflow: auto;
+				border: 1px solid #EDF1F5;
 			}
-			#ss1 table{
+			#ss1 table {
 				margin: auto;
 			}
-			.imgstyle{
+			
+			.imgstyle {
 				text-align: center;
 				margin-top: 50px;
 			}
@@ -44,7 +47,6 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-
 				<!--日报表-->
 				<div class="row" id="divday">
 					<div class="col-md-4 text-left" style="padding-left: 20px;">
@@ -70,10 +72,10 @@
 					</div>
 				</div>
 			</div>
-			
-			 
 		</div>
-      <div id="ss1"></div>
+		<div class="rowcolor">
+			<div id="ss1"></div>
+		</div>
 		<!--end-->
 		<div id="dialogalert" title="系统提示：">
 			<p class="msgcontent" style="margin: 10px auto;text-align: center;"></p>
@@ -92,7 +94,6 @@
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/socket.js"></script>
 		<script src="../js/Reporting.js"></script>
-	
 		<script src="../js/layout.js"></script>
 	</body>
 

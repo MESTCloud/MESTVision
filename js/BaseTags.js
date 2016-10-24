@@ -1,7 +1,6 @@
 
 /*定义变量，模拟量：DoubleFloat，开关量：Boolean*/
 var dataType = "DoubleFloat";
-
 /*table数据*/
 var AlarmTagData;
 

@@ -1,6 +1,5 @@
 var RealTimeAlarmData;
 var fileName1;
-
 $(document).ready(function() {
 
 	/*查询按钮点击事件*/

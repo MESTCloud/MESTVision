@@ -16,7 +16,6 @@ $(function() {
 		
 		}
 	}
-	
 	$("#loginClick").on("click", function() {
 		/*判定*/
 		login();
