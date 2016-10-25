@@ -187,7 +187,6 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-
 	if(typeof result == "string") {
 		var num = result.indexOf("exception");
 		if(num > 0) {
@@ -200,7 +199,7 @@ socket.onmessage = function(msg) {
 			});
 			return false;
 		} else {
-			if(result == "\{\"Function\":\"Login\",\"info\":\"执行成功。\"}") //初始化的时候返回的
+			if(result.indexOf("Login") >= 0)//初始化的时候返回的
 			{
 				/*显示excel*/
 				$("#ss1").attr("style", "height: 650px");
