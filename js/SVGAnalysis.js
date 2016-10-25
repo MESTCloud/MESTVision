@@ -203,6 +203,7 @@ socket.onmessage = function(msg) {
 				$("#div_QRcode").toggle("slow");
 				break;
 			case "OPCWriteValue":
+			 
 				shalert(result["info"]);
 				$("#bg_Dialog").hide();
 				$("#Dialog").hide();
