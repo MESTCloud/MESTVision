@@ -50,9 +50,12 @@ function bindTable(datatable) {
 			str += "<td>" + data["AlarmValue"] + "</td>";
 			str += "<td>" + data["AlarmStandard"] + "</td>";
 			str += "<td>";
+				if(data["Acked"]!=1)
+			{
 			str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='" + data["AlarmID"] + "'>";
-			str += "<span>确认报警</span>"
-			str += "</button></td>"
+			str += "<span>确认报警</span></button>"
+			}
+			str += "</td>"
 			str += "</tr>";
 		});
 	}

@@ -185,9 +185,14 @@ function bindTable(datatable) {
 			str += "<td>" + data["AlarmValue"] + "</td>";
 			str += "<td>" + data["AlarmStandard"] + "</td>";
 			str += "<td>";
+			
+			if(data["Acked"]!=1)
+			{
 			str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='" + data["AlarmID"] + "'>";
-			str += "<span>确认报警</span>"
-			str += "</button></td>"
+			str += "<span>确认报警</span></button>"
+			}
+		
+			str += "</td>"
 			str += "</tr>";
 		});
 	}
@@ -218,7 +223,7 @@ function senddata() {
 
 //收到消息
 socket.onmessage = function(msg) {
-
+    
 	var result = msg.data;
 
 	if(typeof result == "string") {
@@ -226,7 +231,7 @@ socket.onmessage = function(msg) {
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
-		} 
+		}
 		/*else if(result["exception"]) {
 			shalert(result["exception"]);
 		} */
@@ -239,8 +244,9 @@ socket.onmessage = function(msg) {
 						shalert("查无资料");
 						$("tbody").html("");
 					}
+					
 					$("tbody").html(bindTable(result["data"]));
-
+	
 					/*确认报警按钮点击事件*/
 					$(".btnConfirmAlarm").click(function() {
 						var pAlarmID = this.getAttribute("data-value");
@@ -277,7 +283,7 @@ socket.onmessage = function(msg) {
 
 					/*开始日期*/
 					var pStime = $("#startTime").val().trim();
-					
+
 					/*结束日期*/
 					var pEtime = $("#endTime").val().trim();
 
@@ -292,6 +298,19 @@ socket.onmessage = function(msg) {
 					break;
 				case "ConfirmMultiAlarmTagInfo":
 					shalert("确认成功");
+					/*开始日期*/
+					var pStime = $("#startTime").val().trim();
+
+					/*结束日期*/
+					var pEtime = $("#endTime").val().trim();
+
+					if(pStime == "" && pEtime == "") {
+						// 获取所有实时报警数据
+						senddata();
+					} else {
+						// 获取指定时间段内实时报警数据
+						sendCheckTimeData();
+					}
 					break;
 					/*导出*/
 				case "OutputRealTimeAlarmInfo":
@@ -306,7 +325,8 @@ socket.onmessage = function(msg) {
 		}
 	} else {
 		try {
-			var blob = new Blob([msg.data], {
+
+		var blob = new Blob([msg.data], {
 					type: "applicationnd.ms-excel"
 				}),
 				fileName = fileName1.split('/')[1];
@@ -315,8 +335,10 @@ socket.onmessage = function(msg) {
 			link.download = fileName;
 			link.click();
 			window.URL.revokeObjectURL(link.href);
+		
+
 		} catch(e) {
-			shalert("导出时出现问题，请联系管理员");
+			shalert(e);
 			return false;
 		}
 
