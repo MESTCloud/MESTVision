@@ -149,6 +149,18 @@ $(function() {
 	});
 	/*添加开关量*/
 	$("#save_Add_1").on("click", function() {
+		if($("#dot_Add_B").val().trim() == "") {
+			shalert("点名不能为空");
+			return false;
+		}
+		if($("#type_Add_B").val().trim() == "") {
+			shalert("类型不能为空！");
+			return false;
+		}
+		if($("#inputdes_Add_B").val().trim() == "") {
+			shalert("描述不能为空！");
+			return false;
+		}
 		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_B").val().trim() + "\",\"collectorId\":\"" + $("#Collector_B").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_B").val().trim() + "\",\"DataType\":\"" + $("#type_Add_B").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#ItemAlarmBoolValue_B").val().trim() + "\",\"IsAlarm\":\"" + $("#inputcall_Add_B").val().trim() + "\"}";
 		send(jsStr);
 	});
@@ -690,7 +702,7 @@ socket.onmessage = function(msg) {
 						//清空
                  $("#dot_Add_D").val("");
                  $("#inputdes_Add_D").val("");
-                 $("#inputcall_Add_D").val("");
+                 $("#inputcall_Add_D").val("1");
                  $("#inputHighAlarm_Add_D").val("");
                  $("#inputHighAlarm_Add_D_2").val("");
                  $("#inputLowAlarm_Add_D_2").val("");
@@ -716,7 +728,7 @@ socket.onmessage = function(msg) {
 						/*清空*/
 						$("#dot_Add_B").val("");
 						$("#inputdes_Add_B").val("");
-						$("#inputcall_Add_B").val("");
+						$("#inputcall_Add_B").val("1");
 						$("#ItemAlarmBoolValue_B").val("0");
 						$("#type_Add_B").val("Boolean");
 						/*动态的添加到页面*/
