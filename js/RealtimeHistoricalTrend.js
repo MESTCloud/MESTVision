@@ -1,4 +1,6 @@
-var Dashboard = function() {
+
+
+/*var Dashboard = function() {
 	return {
 		
 		initCharts: function() {
@@ -185,4 +187,4 @@ var Dashboard = function() {
 }();
 App.isAngularJsApp() === !1 && jQuery(document).ready(function() {
 	Dashboard.init()
-});
+});*/

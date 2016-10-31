@@ -88,32 +88,40 @@ tbody tr{cursor: pointer}
 /*趋势*/
 .rhTrendleft{
 	width:30%;
-	height: 1000px;
-	
-	 float: left;
+	height: 680px;
+    border-left:1px solid #e7ecf1;
+     border-bottom:1px solid #e7ecf1;
+    float: left;
 }
 .rhTrendright{
 	width:70%;
-	
+	margin-top: 0;
 	float: left;
 }
 .rhTrendright_top,.rhTrendright_middle,.rhTrendright_bottom{
 	border: 1px solid #e7ecf1;
+	
 }
 .rhTrendright_top{
-	height: 150px;
-	
+	height: 180px;
+	overflow-y: auto;
+    overflow-x: auto;
 }
 .rhTrendright_top .row{
 	padding: 5px 0;
 }
 .rhTrendright_middle{
-	height: 300px;
+	height: 280px;
 	overflow: auto;
 	border-top: 0px;
 }
 .rhTrendright_bottom{
-	height: 300px;
+	height: 200px;
 	overflow: auto;
 	border-top: 0px;
+}
+
+.portlet-margin{
+	padding-top: 15px;
+	background-color:#fff ;
 }

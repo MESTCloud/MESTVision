@@ -74,3 +74,14 @@ table  tr  td{
 /*----------------------end----------------------------*/
 /*透明*/
 .transparent{background-color: transparent; border: 0;}
+
+
+/*上下拉动滚动条时卡顿、慢*/
+body {-webkit-overflow-scrolling:
+ touch; overflow-scrolling: touch;}
+ /*长时间按住页面出现闪退*/
+ element {
+
+  -webkit-touch-callout:none;
+
+}
