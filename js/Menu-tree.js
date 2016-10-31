@@ -237,12 +237,13 @@ if(App.isAngularJsApp() === false) {
 						shalert("修改成功");
 						Obje.text = $("#input_treeName_update").val().trim();
 						Obje.icon = "fa fa-folder icon-state-warning icon-lg";
+						Obje.url = $("#input_treeAddress_update").val();
 						/*对页面树节点的修改*/
 						Inst.edit(Obje);
 						$('#my_Modal_tree_Update').modal('hide');
 						$("#input_treeName_update").val("");
 						$("#inputTree_Update").val("icon-user-female");
-						$("#input_treeAddress_update").val("input_treeAddress_update");
+						/*$("#input_treeAddress_update").val("input_treeAddress_update");*/
 						Inst = "";
 						Obje = "";
 						break;
