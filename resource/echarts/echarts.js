@@ -1712,7 +1712,7 @@ var define, require, esl;
 		feature: {
 			mark: {
 				show: !1,
-				title: {
+			title: {
 					mark: "Place Marker",
 					markUndo: "Undo Marker",
 					markClear: "Clear Marker"
