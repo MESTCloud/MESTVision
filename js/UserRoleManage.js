@@ -75,6 +75,10 @@ socket.onmessage = function(msg) {
 					
 					$(".userRole_left tbody").html(bindUserTable(result["data"]));
 					$(".userRole_left tbody tr").click(function() {
+						
+						/*选中前清空历史数据*/
+						 $("input[name='role_list']").prop('checked', false);
+						 
 						 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
 						$userId = $(this).attr("data-userid");
 						var jsStr = "RoleListByUser {\"id\":\"" + $userId + "\"}";
