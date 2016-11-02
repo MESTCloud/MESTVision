@@ -291,7 +291,7 @@ function AddUser(datatable) {
 }
 /*角色绑定*/
 function roleBind(data) {
-	var strRole = "";
+	var strRole = "<option value='0'></option>";
 	if(data.length > 0) {
 		$.each(data, function(index, item) {
 			strRole += "<option value=" + item["RoleId"] + ">" + item["RealName"] + "</option>";
