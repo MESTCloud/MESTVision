@@ -1,6 +1,9 @@
 var RealTimeAlarmData;
 var fileName1;
+
 $(document).ready(function() {
+	/*设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-pConditionHeight-30);
 
 	/*二维码的点击事件*/
 	$("#QRcode").on("click", function() {
