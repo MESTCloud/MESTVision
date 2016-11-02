@@ -12,37 +12,32 @@
 		<link rel="stylesheet" href="../css/public.css" />
 		<link rel="stylesheet" href="../css/Manage.css" />
 	</head>
+
 	<body>
 		<div class="UserCollector_left">
 			<div class="portlet box blue">
 				<div class="portlet-title">
-					<div class="caption" id="divTitle" >
-						用户信息
-						<!--<a href="index.html">首页</a><span>-</span>-->
-					</div>
+					<div class="caption" id="divTitle">用户信息</div>
 				</div>
 				<div class="portlet-body">
 					<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
-
 						<div class="table-scrollable">
-							<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-								<thead>
-									
+							<div id="divuser" style="overflow-y: auto;">
+								<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+									<thead>
 										<tr role="row">
-
-										<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
-											<span>用户</span>
-										</th>
-										<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
-											<span>真实姓名</span>
-										</th>
-
-									</tr>
-								</thead>
-								<tbody>
-
-								</tbody>
-							</table>
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
+												<span>用户</span>
+											</th>
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
+												<span>真实姓名</span>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 						</div>
 
 						<!-- <div class="row">
@@ -74,38 +69,35 @@
 					<div class="actions">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal_Add" id="UserCollector_Add">
                                 <i class="fa fa-plus"></i> 保存
-                            </button>
-
+                           </button>
 					</div>
 				</div>
 				<div class="portlet-body">
 					<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
-
 						<div class="table-scrollable">
-							<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-								<thead>
-									<tr role="row">
-									
-										<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="
+							<div id="divcollector" style="overflow-y: auto;">
+								<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+									<thead>
+										<tr role="row">
+											<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="
 
                                                     " style="width: 46px;">
-											<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+												<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                 <input type="checkbox" class="group-checkable"
                                                        data-set="#sample_3 .checkboxes" id="checkAll">
                                                 <span></span>
                                             </label>
-										</th>
-										<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 采集器名称
-										</th>
-										<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 描述
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-
-								
-								</tbody>
-							</table>
+											</th>
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 采集器名称
+											</th>
+											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 描述
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 						</div>
 
 						<!-- <div class="row">

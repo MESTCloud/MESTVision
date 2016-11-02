@@ -18,6 +18,7 @@
 			}
 		</style>
 	</head>
+
 	<body>
 		<!--列表 begin-->
 		<div class="container-fluid">
@@ -42,43 +43,45 @@
 									<button type="button" class="btn btn-danger" data-target="#myModal_PassWordUpdate" id="user_password">
                                 <i class="fa fa-cogs"></i>修改密码
                             </button>
-                            
+
 								</div>
 							</div>
 							<div class="portlet-body">
 								<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
 									<div class="table-scrollable">
-										<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-											<thead>
-												<tr role="row">
-													<!-- <th style="width: 46px;"> <input type="checkbox" id="checkall" name="checkAll"></th>-->
-													<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 46px;">
-														<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+										<div id="divtable" style="overflow-y: auto;">
+											<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+												<thead>
+													<tr role="row">
+														<!-- <th style="width: 46px;"> <input type="checkbox" id="checkall" name="checkAll"></th>-->
+														<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 46px;">
+															<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                 <input type="checkbox" class="group-checkable"
                                                        data-set="#sample_3 .checkboxes" id="checkAll">
                                                 <span></span>
                                             </label>
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 87px;"> 登录名
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
-														姓名
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
-														手机号
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
-														默认角色
-													</th>
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 87px;"> 登录名
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
+															姓名
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
+															手机号
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
+															默认角色
+														</th>
 
-												</tr>
-											</thead>
+													</tr>
+												</thead>
 
-											<tbody>
+												<tbody>
 
-											</tbody>
+												</tbody>
 
-										</table>
+											</table>
+										</div>
 									</div>
 									<!--分页-->
 									<!--<div class="row">
@@ -159,23 +162,21 @@
 								</div>
 
 								<div class="form-group">
-                            <div class="row">
-                                <label for="inputPassword_Add" class="col-md-3 text-right">密码：</label>
+									<div class="row">
+										<label for="inputPassword_Add" class="col-md-3 text-right">密码：</label>
 
-                                <div class="col-md-9"><input type="password" class="form-control" id="inputPassword_Add"
-                                                             placeholder="密码">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="inputPassword2_Add" class="col-md-3 text-right">确认密码：</label>
+										<div class="col-md-9"><input type="password" class="form-control" id="inputPassword_Add" placeholder="密码">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<label for="inputPassword2_Add" class="col-md-3 text-right">确认密码：</label>
 
-                                <div class="col-md-9"><input type="password" class="form-control"
-                                                             id="inputPassword2_Add" placeholder="确认密码">
-                                </div>
-                            </div>
-                        </div>
+										<div class="col-md-9"><input type="password" class="form-control" id="inputPassword2_Add" placeholder="确认密码">
+										</div>
+									</div>
+								</div>
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" id="save_Add">确定</button>
@@ -209,7 +210,7 @@
 									<div class="row">
 										<label for="login_Update" class="col-md-3 text-right">登录名：</label>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="login_Update"  placeholder="登录名" disabled="disabled">
+											<input type="text" class="form-control" id="login_Update" placeholder="登录名" disabled="disabled">
 										</div>
 									</div>
 								</div>

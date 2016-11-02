@@ -5,6 +5,14 @@ var Inst;
 var Obje;
 var currentNode;
 var Tree_Url;
+
+$(document).ready(function() {
+	/*菜单：设置自适应滚动条*/
+	$("#divmenu").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*详细信息：设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+});
 var UITree = function() {
 
 	var contextualMenuSample = function() {

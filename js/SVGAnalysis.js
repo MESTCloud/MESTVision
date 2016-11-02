@@ -1,9 +1,13 @@
-$(function() {
 
+$(function() {
+	
 	/*获得数据*/
 	if(getQueryString("name")) {
 		$("#SVGBox").append("<embed id='ShowSVG' src='" + "../ProcessWatching/" + getQueryString("name") + ".svg" + "' type='image/svg+xml' width='100%' />");
 	}
+
+	/*设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight);
 
 	/*放大按钮点击事件*/
 	$("#user_Enlarge").click(

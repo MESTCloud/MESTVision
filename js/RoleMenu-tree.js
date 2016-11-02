@@ -1,5 +1,14 @@
 var TreeData;
 var $dataid;
+
+$(document).ready(function() {
+	/*角色：设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*菜单：设置自适应滚动条*/
+	$("#divmenu").css("height", pFrameHeight-pTitleHeight-30);
+});
+
 var UITree = function() {
 
 	var RoleMenu = function() {

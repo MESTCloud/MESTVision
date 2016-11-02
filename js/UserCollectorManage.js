@@ -1,5 +1,13 @@
 var $UserCollectorId;
+
 $(function() {
+	
+	/*用户：设置自适应滚动条*/
+	$("#divuser").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*采集器信息：设置自适应滚动条*/
+	$("#divcollector").css("height", pFrameHeight-pTitleHeight-30);
+	
 /*复选框的操作*/
 	$("#checkAll").click(
 		function() {

@@ -1,3 +1,12 @@
+/*屏幕高度*/
+var pFrameHeight = $(window).height();
+
+/*title的高度*/
+var pTitleHeight = $(".portlet-title").height();
+
+/*查询条件高度*/
+var pConditionHeight = $("#div_condition").height();
+
 /*获得Url参数值*/
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

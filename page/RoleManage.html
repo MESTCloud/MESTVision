@@ -19,16 +19,16 @@
 			}
 		</style>
 	</head>
+
 	<body>
 		<!--列表 begin-->
 		<div class="container-fluid">
 			<div class="page-content">
 				<div class="row">
 					<div class="col-md-12">
-
 						<div class="portlet box blue ">
 							<div class="portlet-title">
-								<div class="caption" id="divTitle" >
+								<div class="caption" id="divTitle">
 									<!--<a href="index.html">首页</a><span>-</span>-->
 								</div>
 								<div class="actions">
@@ -46,32 +46,35 @@
 							<div class="portlet-body">
 								<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
 									<div class="table-scrollable">
-										<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-											<thead>
-												<tr role="row">
-													<!-- <th style="width: 46px;"> <input type="checkbox" id="checkall" name="checkAll"></th>-->
+										<div id="divtable" style="overflow-y: auto;">
+											<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+												<thead>
+													<tr role="row">
+														<!-- <th style="width: 46px;"> <input type="checkbox" id="checkall" name="checkAll"></th>-->
 
-													<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="
+														<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="
 
                                                     " style="width: 46px;">
-														<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+															<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                 <input type="checkbox" class="group-checkable"
                                                     data-id="11"   data-set="#sample_3 .checkboxes" id="checkAll">
                                                 <span></span>
                                             </label>
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 87px;"> 编号
-													</th>
-													<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
-														名称
-													</th>
-												
-												</tr>
-											</thead>
-											<tbody>
-											
-											</tbody>
-										</table>
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 87px;"> 编号
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
+															名称
+														</th>
+
+													</tr>
+												</thead>
+												<tbody>
+
+												</tbody>
+											</table>
+										</div>
+
 									</div>
 									<!--分页-->
 									<!--<div class="row">
@@ -123,8 +126,7 @@
 									</div>
 
 								</div>
-						
-						
+
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" id="Rolesave_Add">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -154,7 +156,7 @@
 						<div class="modal-body">
 
 							<form role="form">
-									<div class="form-group">
+								<div class="form-group">
 									<div class="row">
 										<label for="Number_Update" class="col-md-3 text-right">编号：</label>
 
@@ -171,9 +173,7 @@
 									</div>
 
 								</div>
-							
 
-						
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" id="Rolesave_Update">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

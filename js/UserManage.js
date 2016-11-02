@@ -2,7 +2,11 @@ var UserData;
 /*复选框操作*/
 var indexsDel;
 var idIndexUpdate;
+
 $(function() {
+	
+	/*设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
 
 	/*全选 反选*/
 	$("#checkAll").click(

@@ -1,6 +1,7 @@
 var UserData = "";
 var indexsDel;
 var idIndexUpdate;
+
 /*获取集合*/
 function bindTable(datatable) {
 	if(datatable.length > 0) {
@@ -168,6 +169,9 @@ $(function() {
 });
 /*文本框的判定*/
 $(function() {
+	
+	/*设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
 
 		/*新增*/
 		$("#Rolesave_Add").click(function() {

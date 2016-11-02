@@ -1,5 +1,14 @@
 var TreeData;
 var $dataid;
+
+$(document).ready(function() {
+	/*菜单：设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*详细信息：设置自适应滚动条*/
+	$("#divtree").css("height", pFrameHeight-pTitleHeight-30);
+});
+
 var UITree = function() {
 
 	var handleSample2 = function() {

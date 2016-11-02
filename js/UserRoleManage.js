@@ -1,5 +1,13 @@
 var $userId;/*保存点击用户时的id*/
 
+$(document).ready(function() {
+	/*用户信息：设置自适应滚动条*/
+	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*角色信息：设置自适应滚动条*/
+	$("#divtablerole").css("height", pFrameHeight-pTitleHeight-30);
+});
+
 /*保存*/
 $("#userRole_Add").on("click", function() {
 		{

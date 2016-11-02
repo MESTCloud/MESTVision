@@ -1,5 +1,11 @@
 var $RoleUserId;
 $(function() {
+	
+	/*角色：设置自适应滚动条*/
+	$("#divrole").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*用户：设置自适应滚动条*/
+	$("#divuser").css("height", pFrameHeight-pTitleHeight-30);
 
 	$("#checkAll").click(
 		function() {

@@ -5,85 +5,75 @@
 		<meta charset="UTF-8">
 		<title>角色菜单管理</title>
 		<link href="../css/index.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="../resource/datatables/datatables.min.css" />
-        <link rel="stylesheet" href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" />
-        <link href="../resource/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
-        		<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css" />
+		<link rel="stylesheet" href="../resource/datatables/datatables.min.css" />
+		<link rel="stylesheet" href="../resource/datatables/plugins/bootstrap/datatables.bootstrap.css" />
+		<link href="../resource/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="../resource/bootstrap-modal/css/bootstrap-modal.css" />
 		<link rel="stylesheet" href="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.css" />
 		<link rel="stylesheet" href="../css/public.css" />
 		<link rel="stylesheet" href="../css/Manage.css" />
 	</head>
+
 	<body>
 		<div class="box">
 			<div class="RoleMenu_left">
 				<div class="portlet box blue">
 					<div class="portlet-title">
-						<div class="caption" id="divTitle" >
-							<!--<a href="index.html">首页</a><span>-</span>-->
-						</div>
+						<div class="caption" id="divTitle"></div>
 					</div>
 					<div class="portlet-body">
 						<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
-
 							<div class="table-scrollable">
-								<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-									<thead>
-										<tr role="row">
-
-											<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 归属角色
-											</th>
-
-										</tr>
-									</thead>
-									<tbody>
-
-						
-
-									</tbody>
-								</table>
+								<div id="divtable" style="overflow-y: auto;">
+									<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+										<thead>
+											<tr role="row">
+												<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;"> 归属角色
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
 							</div>
-
-						
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="RoleMenu_right">
-
 				<div class="portlet box blue">
-
 					<div class="portlet-title">
 						<div class="caption">
 							能源管理信息
 						</div>
 						<div class="actions">
 							<button type="button" class="btn btn-success" id="role_save">
-                   <i class="fa fa-plus"></i>保存
-                </button>
+			                   <i class="fa fa-plus"></i>保存
+			                </button>
 						</div>
 					</div>
-
 					<div class="portlet-body">
 						<div class="table-scrollable">
-							<div id="tree_role" class="tree-demo"> </div>
-
+							<div id="divmenu" style="overflow-y: auto;">
+								<div id="tree_role" class="tree-demo"> </div>
+							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
-					<div id="dialogalert" title="系统提示：">
-        <p class="msgcontent" style="margin: 10px auto;
+			<div id="dialogalert" title="系统提示：">
+				<p class="msgcontent" style="margin: 10px auto;
 text-align: center;">
 
-        </p>
-    </div>
+				</p>
+			</div>
 
-    <div id="dialogconfirm" title="系统提示：">
-        <p class="msgcontent" style="margin: 10px auto;
+			<div id="dialogconfirm" title="系统提示：">
+				<p class="msgcontent" style="margin: 10px auto;
 text-align: center;">
-        </p>
-    </div>
+				</p>
+			</div>
 	</body>
 	</body>
 
@@ -112,4 +102,3 @@ text-align: center;">
 <!--<script>
 	 $().Menu(".RoleMenu_left  tbody tr", "#tree_role");
 </script>-->
-	

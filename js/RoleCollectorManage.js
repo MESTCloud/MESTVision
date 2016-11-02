@@ -1,5 +1,12 @@
 var $RoleCollectorId;
+
 $(function() {
+	
+	/*角色：设置自适应滚动条*/
+	$("#divrole").css("height", pFrameHeight-pTitleHeight-30);
+	
+	/*采集信息：设置自适应滚动条*/
+	$("#divcollector").css("height", pFrameHeight-pTitleHeight-30);
 
 	$("#checkAll").click(
 		function() {

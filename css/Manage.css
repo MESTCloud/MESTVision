@@ -70,7 +70,7 @@ tbody tr{cursor: pointer}
 .userMenu_left,.userMenu_right,.RoleMenu_left,.RoleMenu_right,.userRole_left,.userRole_right,.Roleuser_left,.Roleuser_right,.UserCollector_left,.UserCollector_right,
 .RoleCollector_left,.RoleCollector_right{
 
-    height: 800px;
+    /*height: 800px;*/
     border: 1px solid #0088cc;
     float: left;
     /*border-radius: 5px;*/
