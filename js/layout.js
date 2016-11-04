@@ -31,7 +31,7 @@ for(var i = 0; i < ptitle.length; i++) {
 	}
 }
 var u = navigator.userAgent;
-		
+
 if(u.indexOf('iPhone') > -1) { //苹果手机
 	window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
 		if(window.orientation === 180 || window.orientation === 0) {
@@ -41,23 +41,26 @@ if(u.indexOf('iPhone') > -1) { //苹果手机
 		if(window.orientation === 90 || window.orientation === -90) {
 			/*alert('横屏状态！');*/
 			$(".rowcolor").width("550px");
-			
+
 		}
 	}, false);
 }
 /*时间*/
-function formatTen(num) { 
-return num > 9 ? (num + "") : ("0" + num); 
-} 
+function formatTen(num) {
+	return num > 9 ? (num + "") : ("0" + num);
+}
 
-function formatDate(date) { 
-var year = date.getFullYear(); 
-var month = date.getMonth() + 1; 
-var day = date.getDate(); 
-var hour = date.getHours(); 
-var minute = date.getMinutes(); 
-var second = date.getSeconds(); 
-//return year + "-" + formatTen(month) + "-" + formatTen(day)+" " +formatTen(hour)+"："+formatTen(minute)+"："+formatTen(second);
-return year + "-" + formatTen(month) + "-" + formatTen(day); 
-} 
+function formatDate(date, type) {
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var hour = date.getHours();
+	var minute = date.getMinutes();
+	var second = date.getSeconds();
+	if(type == 1) {
+		return year + "-" + formatTen(month) + "-" + formatTen(day) + " " + formatTen(hour) + "：" + formatTen(minute) + "：" + formatTen(second);
+	} else {
+		return year + "-" + formatTen(month) + "-" + formatTen(day);
+	}
 
+}
