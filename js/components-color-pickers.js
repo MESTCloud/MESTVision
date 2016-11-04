@@ -11,8 +11,9 @@ var ComponentsColorPickers = function() {
     }
 
     var handleMiniColors = function() {
-        $('.demo').each(function() {
+      /*  $('.demo').each(function() {
             $(this).minicolors({
+            	
                 control: $(this).attr('data-control') || 'hue',
                 defaultValue: $(this).attr('data-defaultValue') || '',
                 inline: $(this).attr('data-inline') === 'true',
@@ -23,14 +24,18 @@ var ComponentsColorPickers = function() {
                     if (!hex) return;
                     if (opacity) hex += ', ' + opacity;
                     if (typeof console === 'object') {
-                    	
+                    	console.log($(this))
                         console.log(hex);
                     }
+                },
+                click:function(hex, opacity){
+                	alert(22);
                 },
                 theme: 'bootstrap'
             });
 
         });
+   */
     }
 
     return {
