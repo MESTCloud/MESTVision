@@ -560,7 +560,7 @@ jQuery(document).ready(function() {
 						lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
 						lastData = lastData.toFixed(1) - 0;
 
-						axisData = formatDate(new Date(), 0) + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+						axisData = formatDate(new Date(), 0)+" " + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
 						var dataArray = new Array();
 
@@ -570,7 +570,7 @@ jQuery(document).ready(function() {
 									[
 										0, // 系列索引
 										Math.round(Math.random() * 1000), // 新增数据
-										true, // 新增数据是否从队列头部插入
+										false, // 新增数据是否从队列头部插入
 										false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
 										axisData // 坐标轴标签
 									]
