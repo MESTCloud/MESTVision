@@ -1,11 +1,10 @@
 var $RoleUserId;
 $(function() {
-	
 	/*角色：设置自适应滚动条*/
-	$("#divrole").css("height", pFrameHeight-pTitleHeight-30);
-	
+	$("#divrole").css("height", pFrameHeight - pTitleHeight - 30);
+
 	/*用户：设置自适应滚动条*/
-	$("#divuser").css("height", pFrameHeight-pTitleHeight-30);
+	$("#divuser").css("height", pFrameHeight - pTitleHeight - 30);
 
 	$("#checkAll").click(
 		function() {
@@ -19,6 +18,7 @@ $(function() {
 			}
 		}
 	);
+
 	$("tbody").bind("click", function() {
 		var $check = $("input[name='check_table']:checked");
 		var ototal = $check.length;
@@ -29,20 +29,20 @@ $(function() {
 			$("#checkAll").prop("checked", false);
 		}
 	});
+
 	$("#RoleUser_Add").on("click", function() {
 		/*保存内容*/
 		var ckbs = $("input[name='check_table']:checked");
 		var UserArray = [];
 		ckbs.each(function() {
 			UserArray.push($(this).attr("data-userid"));
-
 		});
 
 		var jsStr = "AddUserToRole {\"id\":\"" + UserArray.join(",") + "\",\"role\":\"" + $RoleUserId + "\"}";
 		send(jsStr);
-		//alert($RoleUserId);
 	});
 });
+
 /*用户数据绑定*/
 function bindUserTable(datatable) {
 	if(datatable.length > 0) {
@@ -57,13 +57,12 @@ function bindUserTable(datatable) {
 			str += "<td >" + data["UserName"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
 			str += "</tr>";
-
 		});
-
 	}
 
 	return str;
 }
+
 /*角色数据绑定*/
 function bindRoleTable(datatable) {
 	if(datatable.length > 0) {
@@ -73,69 +72,61 @@ function bindRoleTable(datatable) {
 			str += "<td>";
 			str += "<span>" + data["RealName"] + "</span></td>";
 			str += "</tr>";
-
 		});
-
 	}
 
 	return str;
 }
+
 /*点击左侧的选中右侧复选框*/
 function RoleToUser(userid) {
 	var $rightr = $(".Roleuser_right tbody tr");
-
 	for(var i = 0; i < $rightr.length; i++) {
-
 		if($rightr.find("td label >input").eq(i).attr("data-userid") == userid) {
 			$rightr.find("td label >input").eq(i).prop('checked', true);
-			
+
 		}
 	}
-
 }
+
 //连接成功
 socket.onopen = function() {
-	if($.cookie("user") && $.cookie("password")) {
-		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-	}
-
-	send("userlist");
-	send("RoleList");
-
+		if($.cookie("user") && $.cookie("password")) {
+			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+		}
+		send("userlist");
+		send("RoleList");
 }
+
 //收到消息
 socket.onmessage = function(msg) {
 		var result = msg.data;
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
-		} 
+		}
 		/*else if(result["exception"]) {
 			shalert(result["exception"]);
 		} */
 		else {
 			switch(result["Function"]) {
 				case "UserList":
-
 					$(".Roleuser_right tbody").html(bindUserTable(result["data"]));
-
 					break;
+					
 				case "RoleList":
-
 					$(".Roleuser_left tbody").html(bindRoleTable(result["data"]));
 					$(".Roleuser_left tbody tr").click(function() {
-                    $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
+						$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 						$RoleUserId = $(this).attr("data-roldId");
-
 						var jsStr = "UserListByRole {\"id\":\"" + $RoleUserId + "\"}";
-
 						send(jsStr);
 					});
 					break;
+					
 				case "UserListByRole":
-					  $(":checkbox").prop('checked', false);
+					$(":checkbox").prop('checked', false);
 					if(result["data"].length > 0) {
-
 						for(var i = 0; i < result["data"].length; i++) {
 							RoleToUser(result["data"][i].Id);
 						}
@@ -145,19 +136,17 @@ socket.onmessage = function(msg) {
 							$("#checkAll").prop('checked', false);
 						}
 					}
-
 					break;
+					
 				case "AddUserToRole":
 					shalert(result["info"]);
 					break;
-
 			}
-
 		}
-	}
-	//连接断开
+}
+
+//连接断开
 socket.onclose = function(event) {
-	//console.log("Socket状态:" + readyStatus[socket.readyState]);
 	window.parent.location.href = "../Login.html";
 }
 
@@ -170,7 +159,3 @@ function send(msg) {
 function disconnect() {
 	socket.close();
 }
-
-
-
-

@@ -1,37 +1,29 @@
 var fileName1;
 $(function() {
 	/*日历控件响应*/
-
 	switch(pType) {
 		case "day":
-			/*$("#startTime1").val(getNowFormatDate(0, 0, -1));
-			$("#endTime1").val(getNowFormatDate(0, 0, 0));*/
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 		case "month":
-			/*$("#startTime2").val(getNowFormatDate(0, 0, 0));*/
-
 			$("#divmonth").show();
 			$("#divday").hide();
 			$("#divyear").hide();
 			break;
 		case "year":
-			/*$("#startTime3").val(getNowFormatDate(0, 0, 0));*/
-
 			$("#divyear").show();
 			$("#divday").hide();
 			$("#divmonth").hide();
 			break;
 		default:
-			/*$("#startTime1").val(getNowFormatDate(0, 0, -1));
-			$("#endTime1").val(getNowFormatDate(0, 0, 0));*/
 			$("#divday").show();
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 	}
+
 	/*获取当前系统时间*/
 	function getNowFormatDate(gmonth, gdate, ghours) {
 		var date = new Date();
@@ -152,7 +144,7 @@ $(function() {
 	/*导出execl*/
 	$("#btnOutputExcel").on("click", function() {
 		console.log($("link[rel=File-List]").attr("href"));
-		if($("link[rel=File-List]").attr("href")!= undefined) {
+		if($("link[rel=File-List]").attr("href") != undefined) {
 			var rurl = $("link[rel=File-List]").attr("href").split('_');
 			fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
 			var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
@@ -165,7 +157,7 @@ $(function() {
 	});
 	/*导出pdf*/
 	$("#btnOutputPdf").on("click", function() {
-		if($("link[rel=File-List]").attr("href")!= undefined) {
+		if($("link[rel=File-List]").attr("href") != undefined) {
 			var rurl = $("link[rel=File-List]").attr("href").split('_');
 			fileName1 = rurl[0] + "_" + rurl[1] + ".pdf";
 			var jsStr = "DownLoadFile {\"filename\":\"" + "ReportFile/" + fileName1 + "\"}";
@@ -199,7 +191,7 @@ socket.onmessage = function(msg) {
 			});
 			return false;
 		} else {
-			if(result.indexOf("Login") >= 0)//初始化的时候返回的
+			if(result.indexOf("Login") >= 0) //初始化的时候返回的
 			{
 				/*显示excel*/
 				$("#ss1").attr("style", "height: 650px");
@@ -209,20 +201,10 @@ socket.onmessage = function(msg) {
 				});
 
 			} else {
-				//try {
 				$("#ss1").attr("style", "");
 				$("#ss1").removeClass("imgstyle");
 				$("#ss1").html(result);
 				$("#ss1").height("550px");
-				/*} catch(e) {
-					shalert(result);
-					$("#ss1").attr("style", "height: 650px");
-					var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
-						sheetCount: 1
-					});
-					
-				}*/
-
 			}
 		}
 	} else {
@@ -246,8 +228,6 @@ socket.onmessage = function(msg) {
 
 //连接断开
 socket.onclose = function(event) {
-	/*console.log("Socket状态:" + readyStatus[socket.readyState]);*/
-	//location.href = "http://www.baidu.com";
 	window.parent.location.href = "../Login.html";
 }
 

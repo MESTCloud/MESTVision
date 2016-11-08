@@ -1,32 +1,29 @@
-
 .portlet1.light {
-    padding: 0px 0px 0px;
-    background-color: #fff;
+	padding: 0px 0px 0px;
+	background-color: #fff;
 }
 
 .portlet1.light.bordered {
-    border: 1px solid #e7ecf1!important;
+	border: 1px solid #e7ecf1!important;
 }
 
 .portlet2.light {
-    padding: 0px 20px 15px;
-    background-color: #fff;
+	padding: 0px 20px 15px;
+	background-color: #fff;
 }
 
 .portlet2.light.bordered {
-    border: 1px solid #e7ecf1!important;
+	border: 1px solid #e7ecf1!important;
 }
 
 .row1 {
-
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .row2 {
-    margin-left: -20px;
-    margin-right: -20px;
+	margin-left: -20px;
+	margin-right: -20px;
 }
-
 
 .table tr td> span {
 	float: left;
@@ -46,9 +43,10 @@ table span.no {
 	background: #eff2f5;
 }
 
-.table tr{
-	padding:15px 0px 10px 15px;
+.table tr {
+	padding: 15px 0px 10px 15px;
 }
+
 .table tr th {
 	width: 30%;
 	height: 46px;
@@ -78,6 +76,7 @@ table span.no {
 	border-radius: 5px 5px 0px 0px;
 	border-bottom: 1px solid #b5c8d9;
 }
+
 
 /*Revenue和Site Visits样式设置*/
 .tabGroup {
@@ -123,15 +122,3 @@ table span.no {
 .portlet div.content.selectedContent {
 	display: block;
 }
-
-/*.table-scrollable {
-    border: 0px solid #e7ecf1;
-    margin: 0px 0!important;
-}
-
-.table-scrollable .table tbody tr td span{
-	word-break:break-all;
-     /*white-space:pre-line; */
-    /* 　word-wrap: break-word; 
-　　word-break: normal; */
-}*/

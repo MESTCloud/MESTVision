@@ -6,8 +6,7 @@ var idIndexUpdate;
 function bindTable(datatable) {
 	if(datatable.length > 0) {
 		var str = "";
-		  $.each(datatable, function(index, data) {
-
+		$.each(datatable, function(index, data) {
 			if(parseInt(index) / 2 == 0) {
 				str += "<tr class='gradeX odd' role='row'>"
 			} else {
@@ -19,12 +18,10 @@ function bindTable(datatable) {
 			str += "</label> </td>";
 			str += "<td>" + data["RoleId"] + "</td>";
 			str += "<td>" + data["RealName"] + "</td>";
-
 			str += "</tr>";
-
 		});
-
 	}
+
 	return str;
 }
 
@@ -32,18 +29,15 @@ function AddRole(datatable) {
 	var str = "";
 	var length = parseInt(UserData.length) - 1;
 	str += "<tr class='gradeX even' role='row'>"
-
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-			str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table'>";
-			str += "<span></span>";
-			str += "</label> </td>";
-			str += "<td>" + datatable["RoleId"] + "</td>";
-			str += "<td>" + datatable["RealName"] + "</td>";
-
-			str += "</tr>";
+	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table'>";
+	str += "<span></span>";
+	str += "</label> </td>";
+	str += "<td>" + datatable["RoleId"] + "</td>";
+	str += "<td>" + datatable["RealName"] + "</td>";
+	str += "</tr>";
 	return str;
 }
-
 
 /*复选框操作*/
 $(function() {
@@ -52,10 +46,8 @@ $(function() {
 		function() {
 			if(this.checked) {
 				$("input[name='check_table']").prop('checked', true);
-
 			} else {
 				$("input[name='check_table']").prop('checked', false);
-
 			}
 		}
 	);
@@ -71,6 +63,7 @@ $(function() {
 		}
 
 	});
+
 	/*删除user_delete*/
 	$("#Role_delete").click(function() {
 		//当复选框已经被选中后
@@ -81,24 +74,19 @@ $(function() {
 					var jsStr = "DeleteRole {\"id\":\"";
 					for(var i = 0; i < RoleIndex.length; i++) {
 						jsStr += UserData[RoleIndex[i]]["RoleId"] + "\,";
-
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
-					
-
 				}
 				send(jsStr);
 			});
 		}
 	});
-	/* $("#del_Role").click(function(){
-	     shalert("删除操作");
-	 });*/
 
 	$("#check_cancel").click(function() {
 		$("#User_Check").hide();
 	});
+
 	/*修改*/
 	$("#Role_update").click(function() {
 		//当复选框已经被选中后
@@ -112,11 +100,10 @@ $(function() {
 			$("#Number_Update").val(obj["RoleId"]);
 			UpdateRole(obj["RoleId"]);
 		}
-
 	});
 
 	function UpdateRole(Roleid) {
-    $("#Rolesave_Update").unbind("click");
+		$("#Rolesave_Update").unbind("click");
 		/*修改*/
 		$("#Rolesave_Update").click(function() {
 			if($("#Name_update").val().trim() == "") {
@@ -124,17 +111,13 @@ $(function() {
 				$("#Name_update").focus();
 				return false;
 			}
-
-			var jsStr = "UpdateRole {\"id\":\"" + Roleid + "\",\"realname\":\"" +  $("#Name_update").val().trim() + "\"}";		
+			var jsStr = "UpdateRole {\"id\":\"" + Roleid + "\",\"realname\":\"" + $("#Name_update").val().trim() + "\"}";
 			send(jsStr);
-
 		});
-
 	}
 
 	/*对全选项的判定*/
 	function CheckedLength() {
-
 		var oChecked = document.getElementsByName("check_table");
 		var total = 0;
 		var checked = [];
@@ -169,9 +152,8 @@ $(function() {
 });
 /*文本框的判定*/
 $(function() {
-	
-	/*设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+		/*设置自适应滚动条*/
+		$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
 
 		/*新增*/
 		$("#Rolesave_Add").click(function() {
@@ -182,20 +164,17 @@ $(function() {
 			}
 
 			var jsStr = "AddRole {\"realname\":\"" + $("#Name_Add").val().trim() + "\"}";
-
 			send(jsStr);
-
 		});
-
 	})
-	//连接成功
+
+//连接成功
 socket.onopen = function() {
 	if($.cookie("user") && $.cookie("password")) {
 		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 	}
 
 	send("RoleList");
-
 }
 
 //收到消息
@@ -204,79 +183,68 @@ socket.onmessage = function(msg) {
 	result = JSON.parse(result);
 	if(result["error"]) {
 		shalert(result["error"]);
-	} 
-/*	else if(result["exception"]) {
-		shalert(result["exception"]);
-	} */
-	
+	}
+	/*	else if(result["exception"]) {
+			shalert(result["exception"]);
+		} */
 	else {
 		switch(result["Function"]) {
 			case "RoleList":
 				UserData = result["data"];
-				
+
 				$("tbody").html(bindTable(result["data"]));
 				break;
-			case "AddRole": 
-				shalert("添加成功！");
-                    var valuel=parseInt(UserData.length);
-					var obj = {
-					"value":valuel,
-					"RoleId": result["info"],
 				
+			case "AddRole":
+				shalert("添加成功！");
+				var valuel = parseInt(UserData.length);
+				var obj = {
+					"value": valuel,
+					"RoleId": result["info"],
 					"RealName": $("#Name_Add").val().trim(),
-					
-				};				
+				};
 
 				UserData.push(obj);
 				$("tbody").append(AddRole(obj));
 				$('#myModal_Add').modal('hide');
-				
-								
 				$("#Name_Add").val("");
-				
+
 				break;
+				
 			case "UpdateRole":
 				shalert("修改成功");
 				var ckbs = $("input[name='check_table']:checked");
-
 				var obj = {
 					"RoleId": UserData[idIndexUpdate].RoleId,
-				
 					"RealName": $("#Name_update").val().trim(),
-				
 				};
+				
+				UserData[idIndexUpdate].RealName = $("#Name_update").val().trim();
 
-				;
-				 UserData[idIndexUpdate].RealName = $("#Name_update").val().trim();
-	
 				ckbs.each(function() {
-				obj.value=$(this).val();
+					obj.value = $(this).val();
 					$(this).parent().parent().parent().replaceWith(AddRole(obj));
 
 				});
 				$('#myModal_Update').modal('hide');
-				
+
 				$("#Name_Add").val("");
-				
+
 				break;
 			case "DeleteRole":
-			var ckbs = $("input[name='check_table']:checked");
+				var ckbs = $("input[name='check_table']:checked");
 				ckbs.each(function() {
 					$(this).parent().parent().parent().remove();
 
 				});
 				shalert("删除成功");
 				break;
-
 		}
-
 	}
 }
 
 //连接断开
 socket.onclose = function(event) {
-	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	//location.href = "http://www.baidu.com";
 	window.parent.location.href = "../Login.html";
 }
 

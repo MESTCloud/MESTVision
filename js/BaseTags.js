@@ -1,4 +1,3 @@
-
 /*定义变量，模拟量：DoubleFloat，开关量：Boolean*/
 var dataType = "DoubleFloat";
 
@@ -23,7 +22,7 @@ var fileName1;
 // 页面加载
 $(function() {
 	/*设置自适应滚动条*/
-    $("#divtable").css("height", pFrameHeight-pTitleHeight-pConditionHeight-30);
+	$("#divtable").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
 
 	$("[name='my-checkbox']").bootstrapSwitch();
 
@@ -46,7 +45,6 @@ $(function() {
 
 			Senddata();
 		} else {
-
 			/*开关量*/
 			dataType = "Boolean";
 
@@ -56,21 +54,16 @@ $(function() {
 			$("#checkAll1").prop('checked', false);
 			$("input[name='check_table']").prop('checked', false);
 			$("input[name='check_table1']").prop('checked', false);
-            $("#tblSwitch tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
+			$("#tblSwitch tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 			Senddata();
-			//send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + "" + "\"}");
-
 		}
 	});
 
 	/*全选 反选 模拟量*/
 	$("#checkAll").click(
 		function() {
-
 			if(this.checked) {
-
 				$("input[name='check_table']").prop('checked', true);
-
 			} else {
 				$("input[name='check_table']").prop('checked', false);
 			}
@@ -80,11 +73,8 @@ $(function() {
 	/*全选 反选 开关量*/
 	$("#checkAll1").click(
 		function() {
-
 			if(this.checked) {
-
 				$("input[name='check_table1']").prop('checked', true);
-
 			} else {
 				$("input[name='check_table1']").prop('checked', false);
 			}
@@ -93,7 +83,6 @@ $(function() {
 
 	/*单选全选后,全选按钮选中*/
 	$("tbody").bind("click", function() {
-
 		/*模拟量*/
 		if(dataType == "DoubleFloat") {
 			var $check = $("input[name='check_table']:checked");
@@ -115,7 +104,6 @@ $(function() {
 				$("#checkAll1").prop("checked", false);
 			}
 		}
-
 	});
 
 	/*添加*/
@@ -128,8 +116,9 @@ $(function() {
 		} else {
 			$('#myModal_Add1').modal('show')
 		}
-		
+
 	});
+
 	/*添加模拟量*/
 	$("#save_Add").on("click", function() {
 		if($("#dot_Add_D").val().trim() == "") {
@@ -144,11 +133,12 @@ $(function() {
 			shalert("描述不能为空！");
 			return false;
 		}
-		
+
 		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_D").val().trim() + "\",\"collectorId\":\"" + $("#Collector_D").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_D").val().trim() + "\",\"DataType\":\"" + $("#type_Add_D").val().trim() + "\",\"HHAlarm\":\"" + $("#inputHighAlarm_Add_D").val().trim() + "\",\"HAlarm\":\"" + $("#inputHighAlarm_Add_D_2").val().trim() + "\",\"LAlarm\":\"" + $("#inputLowAlarm_Add_D_2").val().trim() + "\",\"LLAlarm\":\"" + $("#inputLowAlarm_Add_D").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#inputcall_Add_D").val().trim() + "\"}";
-		 
+
 		send(jsStr);
 	});
+
 	/*添加开关量*/
 	$("#save_Add_1").on("click", function() {
 		if($("#dot_Add_B").val().trim() == "") {
@@ -166,6 +156,7 @@ $(function() {
 		var jsStr = "AddAlarmTagInfo {\"tagname\":\"" + $("#dot_Add_B").val().trim() + "\",\"collectorId\":\"" + $("#Collector_B").val().trim() + "\",\"description\":\"" + $("#inputdes_Add_B").val().trim() + "\",\"DataType\":\"" + $("#type_Add_B").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#ItemAlarmBoolValue_B").val().trim() + "\",\"IsAlarm\":\"" + $("#inputcall_Add_B").val().trim() + "\"}";
 		send(jsStr);
 	});
+
 	/*修改*/
 	$("#alarm_update").click(function() {
 		//当复选框已经被选中后
@@ -175,19 +166,16 @@ $(function() {
 			//模拟量
 			if(dataType == "DoubleFloat") {
 				$('#myModal_Update').modal('show');
-
 				idIndexUpdate = $("input[name='check_table']:checked").val();
-
 				var obj = AlarmTagData[idIndexUpdate];
 
 				/*是否报警,如果为空,默认为是*/
 				var pIsAlarm = obj["IsAlarm"] == null ? "1" : obj["IsAlarm"];
-                console.log(pIsAlarm);
+				console.log(pIsAlarm);
 				$("#txtTagNameU").val(obj["Tagname"]);
 				$("#txtDataTypeU").val(obj["DataType"]);
 				$("#txtDescriptionU").val(obj["Description"]);
 				$("#select_IsAlarmU").val(pIsAlarm);
-				
 				$("#txtHHAlarm").val(obj["HHAlarm"]);
 				$("#txtHAlarm").val(obj["HAlarm"]);
 				$("#txtLAlarm").val(obj["LAlarm"]);
@@ -197,14 +185,11 @@ $(function() {
 			} else // 开关量
 			{
 				$('#myModal_Update1').modal('show');
-
 				idIndexUpdate = $("input[name='check_table1']:checked").val();
-
 				var obj = AlarmTagData[idIndexUpdate];
 
 				/*是否报警,如果为空,默认为是*/
 				var pIsAlarm = obj["IsAlarm"] == null ? "1" : obj["IsAlarm"];
-
 				$("#txtTagNameU1").val(obj["Tagname"]);
 				$("#txtDataTypeU1").val(obj["DataType"]);
 				$("#txtDescriptionU1").val(obj["Description"]);
@@ -227,18 +212,17 @@ $(function() {
 		Senddata();
 
 	});
+
 	/*导出*/
 	$("#btnExcel").click(function() {
 
 		/*点名*/
-
 		var txt_name = $("#txtDataType").val().trim();
 
 		/*描述*/
 		var txt_describe = $("#txtTagName").val().trim();
-	
+
 		var jsStr = "OutputAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + txt_name + "\",\"Description\":\"" + txt_describe + "\"}";
-		
 		send(jsStr);
 	});
 
@@ -253,18 +237,15 @@ $(function() {
 				if(result) {
 					var jsStr = "DeleteAlarmTagInfo {\"id\":\"";
 					for(var i = 0; i < indexsDel.length; i++) {
-
 						jsStr += AlarmTagData[indexsDel[i]]["ID"] + "\,";
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
-
 				}
 				send(jsStr);
 			});
 		}
 	});
-
 
 	/*导出模板按钮点击事件*/
 	$("#btnExportTemplate").click(function() {
@@ -272,7 +253,6 @@ $(function() {
 		send("DownLoadFile {\"filename\":\"" + "ReportModel/BaseTags.xls" + "\"}");
 
 	});
-
 
 	/*导出按钮点击事件*/
 	$("#btnOutputExcel").click(function() {
@@ -327,7 +307,6 @@ function UpdateAlarmData(Alarmid) {
 	$("#save_UpdateDouble").click(function() {
 
 		var jsStr1 = "UpdateAlarmTagInfo {\"id\":\"" + Alarmid + "\",\"DataType\":\"" + $("#txtDataTypeU").val().trim() + "\",\"HHAlarm\":\"" + $("#txtHHAlarm").val().trim() + "\",\"HAlarm\":\"" + $("#txtHAlarm").val().trim() + "\",\"LAlarm\":\"" + $("#txtLAlarm").val().trim() + "\",\"LLAlarm\":\"" + $("#txtLLAlarm").val().trim() + "\",\"ItemAlarmBoolValue\":\"" + "1" + "\",\"IsAlarm\":\"" + $("#select_IsAlarmU").val().trim() + "\"}";
-
 		send(jsStr1);
 	});
 
@@ -336,19 +315,17 @@ function UpdateAlarmData(Alarmid) {
 	$("#save_UpdateBoolean").click(function() {
 
 		var jsStr2 = "UpdateAlarmTagInfo {\"id\":\"" + Alarmid + "\",\"DataType\":\"" + $("#txtDataTypeU1").val().trim() + "\",\"HHAlarm\":\"" + "" + "\",\"HAlarm\":\"" + "" + "\",\"LAlarm\":\"" + "" + "\",\"LLAlarm\":\"" + "" + "\",\"ItemAlarmBoolValue\":\"" + $("#select_Switch").val().trim() + "\",\"IsAlarm\":\"" + $("#select_IsAlarmU1").val().trim() + "\"}";
-
 		send(jsStr2);
 	});
 }
 
 // 发送消息
 function Senddata() {
-	
+
 	$("#tblAnalog tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
-	
+
 	send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
 }
-
 
 /*获取模拟量集合*/
 function bindAnalogTable(datatable) {
@@ -409,7 +386,7 @@ function AddtrAnalog(datatable) {
 	var pDescription = datatable["Description"] == null ? "" : datatable["Description"];
 
 	// 是否报警
-	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"]=="0"?"否":"是");
+	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"] == "0" ? "否" : "是");
 
 	// 高高限值
 	var pHHAlarm = datatable["HHAlarm"] == null ? "" : datatable["HHAlarm"];
@@ -424,7 +401,6 @@ function AddtrAnalog(datatable) {
 	var pLLAlarm = datatable["LLAlarm"] == null ? "" : datatable["LLAlarm"];
 
 	var str = "";
-	//var length = parseInt(AlarmTagData.length) - 1;
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
 	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table'>";
@@ -488,13 +464,12 @@ function AddtrSwitch(datatable) {
 	var pDescription = datatable["Description"] == null ? "" : datatable["Description"];
 
 	// 是否报警
-	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"]=="0"?"否":"是");
+	var pIsAlarm = datatable["IsAlarm"] == null ? "" : (datatable["IsAlarm"] == "0" ? "否" : "是");
 
 	// 开关量
 	var pItemAlarmBoolValue = datatable["ItemAlarmBoolValue"] == null ? "" : datatable["ItemAlarmBoolValue"];
 
 	var str = "";
-	//var length = parseInt(AlarmTagData.length) - 1;
 	str += "<tr role='row'>"
 	str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
 	str += "<input type='checkbox' class='checkboxes' value='" + datatable["value"] + "' name='check_table1'>";
@@ -508,6 +483,7 @@ function AddtrSwitch(datatable) {
 	str += "</tr>";
 	return str;
 }
+
 /*采集器绑定*/
 function CollectorBind(data) {
 	var strCollector = "";
@@ -519,25 +495,24 @@ function CollectorBind(data) {
 	}
 
 	return strCollector;
+}
 
-}
 /*采集器数据绑定*/
-function Collectorsend()
-{
-	
+function Collectorsend() {
+
 	var jsStr = "CollectorListByUsername {\"username\":\"" + $.cookie("user") + "\"}";
-	
 	send(jsStr);
-	
-	
 }
+
 //连接成功
 socket.onopen = function() {
 	if($.cookie("user") && $.cookie("password")) {
 		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 	}
+
 	//数据绑定
 	Senddata();
+
 	/*采集器数据*/
 	Collectorsend();
 }
@@ -545,13 +520,13 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-	
+
 	if(typeof result == "string") {
 		result = JSON.parse(result);
 
 		if(result["error"]) {
 			shalert(result["error"]);
-		} 
+		}
 		/*else if(result["exception"]) {
 			shalert(result["exception"]);
 		} */
@@ -559,7 +534,6 @@ socket.onmessage = function(msg) {
 			switch(result["Function"]) {
 				case "AlarmTagInfo":
 					AlarmTagData = result["data"];
-					
 
 					if(dataType == "DoubleFloat") {
 						if(result["data"].length == 0) {
@@ -607,7 +581,7 @@ socket.onmessage = function(msg) {
 						AlarmTagData[idIndexUpdate].LAlarm = $("#txtLAlarm").val().trim();
 						AlarmTagData[idIndexUpdate].LLAlarm = $("#txtLLAlarm").val().trim();
 						ckbs.each(function() {
-                           obj.value=$(this).val();
+							obj.value = $(this).val();
 							$(this).parent().parent().parent().replaceWith(AddtrAnalog(obj));
 
 						});
@@ -639,7 +613,7 @@ socket.onmessage = function(msg) {
 						AlarmTagData[idIndexUpdate].IsAlarm = $("#select_IsAlarmU1").val().trim();
 						AlarmTagData[idIndexUpdate].ItemAlarmBoolValue = $("#select_Switch option:selected").text().trim();
 						ckbs.each(function() {
-                        obj.value=$(this).val();
+							obj.value = $(this).val();
 							$(this).parent().parent().parent().replaceWith(AddtrSwitch(obj));
 
 						});
@@ -673,19 +647,19 @@ socket.onmessage = function(msg) {
 				case "OutputAlarmInfo":
 
 					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
-					fileName1 = result["info"].replace("\\", "/").split('/')[1];;			
+					fileName1 = result["info"].replace("\\", "/").split('/')[1];;
 					send(jsStr);
 					break;
 				case "AddAlarmTagInfo":
-					
+
 					shalert("添加成功！");
-					 var valuel=parseInt(AlarmTagData.length);
+					var valuel = parseInt(AlarmTagData.length);
 					//模拟量
 					if(dataType == "DoubleFloat") {
 						/*修改保存的集合*/
 						var obj = {
 							"ID": result["info"],
-							"value":valuel,
+							"value": valuel,
 							"Tagname": $("#dot_Add_D").val().trim(),
 							"Description": $("#inputdes_Add_D").val().trim(),
 							"IsAlarm": $("#inputcall_Add_D").val().trim(),
@@ -693,28 +667,28 @@ socket.onmessage = function(msg) {
 							"HAlarm": $("#inputHighAlarm_Add_D_2").val().trim(),
 							"LAlarm": $("#inputLowAlarm_Add_D_2").val().trim(),
 							"LLAlarm": $("#inputLowAlarm_Add_D").val().trim(),
-							"ItemAlarmBoolValue":"1",
+							"ItemAlarmBoolValue": "1",
 							"DataType": $("#type_Add_D").val().trim()
 						};
-                        
+
 						AlarmTagData.push(obj);
-						
+
 						/*动态的添加到页面*/
 						$("#tblAnalog tbody").prepend(AddtrAnalog(obj));
 						//清空
-                 $("#dot_Add_D").val("");
-                 $("#inputdes_Add_D").val("");
-                 $("#inputcall_Add_D").val("1");
-                 $("#inputHighAlarm_Add_D").val("");
-                 $("#inputHighAlarm_Add_D_2").val("");
-                 $("#inputLowAlarm_Add_D_2").val("");
-                 $("#inputLowAlarm_Add_D").val("");
-                 $("#type_Add_D").val("DoubleFloat");
+						$("#dot_Add_D").val("");
+						$("#inputdes_Add_D").val("");
+						$("#inputcall_Add_D").val("1");
+						$("#inputHighAlarm_Add_D").val("");
+						$("#inputHighAlarm_Add_D_2").val("");
+						$("#inputLowAlarm_Add_D_2").val("");
+						$("#inputLowAlarm_Add_D").val("");
+						$("#type_Add_D").val("DoubleFloat");
 					} else {
 						/*修改保存的集合*/
-						var obj = { 
+						var obj = {
 							"ID": result["info"],
-							"value":valuel,
+							"value": valuel,
 							"Tagname": $("#dot_Add_B").val().trim(),
 							"Description": $("#inputdes_Add_B").val().trim(),
 							"IsAlarm": $("#inputcall_Add_B").val().trim(),
@@ -722,32 +696,33 @@ socket.onmessage = function(msg) {
 							"HAlarm": "",
 							"LAlarm": "",
 							"LLAlarm": "",
-							"ItemAlarmBoolValue":$("#ItemAlarmBoolValue_B").val().trim(),
+							"ItemAlarmBoolValue": $("#ItemAlarmBoolValue_B").val().trim(),
 							"DataType": $("#type_Add_B").val().trim()
 						};
 
 						AlarmTagData.push(obj);
+						
 						/*清空*/
 						$("#dot_Add_B").val("");
 						$("#inputdes_Add_B").val("");
 						$("#inputcall_Add_B").val("1");
 						$("#ItemAlarmBoolValue_B").val("0");
 						$("#type_Add_B").val("Boolean");
+						
 						/*动态的添加到页面*/
 						$("#tblSwitch tbody").prepend(AddtrSwitch(obj));
 					}
 					break;
-					case "CollectorListByUsername":
 					
-					if(result["data"].length==0)
-					{
+				case "CollectorListByUsername":
+
+					if(result["data"].length == 0) {
 						$("#Base_Add").hide();
-					}else
-					{
-						
+					} else {
+
 						$("#Collector_D").html(CollectorBind(result["data"]));
 						$("#Collector_B").html(CollectorBind(result["data"]));
-						
+
 					}
 					break;
 			}
@@ -764,7 +739,6 @@ socket.onmessage = function(msg) {
 		link.click();
 		window.URL.revokeObjectURL(link.href);
 	}
-
 }
 
 //连接断开

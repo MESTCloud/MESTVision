@@ -1,5 +1,5 @@
+/*重置密码确定按钮点击事件*/
 $("#save_inputPassWordUpdate").click(function() {
-
 	if($("#inputPassWordUpdateOld").val().trim() == "") {
 		shalert("旧密码不能为空");
 		return false;
@@ -18,38 +18,41 @@ $("#save_inputPassWordUpdate").click(function() {
 
 	send(jsonStr);
 });
+
 /*登录用户加载*/
 $("#userLoginName").html($.cookie("realName"));
+
 //连接成功
 socket.onopen = function() {
-	   
-		if($.cookie("user") && $.cookie("password")) {
-			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-		}
-		send("ModuleListByMenu");
+
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 	}
-	//收到消息
+	send("ModuleListByMenu");
+}
+
+//收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
 	result = JSON.parse(result);
 	if(result["error"]) {
 
-	if($.cookie("user") == ""||$.cookie("user") == null) {
+		if($.cookie("user") == "" || $.cookie("user") == null) {
 			shconfirm1(result["error"], function(result) {
 				if(result) {
 					location.href = "Login.html";
 				}
 			});
-		}
-		else
-		{
+		} else {
 			shalert(result["error"]);
 		}
 
-	} /*else if(result["exception"]) {
+	}
+	/*else if(result["exception"]) {
 	
 		shalert(result["exception"]);
-	}*/ else {
+	}*/
+	else {
 		switch(result["Function"]) {
 
 			case "ChangePassword":
@@ -68,7 +71,7 @@ socket.onmessage = function(msg) {
 				$("#Menu").html('<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>' + result["data"]);
 
 				$(".sub-menu > li").click(function() {
-				
+
 					var menu = $('.page-sidebar-menu');
 
 					var el = $(this);
@@ -98,8 +101,7 @@ socket.onmessage = function(msg) {
 
 					menu.find('li.active').removeClass('active');
 					menu.find('li > a > .selected').remove();
-					// end: handle active state
-
+					
 					el.parents('li').each(function() {
 						$(this).addClass('active');
 						$(this).find('> a > span.arrow').addClass('open');
@@ -138,31 +140,23 @@ socket.onmessage = function(msg) {
 
 						$("#ShowPage").attr("src", url);
 					}
-			
+
 					var resBreakpointMd = App.getResponsiveBreakpoint('md');
 					if(App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass('in')) { // close the menu on mobile view while laoding a page 
-					
-					 if($(this).find('> a').attr('data-page')!=undefined)
-					 {
-					 	 $('.page-header .responsive-toggler').click();
-					 }
-					
-					  
+
+						if($(this).find('> a').attr('data-page') != undefined) {
+							$('.page-header .responsive-toggler').click();
+						}
 					}
-					
 				});
 
 				break;
-
 		}
-
 	}
 }
 
 socket.onclose = function(event) {
-	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-
-	  location.href = "Login.html";
+	location.href = "Login.html";
 }
 
 //发送

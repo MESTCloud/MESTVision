@@ -3,66 +3,53 @@ var $dataid;
 
 $(document).ready(function() {
 	/*菜单：设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
-	
+	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
+
 	/*详细信息：设置自适应滚动条*/
-	$("#divtree").css("height", pFrameHeight-pTitleHeight-30);
+	$("#divtree").css("height", pFrameHeight - pTitleHeight - 30);
 });
 
 var UITree = function() {
-
 	var handleSample2 = function() {
-			var treeObj = {};
+		var treeObj = {};
+		$('#tree_2').jstree({
 
-			$('#tree_2').jstree({
-
-				'plugins': ["checkbox", "types"],
-
-				'core': {
-					"themes": {
-						"responsive": false
-					},
-					'data': TreeData
+			'plugins': ["checkbox", "types"],
+			'core': {
+				"themes": {
+					"responsive": false
 				},
-				"types": {
-					"default": {
-						"icon": "fa fa-folder icon-state-warning icon-lg"
-					},
-					"file": {
-						"icon": "fa fa-file icon-state-warning icon-lg"
-					}
+				'data': TreeData
+			},
+			"types": {
+				"default": {
+					"icon": "fa fa-folder icon-state-warning icon-lg"
+				},
+				"file": {
+					"icon": "fa fa-file icon-state-warning icon-lg"
 				}
-				 
-			});
-　　　　
-		}
-	
-	
-		/*保存按钮*/
-	$("#usermenu_save").on("click", function() {
+			}
+		});　　　　
+	}
 
+	/*保存按钮*/
+	$("#usermenu_save").on("click", function() {
 		var Array = [];
 		var UndaterArray = [];
-
 		if($dataid != undefined) {
-			//console.log($("#tree_2").find(".jstree-undetermined").parent().parent());
 			$.each($("#tree_2").find(".jstree-undetermined").parent().parent(), function(index, item) {
 				UndaterArray.unshift(item.id)
 			});
 			$.each($("#tree_2").find(".jstree-clicked").parent(), function(index, item) {
 				Array.unshift(item.id);
-
 			});
 			var module = UndaterArray.concat(Array).join(',');
-			
 			var jsStr = "SetModuleForUser {\"id\":\"" + $dataid + "\",\"module\":\"" + module + "\"}";
-          
 			send(jsStr);
 		} else {
 			shalert("请选择用户");
 			return false;
 		}
-
 	});
 
 	//连接成功
@@ -71,7 +58,6 @@ var UITree = function() {
 		if($.cookie("user") && $.cookie("password")) {
 			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 		}
-
 		send("userlist");
 		send("ModuleListByTree");
 	}
@@ -79,14 +65,11 @@ var UITree = function() {
 	return {
 		//main function to initiate the module
 		init: function() {
-
 			handleSample2();
-
 		}
-
 	};
-
 }();
+
 var ChirdID;
 if(App.isAngularJsApp() === false) {
 	jQuery(document).ready(function() {
@@ -101,9 +84,7 @@ if(App.isAngularJsApp() === false) {
 					str += "<td >" + data["UserName"] + "</td>";
 					str += "<td>" + data["RealName"] + "</td>";
 					str += "</tr>";
-
 				});
-
 			}
 
 			return str;
@@ -112,7 +93,6 @@ if(App.isAngularJsApp() === false) {
 		//首先判断当前这个id 是否有子集，如果没有子集  添加对勾样式；  如果有子集，判断子集的个数，和子集选中的个数，如果个数相等添加对勾的样式 ，不相等 半选中
 		/*点击用户列表 给菜单添加样式*/
 		var active = function($id) {
-
 			if($("#" + $id).find(">ul").length > 0) {
 				//获取当前元素中子集的个数
 				var childLength = $("#" + $id).find(">ul").children().length;
@@ -127,29 +107,20 @@ if(App.isAngularJsApp() === false) {
 
 				}
 				if(count == childLength) {
-					$("#tree_2").jstree("check_node","#"+$id);
-					/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
-				} /*else {
-					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-				}*/
-				
+					$("#tree_2").jstree("check_node", "#" + $id);
+				}
 			} else {
-				$("#tree_2").jstree("check_node","#"+$id);
-				/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
+				$("#tree_2").jstree("check_node", "#" + $id);
 			}
-
 		}
 
 		//收到消息
 		socket.onmessage = function(msg) {
 			var result = msg.data;
-
 			result = JSON.parse(result);
-
 			if(result["error"]) {
-
 				shalert(result["error"]);
-			} 
+			}
 			/*else if(result["exception"]) {
 
 				shalert(result["exception"]);
@@ -159,53 +130,46 @@ if(App.isAngularJsApp() === false) {
 					case "UserList":
 						/*获取集合*/
 						$(".userMenu_left tbody").html(bindUserTable(result["data"]));
-						 
+
 						/* 点击事件*/
 						$(".userMenu_left  tbody tr").click(function() {
-							 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
+							$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 							$dataid = $(this).attr("data_uid");
-                          
+
 							$("#tree_2").find('.jstree-undetermined').removeClass('jstree-undetermined');
 							$("#tree_2").find("a").removeClass("jstree-clicked");
- 
+
 							var jsStr = "ModuleListByUser {\"id\":\"" + $dataid + "\"}";
 							send(jsStr);
 						});
-
 						break;
 
 					case "ModuleListByTree":
 						/*获取树集合*/
 						TreeData = result["data"];
-
-						UITree.init();
- 　　　　　　　　　　　
+						UITree.init();　　　　　　　　　　　
 						break;
-					case "ModuleListByUser":
-                         $("#tree_2").jstree("uncheck_all");
-						var ary = result["info"].split(',');
 						
+					case "ModuleListByUser":
+						$("#tree_2").jstree("uncheck_all");
+						var ary = result["info"].split(',');
 						for(var i = 0; i < ary.length; i++) {
-							
 							active(ary[i]);
 						}
 
 						break;
+						
 					case "SetModuleForUser":
 						shalert("保存成功");
 						break;
 				}
-
 			}
 		}
-
 	});
 }
 
 //连接断开
 socket.onclose = function(event) {
-	//console.log("Socket状态:" + readyStatus[socket.readyState]);
-	//location.href = "http://www.baidu.com";
 	window.parent.location.href = "../Login.html";
 }
 

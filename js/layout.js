@@ -16,8 +16,7 @@ function getQueryString(name) {
 	return null;
 }
 
-//var pType=getQueryString("type");
-var pType = "day";
+var pType=getQueryString("type");
 
 /*页面title赋值*/
 var ptitle = getQueryString("path").split(",");
@@ -45,6 +44,7 @@ if(u.indexOf('iPhone') > -1) { //苹果手机
 		}
 	}, false);
 }
+
 /*时间*/
 function formatTen(num) {
 	return num > 9 ? (num + "") : ("0" + num);

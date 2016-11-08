@@ -3,14 +3,13 @@ var $dataid;
 
 $(document).ready(function() {
 	/*角色：设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
-	
+	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
+
 	/*菜单：设置自适应滚动条*/
-	$("#divmenu").css("height", pFrameHeight-pTitleHeight-30);
+	$("#divmenu").css("height", pFrameHeight - pTitleHeight - 30);
 });
 
 var UITree = function() {
-
 	var RoleMenu = function() {
 			var treeObj = {};
 			$('#tree_role').jstree({
@@ -36,20 +35,17 @@ var UITree = function() {
 
 			});
 		}
-		/*保存按钮*/
+	
+	/*保存按钮*/
 	$("#role_save").on("click", function() {
-
 		var Array = [];
 		var UndaterArray = [];
-
 		if($dataid != undefined) {
-
 			$.each($("#tree_role").find(".jstree-undetermined").parent().parent(), function(index, item) {
 				UndaterArray.unshift(item.id)
 			});
 			$.each($("#tree_role").find(".jstree-clicked").parent(), function(index, item) {
 				Array.unshift(item.id);
-
 			});
 
 			var module = UndaterArray.concat(Array).join(',');
@@ -64,7 +60,6 @@ var UITree = function() {
 
 	//连接成功
 	socket.onopen = function() {
-
 		if($.cookie("user") && $.cookie("password")) {
 			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 		}
@@ -106,7 +101,6 @@ if(App.isAngularJsApp() === false) {
 		//首先判断当前这个id 是否有子集，如果没有子集  添加对勾样式；  如果有子集，判断子集的个数，和子集选中的个数，如果个数相等添加对勾的样式 ，不相等 半选中
 		/*点击用户列表 给菜单添加样式*/
 		var active = function($id) {
-
 			if($("#" + $id).find(">ul").length > 0) {
 				//获取当前元素中子集的个数
 				var childLength = $("#" + $id).find(">ul").children().length;
@@ -118,45 +112,36 @@ if(App.isAngularJsApp() === false) {
 						count++;
 
 					}
-
 				}
 				if(count == childLength) {
-					$("#tree_role").jstree("check_node","#"+$id);
-					/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
-				} /*else {
-					$("#" + $id).find("a:first").removeClass("jstree-clicked").children(":first").addClass("jstree-undetermined");
-				}*/
-				
+					$("#tree_role").jstree("check_node", "#" + $id);
+				}
 			} else {
-				$("#tree_role").jstree("check_node","#"+$id);
-				/*$("#" + $id).find("a:first").addClass("jstree-clicked");*/
+				$("#tree_role").jstree("check_node", "#" + $id);
 			}
-
 		}
 
 		//收到消息
 		socket.onmessage = function(msg) {
 			var result = msg.data;
-
 			result = JSON.parse(result);
-
 			if(result["error"]) {
-
 				shalert(result["error"]);
-			} 
-		/*	else if(result["exception"]) {
+			}
+			/*	else if(result["exception"]) {
 
-				shalert(result["exception"]);
-			} */
+					shalert(result["exception"]);
+				} */
 			else {
 				switch(result["Function"]) {
 					case "RoleList":
-						
+
 						/*页面加载*/
 						$(".RoleMenu_left tbody").html(bindUserTable(result["data"]));
+						
 						/*角色的点击事件*/
 						$(".RoleMenu_left  tbody tr").click(function() {
-							 $(this).attr("style","background-color: #DAF3F5").siblings().removeAttr("style");
+							$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 							$dataid = $(this).attr("data_Rid");
 							$("#tree_role").find('.jstree-undetermined').removeClass('jstree-undetermined');
 							$("#tree_role").find("a").removeClass("jstree-clicked");
@@ -164,7 +149,6 @@ if(App.isAngularJsApp() === false) {
 							var jsStr = "ModuleListByRole {\"id\":\"" + $dataid + "\"}";
 							send(jsStr);
 						});
-
 						break;
 
 					case "ModuleListByTree":
@@ -172,32 +156,28 @@ if(App.isAngularJsApp() === false) {
 						TreeData = result["data"];
 						UITree.init();
 						break;
+						
 					case "ModuleListByRole":
-					
 						/*获取角色集合*/
 						var ary = result["info"].split(',');
-                       $("#tree_role").jstree("uncheck_all");
+						$("#tree_role").jstree("uncheck_all");
 						for(var i = 0; i < ary.length; i++) {
-							
 							active(ary[i]);
 						}
 						break;
+						
 					case "SetModuleForRole":
 						/*保存*/
 						shalert("保存成功");
 						break;
 				}
-
 			}
 		}
-
 	});
 }
 
 //连接断开
 socket.onclose = function(event) {
-	/*console.log("Socket状态:" + readyStatus[socket.readyState]);*/
-	//location.href = "http://www.baidu.com";
 	window.parent.location.href = "../Login.html";
 }
 

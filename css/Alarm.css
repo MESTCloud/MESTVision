@@ -1,19 +1,28 @@
+/*报警数据显示背景色
+高报:蓝色*/
 .fontblue {
 	color: blue;
 }
 
+
+/*高高报:红色*/
 .fontred {
 	color: red;
 }
 
+
+/*低报:紫色*/
 .fontviolet {
 	color: darkviolet;
 }
 
+
+/*低低报:绿色*/
 .fontgreen {
 	color: green;
 }
 
+/*确认报警按钮样式*/
 .btn1 {
 	padding: 3px 7px;
 }
@@ -22,8 +31,12 @@
 	width: 100%;
 }
 
-body {-webkit-overflow-scrolling:
- touch; overflow-scrolling: touch;}
+body {
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+}
+
+
 /*iphone5*/
 /*横屏*/
 
@@ -45,7 +58,6 @@ body {-webkit-overflow-scrolling:
 
 /*iphone6 6s*/
 /*横屏*/
-
 @media screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) {
 	.rowcolor {
 		width: 600px;
@@ -64,7 +76,6 @@ body {-webkit-overflow-scrolling:
 
 /*iphone 6 Plus, 6s Plus*/
 /*横屏*/
-
 @media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
 	.rowcolor {
 		width: 600px;

@@ -3,16 +3,13 @@ var fileName1;
 
 $(document).ready(function() {
 	/*设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight-pTitleHeight-pConditionHeight-30);
+	$("#divtable").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
 
 	/*二维码的点击事件*/
 	$("#QRcode").on("click", function() {
 
 		$("#div_QRcode").toggle("slow");
 	});
-
-	/*固定表头*/
-	//$("#tblList").freezeHeader();
 
 	/*全选 反选*/
 	$("#checkAll").click(function() {
@@ -24,9 +21,9 @@ $(document).ready(function() {
 			$("input[name='check_table']").prop('checked', false);
 		}
 	});
+
 	/*单选全选后,全选按钮选中*/
 	$("tbody").bind("click", function() {
-
 		var $check = $("input[name='check_table']:checked");
 		var ototal = $check.length;
 
@@ -39,10 +36,8 @@ $(document).ready(function() {
 
 	/*查询按钮点击事件*/
 	$("#btnQuery").click(function() {
-
 		// 获取指定时间段内实时报警数据
 		sendCheckTimeData();
-
 	});
 
 	/*确认选中按钮点击事件*/
@@ -61,9 +56,7 @@ $(document).ready(function() {
 					}
 					jsStr = jsStr.substring(0, jsStr.length - 1) + "\"";
 					jsStr += "}";
-
 				}
-
 				send(jsStr);
 			});
 		}
@@ -82,6 +75,7 @@ $(document).ready(function() {
 			});
 		};
 	});
+
 	//导出功能
 	$("#btnOutputExcel").on("click", function() {
 
@@ -90,8 +84,8 @@ $(document).ready(function() {
 
 		/*结束日期*/
 		var pEtime = $("#endTime").val().trim();
-		var jsStr = "OutputRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
 
+		var jsStr = "OutputRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
 		send(jsStr);
 	});
 });
@@ -119,15 +113,12 @@ function sendCheckTimeData() {
 	}
 
 	var jsStr = "CheckRealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\",\"startTime\":\"" + pStime + "\",\"endTime\":\"" + pEtime + "\"}";
-
 	send(jsStr);
 }
 
 /*对全选项的判定*/
 function CheckedLength() {
-
 	var oChecked = document.getElementsByName("check_table");
-
 	var total = 0;
 	var checked = [];
 	for(var i = 0; i < oChecked.length; i++) {
@@ -161,9 +152,7 @@ function CheckedLength() {
 function bindTable(datatable) {
 	var str = "";
 	if(datatable.length > 0) {
-
 		$.each(datatable, function(index, data) {
-
 			// 结束时间
 			var pEndTime = data["EndTime"] == null ? "" : data["EndTime"];
 
@@ -188,13 +177,12 @@ function bindTable(datatable) {
 			str += "<td>" + data["AlarmValue"] + "</td>";
 			str += "<td>" + data["AlarmStandard"] + "</td>";
 			str += "<td>";
-			
-			if(data["Acked"]!=1)
-			{
-			str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='" + data["AlarmID"] + "'>";
-			str += "<span>确认报警</span></button>"
+
+			if(data["Acked"] != 1) {
+				str += "<button type='button' class='btn btn1 btn-success btnConfirmAlarm'   data-value='" + data["AlarmID"] + "'>";
+				str += "<span>确认报警</span></button>"
 			}
-		
+
 			str += "</td>"
 			str += "</tr>";
 		});
@@ -206,7 +194,6 @@ function bindTable(datatable) {
 // 确认按钮点击事件
 function ConfirmAlarmData(pAlarmID) {
 	var jsStr = "ConfirmOneAlarmTagInfo {\"id\":\"" + pAlarmID + "\"}";
-
 	send(jsStr);
 }
 
@@ -220,17 +207,13 @@ socket.onopen = function() {
 
 // 获取所有实时报警数据
 function senddata() {
-
 	send("RealTimeAlarmInfo {\"username\":\"" + $.cookie("user") + "\"}");
 }
 
 //收到消息
 socket.onmessage = function(msg) {
-    
 	var result = msg.data;
-
 	if(typeof result == "string") {
-
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
@@ -247,17 +230,14 @@ socket.onmessage = function(msg) {
 						shalert("查无资料");
 						$("tbody").html("");
 					}
-					
 					$("tbody").html(bindTable(result["data"]));
-	
+
 					/*确认报警按钮点击事件*/
 					$(".btnConfirmAlarm").click(function() {
 						var pAlarmID = this.getAttribute("data-value");
 						shconfirm("确认要确认报警吗?", function(result) {
 							if(result) {
-
 								ConfirmAlarmData(pAlarmID);
-
 							};
 						});
 					});
@@ -320,7 +300,6 @@ socket.onmessage = function(msg) {
 
 					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
 					fileName1 = result["info"].replace("\\", "/");
-
 					send(jsStr);
 					break;
 
@@ -328,8 +307,7 @@ socket.onmessage = function(msg) {
 		}
 	} else {
 		try {
-
-		var blob = new Blob([msg.data], {
+			var blob = new Blob([msg.data], {
 					type: "applicationnd.ms-excel"
 				}),
 				fileName = fileName1.split('/')[1];
@@ -338,15 +316,12 @@ socket.onmessage = function(msg) {
 			link.download = fileName;
 			link.click();
 			window.URL.revokeObjectURL(link.href);
-		
 
 		} catch(e) {
 			shalert(e);
 			return false;
 		}
-
 	}
-
 }
 
 //连接断开

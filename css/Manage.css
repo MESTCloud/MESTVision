@@ -1,4 +1,3 @@
-
 /*userManage*/
 #del{
     width: 400px;
@@ -12,6 +11,7 @@
     margin-left: -200px;
 
 }
+
 #User_Check{
     width: 400px;
     height:200px;
@@ -23,7 +23,8 @@
     top: 50px;
     margin-left: -200px;
 }
-/*index ҳ��*/
+
+/*index*/
 .login{
     float: left;
     display: block;
@@ -33,100 +34,102 @@
     padding-right: 20px;
     padding-top: 20px;
 }
-/*MenuManage ҳ��*/
+
+/*MenuManage*/
 .tree{
     background: white;
 }
+
 .row_tree{
     width: 100%;
     border-radius: 4px;
 }
-.left_row{
 
+.left_row{
     height: 800px;
-    width: 35%;
-    
+    width: 35%;  
     float: left;
-    /*border-radius: 4px;*/
     margin-right: 1%;
     border: 1px solid #0088cc;
 }
+
 .right_row{
     width: 64%;
     float: left;
     height: 800px;
-    /*border-radius: 4px;*/
     border: 1px solid #0088cc;
 }
+
 .portlet.box.blue{
     border: 0px;
 }
-/*用户菜单UserMenuManage*//*角色菜单管理 RoleManager*/
-.box{
-/* width:700px;*/
- 
-}
+
 tbody tr{cursor: pointer}
 .userMenu_left,.userMenu_right,.RoleMenu_left,.RoleMenu_right,.userRole_left,.userRole_right,.Roleuser_left,.Roleuser_right,.UserCollector_left,.UserCollector_right,
 .RoleCollector_left,.RoleCollector_right{
-
-    /*height: 800px;*/
     border: 1px solid #0088cc;
     float: left;
-    /*border-radius: 5px;*/
-
 }
+
 .userMenu_left,.RoleMenu_left,.userRole_left,.Roleuser_left,.UserCollector_left,.RoleCollector_left{
     width: 35%;
     margin-right: 1%;
      overflow-x: auto;
 }
+
 .userMenu_right,.RoleMenu_right,.userRole_right,.Roleuser_right,.UserCollector_right,.RoleCollector_right{
     width: 64%;
     overflow-x: auto;
 }
+
 /*趋势*/
 .rhTrendleft{
 	width:20%;
-	/*height: 650px;*/
     border-left:1px solid #e7ecf1;
      border-bottom:1px solid #e7ecf1;
     float: left;
 }
+
 .rhTrendright{
 	width:80%;
 	margin-top: 0;
 	float: left;
 }
+
 .rhTrendright_right{
 	width:20%;
 	margin-top: 0;
-	/*height: 650px;*/
 	float: left;
 	border: 1px solid #e7ecf1;
 }
+
 .minicolors-slider-hue{
 	overflow: auto;
 	width: 100%;
 	
 }
+
 .rhTrendright_top,.rhTrendright_middle,.rhTrendright_bottom{
 	border: 1px solid #e7ecf1;
 	
 }
+
 .rhTrendright_top{
 	height: 300px;
 	overflow-y: auto;
     overflow-x: auto;
 }
+
 .rhTrendright_top .row{
 	padding: 5px 0;
 }
+
 .rhTrendright_middle{
 	height: 250px;
 	overflow: auto;
 	border-top: 0px;
 }
+
 .rhTrendright_bottom{
 	height: 200px;
 	overflow: auto;
