@@ -5,6 +5,15 @@ jQuery(document).ready(function() {
 			echarts: '../resource/echarts/'
 		}
 	});
+	var height=pFrameHeight - pTitleHeight - 30;
+	$(".rhTrendleft").css("height",height);
+	$(".rhTrendright").css("height",height);
+	$(".rhTrendright_right").css("height",height);
+	
+	$(".rhTrendright_top").css("height",height*0.3);
+	$(".rhTrendright_middle").css("height",height*0.35);
+	$(".rhTrendright_bottom").css("height",height*0.35);
+	/*.rhTrendright_middle,.rhTrendright_bottom*/
 	var timeTicket; /*定时器*/
 	var trId = "";/*存放点击id*/
 	var colorItem=0;/*存储颜色id*/
@@ -703,6 +712,7 @@ jQuery(document).ready(function() {
 					$(".rhTrendright_right").css('display', 'none');
 
 				}
+				myChart.resize();
 			});
 			/*点表列表 */
 			$("#CList").on("click", function() {
@@ -723,6 +733,7 @@ jQuery(document).ready(function() {
 					$(".rhTrendleft").css('display', 'none');
 
 				}
+				myChart.resize();
 			});
 			/*选择列表*/
 			$("#Ccheck").on("click", function() {

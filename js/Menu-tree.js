@@ -8,10 +8,10 @@ var Tree_Url;
 
 $(document).ready(function() {
 	/*菜单：设置自适应滚动条*/
-	$("#divmenu").css("height", pFrameHeight-pTitleHeight-30);
-	
+	$("#divmenu").css("height", pFrameHeight - pTitleHeight - 30);
+
 	/*详细信息：设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight-pTitleHeight-30);
+	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
 });
 var UITree = function() {
 
@@ -41,6 +41,7 @@ var UITree = function() {
 			},
 			"contextmenu": {
 				"items": {
+					/*创建 */
 					"create": {
 						"label": "添加",
 						"action": function(obj) {
@@ -66,12 +67,12 @@ var UITree = function() {
 								send(jsStr);
 
 								//alert(ChirdID);
-								
+
 							});
 
 						}
 					},
-
+					/*修改*/
 					"rename": {
 						"separator_before": false,
 						"separator_after": false,
@@ -85,13 +86,13 @@ var UITree = function() {
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-                            
+
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Update').modal('show');
 							$("#input_treeName_update").val(obj.text);
 							//console.log((obj.icon.split(' '))[2]);
 							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
-                            $("#inputTree_Update").val("icon-bar-chart");
+							$("#inputTree_Update").val("icon-bar-chart");
 							$("#input_treeAddress_update").val(obj.url);
 							$("#save_inputTreeUpdate").unbind("click");
 							$("#save_inputTreeUpdate").on("click", function() {
@@ -109,13 +110,12 @@ var UITree = function() {
 								send(jsStr);
 								Obje = obj;
 								Inst = inst;
-								
 
 							});
 
 						}
 					},
-
+					/*删除*/
 					"delete": {
 						"label": "删除",
 						"action": function(data) {
@@ -125,25 +125,100 @@ var UITree = function() {
 								if(result) {
 									var jsStr = "DeleteModule {\"id\":\"" + obj.id + "\"}";
 									send(jsStr);
-									
+
 									Inst = inst;
 									Obje = obj;
-                       
+
 								}
 							})
 
-							
+						}
+					},
+					/*移动*/
+				/*	"move": {
+						"label": "移动",
+						"action": function(data) {
+							console.log(data.node)
+							var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+							//var node = _menu.data.jsTree.jstree('get_node',data.reference[0]);
+							var next_dom = data.reference.closest("li").next();
+							//$.operation.sortMenu(obj, next_dom);
+
+						}
+					},*/
+	
+				"ccp" : {
+					"separator_before"	: true,
+					"icon"				: false,
+					"separator_after"	: false,
+					"label"				: "复制/粘贴",
+					"action"			: false,
+					"submenu" : {
+						"cut" : {
+							"separator_before"	: false,
+							"separator_after"	: false,
+							"label"				: "剪切",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+								if(inst.is_selected(obj)) {
+									inst.cut(inst.get_top_selected());
+								}
+								else {
+									inst.cut(obj);
+								}
+							}
+						},
+						"copy" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							"separator_after"	: false,
+							"label"				: "复制",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+								if(inst.is_selected(obj)) {
+									inst.copy(inst.get_top_selected());
+								}
+								else {
+									inst.copy(obj);
+								}
+							}
+						},
+						"paste" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							/*"_disabled"			: function (data) {
+								return !$.jstree.reference(data.reference).can_paste();
+							},*/
+							"separator_after"	: false,
+							"label"				: "粘贴",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+								inst.paste(obj);
+							}
 						}
 					}
 				}
+			
+			
+				}
 			},
 
-			"plugins": ["contextmenu", "state", "types"]
+			"plugins": ["contextmenu", "state", "types","dnd"]
 		});
 
 		$('#tree_3').bind("activate_node.jstree", function(obj, e) {
 
 			currentNode = e.node;
+		});
+		$("#tree_3").bind('move_node.jstree', function (e, data){
+			 console.log(data.node.id)//移动节点的id
+			 console.log(data.parent)//移动后父节点的id
+			 console.log(data.position)//移动后所在父节点的位置，第一个位置为0
+
 		});
 		$("#tree_3").bind("click.jstree", function(obj, e) {
 
@@ -190,7 +265,6 @@ if(App.isAngularJsApp() === false) {
 					str += "<td>" + data["NavigateUrl"] + "</td>";
 
 					str += "</tr>";
-
 				});
 
 			}
@@ -206,7 +280,7 @@ if(App.isAngularJsApp() === false) {
 
 			if(result["error"]) {
 				shalert(result["error"]);
-			} 
+			}
 			/*else if(result["exception"]) {
 				shalert(result["exception"]);
 			}*/
@@ -214,7 +288,7 @@ if(App.isAngularJsApp() === false) {
 				switch(result["Function"]) {
 					case "ModuleListByTree":
 						TreeData = result["data"];
-						
+
 						UITree.init();
 						break;
 					case "AddModule":
@@ -227,7 +301,7 @@ if(App.isAngularJsApp() === false) {
 						new_node.text = $("#input_treeName").val().trim();
 						new_node.icon = "fa fa-folder icon-state-warning icon-lg";
 						new_node.url = $("#input_treeAddress").val().trim();
-                        /*创建节点*/
+						/*创建节点*/
 						Inst.create_node(Obje, new_node, "last", function(new_node) {
 
 							Inst.edit(new_node);
@@ -263,8 +337,8 @@ if(App.isAngularJsApp() === false) {
 						} else {
 							Inst.delete_node(Obje);
 						}
-						Inst="";
-						Obje="";
+						Inst = "";
+						Obje = "";
 						break;
 
 					case "ModuleListByParent":
