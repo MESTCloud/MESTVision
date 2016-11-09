@@ -13,8 +13,8 @@ $(document).ready(function() {
 	/*详细信息：设置自适应滚动条*/
 	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
 });
-
 var UITree = function() {
+
 	var contextualMenuSample = function() {
 		var currentNode = "";
 
@@ -24,6 +24,7 @@ var UITree = function() {
 				"themes": {
 					"responsive": false
 				},
+				// so that create works
 				"check_callback": true,
 				'data': TreeData
 			},
@@ -59,10 +60,14 @@ var UITree = function() {
 									shalert("请选择图标");
 									return false;
 								}
+								//New_node = new_node;
 								Inst = inst;
 								Obje = obj;
 								var jsStr = "AddModule {\"parent\":\"" + obj.id + "\",\"name\":\"" + $("#input_treeName").val().trim() + "\",\"image\":\"" + $("#inputTree_Add").val().trim() + "\",\"url\":\"" + $("#input_treeAddress").val().trim() + "\"}";
 								send(jsStr);
+
+								//alert(ChirdID);
+
 							});
 
 						}
@@ -73,6 +78,11 @@ var UITree = function() {
 						"separator_after": false,
 						"_disabled": false, //(this.check("rename_node", data.reference, this.get_parent(data.reference), "")),
 						"label": "修改",
+						/*!
+						"shortcut"			: 113,
+						"shortcut_label"	: 'F2',
+						"icon"				: "glyphicon glyphicon-leaf",
+						*/
 						"action": function(data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
@@ -80,6 +90,8 @@ var UITree = function() {
 							$(this).prop("data-toggle", "modal");
 							$('#my_Modal_tree_Update').modal('show');
 							$("#input_treeName_update").val(obj.text);
+							//console.log((obj.icon.split(' '))[2]);
+							//$("#inputTree_Update").val((obj.icon.split(' '))[2]);
 							$("#inputTree_Update").val("icon-bar-chart");
 							$("#input_treeAddress_update").val(obj.url);
 							$("#save_inputTreeUpdate").unbind("click");
@@ -98,7 +110,9 @@ var UITree = function() {
 								send(jsStr);
 								Obje = obj;
 								Inst = inst;
+
 							});
+
 						}
 					},
 					/*删除*/
@@ -114,80 +128,157 @@ var UITree = function() {
 
 									Inst = inst;
 									Obje = obj;
+
 								}
 							})
+
 						}
 					},
-					"ccp": {
-						"separator_before": true,
-						"icon": false,
-						"separator_after": false,
-						"label": "复制/粘贴",
-						"action": false,
-						"submenu": {
-							"cut": {
-								"separator_before": false,
-								"separator_after": false,
-								"label": "剪切",
-								"action": function(data) {
-									var inst = $.jstree.reference(data.reference),
-										obj = inst.get_node(data.reference);
-									if(inst.is_selected(obj)) {
-										inst.cut(inst.get_top_selected());
-									} else {
-										inst.cut(obj);
-									}
+					/*移动*/
+				/*	"move": {
+						"label": "移动",
+						"action": function(data) {
+							console.log(data.node)
+							var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+							//var node = _menu.data.jsTree.jstree('get_node',data.reference[0]);
+							var next_dom = data.reference.closest("li").next();
+							//$.operation.sortMenu(obj, next_dom);
+
+						}
+					},*/
+	
+			/*	"ccp" : {
+					"separator_before"	: true,
+					"icon"				: false,
+					"separator_after"	: false,
+					"label"				: "复制/粘贴",
+					"action"			: false,
+					"submenu" : {
+						"cut" : {
+							"separator_before"	: false,
+							"separator_after"	: false,
+							"label"				: "剪切",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+								if(inst.is_selected(obj)) {
+									inst.cut(inst.get_top_selected());
 								}
-							},
-							"copy": {
-								"separator_before": false,
-								"icon": false,
-								"separator_after": false,
-								"label": "复制",
-								"action": function(data) {
-									var inst = $.jstree.reference(data.reference),
-										obj = inst.get_node(data.reference);
-									if(inst.is_selected(obj)) {
-										inst.copy(inst.get_top_selected());
-									} else {
-										inst.copy(obj);
-									}
-								}
-							},
-							"paste": {
-								"separator_before": false,
-								"icon": false,
-								"separator_after": false,
-								"label": "粘贴",
-								"action": function(data) {
-									var inst = $.jstree.reference(data.reference),
-										obj = inst.get_node(data.reference);
-									inst.paste(obj);
+								else {
+									inst.cut(obj);
 								}
 							}
+						},
+						"copy" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							"separator_after"	: false,
+							"label"				: "复制",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+									console.log(obj);
+									console.log(inst);
+								if(inst.is_selected(obj)) {
+									inst.copy(inst.get_top_selected());
+								}
+								else {
+									inst.copy(obj);
+								}
+							}
+						},
+						"paste" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							
+							"separator_after"	: false,
+							"label"				: "粘贴",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+									console.log(obj);
+									console.log(inst);
+								inst.paste(obj);
+							}
 						}
+					
 					}
+				}*/
+			
+				"cut" : {
+							"separator_before"	: false,
+							"separator_after"	: false,
+							"label"				: "剪切",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+								if(inst.is_selected(obj)) {
+									inst.cut(inst.get_top_selected());
+								}
+								else {
+									inst.cut(obj);
+								}
+							}
+						},
+						"copy" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							"separator_after"	: false,
+							"label"				: "复制",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+									console.log(obj);
+									console.log(inst);
+								if(inst.is_selected(obj)) {
+									inst.copy(inst.get_top_selected());
+								}
+								else {
+									inst.copy(obj);
+								}
+							}
+						},
+						"paste" : {
+							"separator_before"	: false,
+							"icon"				: false,
+							/*"_disabled"			: function (data) {
+								return !$.jstree.reference(data.reference).can_paste();
+							},*/
+							"separator_after"	: false,
+							"label"				: "粘贴",
+							"action"			: function (data) {
+								var inst = $.jstree.reference(data.reference),
+									obj = inst.get_node(data.reference);
+									console.log(obj);
+									console.log(inst);
+								inst.paste(obj);
+							}
+						}
+					
 				}
 			},
 
-			"plugins": ["contextmenu", "state", "types", "dnd"]
+			"plugins": ["contextmenu", "state", "types","dnd"]
 		});
 
 		$('#tree_3').bind("activate_node.jstree", function(obj, e) {
 
 			currentNode = e.node;
 		});
-		$("#tree_3").bind('move_node.jstree', function(e, data) {
-			console.log(data.node.id) //移动节点的id
-			console.log(data.parent) //移动后父节点的id
-			console.log(data.position) //移动后所在父节点的位置，第一个位置为0
+		$("#tree_3").bind('move_node.jstree', function (e, data){
+			// console.log(data.node.id)//移动节点的id
+			 //console.log(data.parent)//移动后父节点的id
+			// console.log(data.position)//移动后所在父节点的位置，第一个位置为0
 
 		});
 		$("#tree_3").bind("click.jstree", function(obj, e) {
 
 			var jsStr = "ModuleListByParent {\"id\":\"" + currentNode.id + "\"}";
 			send(jsStr);
+
 		});
+
 	}
 
 	//连接成功
@@ -198,14 +289,19 @@ var UITree = function() {
 		}
 
 		socket.send("ModuleListByTree");
+
 	}
 
 	return {
 		//main function to initiate the module
 		init: function() {
+
 			contextualMenuSample();
+
 		}
+
 	};
+
 }();
 
 if(App.isAngularJsApp() === false) {
@@ -222,6 +318,7 @@ if(App.isAngularJsApp() === false) {
 
 					str += "</tr>";
 				});
+
 			}
 
 			return str;
@@ -245,6 +342,7 @@ if(App.isAngularJsApp() === false) {
 						TreeData = result["data"];
 
 						UITree.init();
+						console.log(TreeData);
 						break;
 					case "AddModule":
 
@@ -280,6 +378,7 @@ if(App.isAngularJsApp() === false) {
 						$('#my_Modal_tree_Update').modal('hide');
 						$("#input_treeName_update").val("");
 						$("#inputTree_Update").val("icon-user-female");
+						/*$("#input_treeAddress_update").val("input_treeAddress_update");*/
 						Inst = "";
 						Obje = "";
 						break;
@@ -302,14 +401,19 @@ if(App.isAngularJsApp() === false) {
 							$(".right_row tbody").html("");
 						}
 						break;
+
 				}
+
 			}
 		}
+
 	});
 }
 
 //连接断开
 socket.onclose = function(event) {
+	//console.log("Socket状态:" + readyStatus[socket.readyState]);
+	//location.href = "http://www.baidu.com";
 	window.parent.location.href = "../Login.html";
 }
 
