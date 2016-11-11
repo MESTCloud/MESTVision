@@ -5,13 +5,14 @@ var Inst;
 var Obje;
 var currentNode;
 var Tree_Url;
-
+var objCopyorCut;
 $(document).ready(function() {
 	/*菜单：设置自适应滚动条*/
-	$("#divmenu").css("height", pFrameHeight - pTitleHeight - 30);
+	var height=pFrameHeight - pTitleHeight - 30;
+	$("#divmenu").css("height", height);
 
 	/*详细信息：设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
+	$("#divtable").css("height", height);
 });
 var UITree = function() {
 
@@ -134,141 +135,75 @@ var UITree = function() {
 
 						}
 					},
-					/*移动*/
-				/*	"move": {
-						"label": "移动",
+
+					"cut": {
+						"separator_before": false,
+						"separator_after": false,
+						"label": "剪切",
 						"action": function(data) {
-							console.log(data.node)
+							var inst = $.jstree.reference(data.reference);
+								objCopyorCut = inst.get_node(data.reference);
+							console.log(objCopyorCut);
+							if(inst.is_selected(objCopyorCut)) {
+								inst.cut(inst.get_top_selected());
+							} else {
+								inst.cut(objCopyorCut);
+							}
+						}
+					},
+					"copy": {
+						"separator_before": false,
+						"icon": false,
+						"separator_after": false,
+						"label": "复制",
+						"action": function(data) {
+							var inst = $.jstree.reference(data.reference);
+								objCopyorCut = inst.get_node(data.reference);
+							console.log(objCopyorCut);
+
+							if(inst.is_selected(objCopyorCut)) {
+								inst.copy(inst.get_top_selected());
+							} else {
+								inst.copy(objCopyorCut);
+							}
+						}
+					},
+					"paste": {
+						"separator_before": false,
+						"icon": false,
+						/*"_disabled"			: function (data) {
+							return !$.jstree.reference(data.reference).can_paste();
+						},*/
+						"separator_after": false,
+						"label": "粘贴",
+						"action": function(data) {
+							
+							if(objCopyorCut!="")
+							{
+								console.log(objCopyorCut["id"]+","+objCopy["children"].join(','))
+							}
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-							//var node = _menu.data.jsTree.jstree('get_node',data.reference[0]);
-							var next_dom = data.reference.closest("li").next();
-							//$.operation.sortMenu(obj, next_dom);
-
-						}
-					},*/
-	
-			/*	"ccp" : {
-					"separator_before"	: true,
-					"icon"				: false,
-					"separator_after"	: false,
-					"label"				: "复制/粘贴",
-					"action"			: false,
-					"submenu" : {
-						"cut" : {
-							"separator_before"	: false,
-							"separator_after"	: false,
-							"label"				: "剪切",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-								if(inst.is_selected(obj)) {
-									inst.cut(inst.get_top_selected());
-								}
-								else {
-									inst.cut(obj);
-								}
-							}
-						},
-						"copy" : {
-							"separator_before"	: false,
-							"icon"				: false,
-							"separator_after"	: false,
-							"label"				: "复制",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-									console.log(obj);
-									console.log(inst);
-								if(inst.is_selected(obj)) {
-									inst.copy(inst.get_top_selected());
-								}
-								else {
-									inst.copy(obj);
-								}
-							}
-						},
-						"paste" : {
-							"separator_before"	: false,
-							"icon"				: false,
 							
-							"separator_after"	: false,
-							"label"				: "粘贴",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-									console.log(obj);
-									console.log(inst);
-								inst.paste(obj);
-							}
+
+							inst.paste(obj);
 						}
-					
 					}
-				}*/
-			
-				"cut" : {
-							"separator_before"	: false,
-							"separator_after"	: false,
-							"label"				: "剪切",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-								if(inst.is_selected(obj)) {
-									inst.cut(inst.get_top_selected());
-								}
-								else {
-									inst.cut(obj);
-								}
-							}
-						},
-						"copy" : {
-							"separator_before"	: false,
-							"icon"				: false,
-							"separator_after"	: false,
-							"label"				: "复制",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-									console.log(obj);
-									console.log(inst);
-								if(inst.is_selected(obj)) {
-									inst.copy(inst.get_top_selected());
-								}
-								else {
-									inst.copy(obj);
-								}
-							}
-						},
-						"paste" : {
-							"separator_before"	: false,
-							"icon"				: false,
-							/*"_disabled"			: function (data) {
-								return !$.jstree.reference(data.reference).can_paste();
-							},*/
-							"separator_after"	: false,
-							"label"				: "粘贴",
-							"action"			: function (data) {
-								var inst = $.jstree.reference(data.reference),
-									obj = inst.get_node(data.reference);
-									console.log(obj);
-									console.log(inst);
-								inst.paste(obj);
-							}
-						}
-					
+
 				}
 			},
 
-			"plugins": ["contextmenu", "state", "types","dnd"]
+			"plugins": ["contextmenu", "state", "types", "dnd"]
 		});
 
 		$('#tree_3').bind("activate_node.jstree", function(obj, e) {
 
 			currentNode = e.node;
 		});
-		$("#tree_3").bind('move_node.jstree', function (e, data){
+		/*移动*/
+		$("#tree_3").bind('move_node.jstree', function(e, data) {
 			// console.log(data.node.id)//移动节点的id
-			 //console.log(data.parent)//移动后父节点的id
+			//console.log(data.parent)//移动后父节点的id
 			// console.log(data.position)//移动后所在父节点的位置，第一个位置为0
 
 		});

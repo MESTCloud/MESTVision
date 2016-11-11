@@ -84,11 +84,38 @@ tbody tr{cursor: pointer}
 
 /*趋势*/
 .rhTrendleft{
-	width:20%;
-    border-left:1px solid #e7ecf1;
-     border-bottom:1px solid #e7ecf1;
+	width:19%;
+    border:1px solid #e7ecf1;
+     /*border-bottom:1px solid #e7ecf1;*/
+     margin-left:1%;
     float: left;
 }
+
+.rhTrendleftTitle{
+	background-color: #EDF1F5;
+	-webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -ms-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    min-height: 41px;
+    
+}
+.rhTrendleft .container-fluid{
+	margin-left: 10%;
+	padding-left: 10%;
+}
+.rhTrendleft .row{`
+	margin-left: 0px;
+}
+.rhTrendleft .portlet.box>.portlet-body{
+	padding: 5px;
+}
+.table-scrollable{
+	width: 100%;
+	overflow: auto;
+}
+
 
 .rhTrendright{
 	width:80%;
@@ -97,17 +124,16 @@ tbody tr{cursor: pointer}
 }
 
 .rhTrendright_right{
-	width:20%;
+	width:19%;
 	margin-top: 0;
+	padding-right:1% ;
 	float: left;
 	border: 1px solid #e7ecf1;
 }
-
-.minicolors-slider-hue{
-	overflow: auto;
-	width: 100%;
-	
+.rhTrendright_right_top{
+	  overflow-x: auto;
 }
+
 
 .rhTrendright_top,.rhTrendright_middle,.rhTrendright_bottom{
 	border: 1px solid #e7ecf1;

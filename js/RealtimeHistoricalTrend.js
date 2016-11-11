@@ -13,6 +13,7 @@ jQuery(document).ready(function() {
 	$(".rhTrendright_top").css("height",height*0.3);
 	$(".rhTrendright_middle").css("height",height*0.35);
 	$(".rhTrendright_bottom").css("height",height*0.35);
+	$(".rhTrendright_right_top").css("height",height);
 	/*.rhTrendright_middle,.rhTrendright_bottom*/
 	var timeTicket; /*定时器*/
 	var trId = "";/*存放点击id*/
