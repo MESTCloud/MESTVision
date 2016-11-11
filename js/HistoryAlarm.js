@@ -108,7 +108,9 @@ socket.onopen = function() {
 
 //收到消息
 socket.onmessage = function(msg) {
+	
 	var result = msg.data;
+	
 	if(typeof result == "string") {
 		result = JSON.parse(result);
 		if(result["error"]) {
@@ -156,11 +158,12 @@ socket.onmessage = function(msg) {
 				link.click();　　
 			}　　
 			else {　　
+				alert()
 				var evt = document.createEvent("MouseEvents");　　
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			window.URL.revokeObjectURL(link.href);
+			/*window.URL.revokeObjectURL(link.href);*/
 		} catch(e) {
 			shalert("导出时出现问题，请联系管理员");
 			return false;

@@ -227,11 +227,12 @@ socket.onmessage = function(msg) {
 				link.click();　　
 			}　　
 			else {　　
+				
 				var evt = document.createEvent("MouseEvents");　　
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			window.URL.revokeObjectURL(link.href);
+			/*window.URL.revokeObjectURL(link.href);*/
 		} catch(e) {
 			shalert("由于网络问题导出时出现问题,请联系管理员");
 			return false;
@@ -239,20 +240,12 @@ socket.onmessage = function(msg) {
 	}
 
 }　
-function clickObj(obj) {　　
-	if(document.all) {　　
-		obj.click();　　
-	}　　
-	else {　　
-		var evt = document.createEvent("MouseEvents");　　
-		evt.initEvent("click", true, true);　　
-		obj.dispatchEvent(evt);　　
-	}　　
-}
+
 
 //连接断开
 socket.onclose = function(event) {
 	window.parent.location.href = "../Login.html";
+	
 }
 
 //发送

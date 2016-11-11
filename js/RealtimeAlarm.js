@@ -323,7 +323,7 @@ socket.onmessage = function(msg) {
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			window.URL.revokeObjectURL(link.href);
+			/*window.URL.revokeObjectURL(link.href);*/
 
 		} catch(e) {
 			shalert(e);
