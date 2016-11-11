@@ -108,61 +108,66 @@ socket.onopen = function() {
 
 //收到消息
 socket.onmessage = function(msg) {
-		var result = msg.data;
-		if(typeof result == "string") {
-			result = JSON.parse(result);
-			if(result["error"]) {
-				shalert(result["error"]);
-			}
-			/*else if(result["exception"]) {
-				shalert(result["exception"]);
-			} */
-			else {
-				switch(result["Function"]) {
-					case "HisAlarmInfo":
-						if(result["data"].length == 0) {
-							shalert("查无资料");
-						}
-						$("tbody").html(bindTable(result["data"]));
-						break;
+	var result = msg.data;
+	if(typeof result == "string") {
+		result = JSON.parse(result);
+		if(result["error"]) {
+			shalert(result["error"]);
+		}
+		/*else if(result["exception"]) {
+			shalert(result["exception"]);
+		} */
+		else {
+			switch(result["Function"]) {
+				case "HisAlarmInfo":
+					if(result["data"].length == 0) {
+						shalert("查无资料");
+					}
+					$("tbody").html(bindTable(result["data"]));
+					break;
 
-					case "CheckHisAlarmInfo":
-						if(result["data"].length == 0) {
-							shalert("查无资料");
-						}
-						$("tbody").html(bindTable(result["data"]));
+				case "CheckHisAlarmInfo":
+					if(result["data"].length == 0) {
+						shalert("查无资料");
+					}
+					$("tbody").html(bindTable(result["data"]));
 
-						break;
-					case "OutputHisAlarmInfo":
+					break;
+				case "OutputHisAlarmInfo":
 
-						var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
-						fileName1 = result["info"].replace("\\", "/");
-						send(jsStr);
-						break;
+					var jsStr = "DownLoadFile {\"filename\":\"" + result["info"].replace("\\", "/") + "\"}";
+					fileName1 = result["info"].replace("\\", "/");
+					send(jsStr);
+					break;
 
-				}
-			}
-		} else {
-			try {
-				var blob = new Blob([msg.data], {
-						type: "applicationnd.ms-excel"
-					}),
-					fileName = fileName1.split('/')[1];
-				var link = document.createElement('a');
-				/*link.href = window.URL.createObjectURL(blob);*/
-				link.href = window.URL.createObjectURL(blob);
-				alert(1);
-				//alert(link.href);
-				link.download = fileName;
-				link.click();
-				window.URL.revokeObjectURL(link.href);
-			} catch(e) {
-				shalert("导出时出现问题，请联系管理员");
-				return false;
 			}
 		}
-
+	} else {
+		try {
+			var blob = new Blob([msg.data], {
+					type: "applicationnd.ms-excel"
+				}),
+				fileName = fileName1.split('/')[1];
+			var link = document.createElement('a');
+			window.URL = window.URL || window.webkitURL;
+			link.href = window.URL.createObjectURL(blob);
+			link.download = fileName;
+			if(document.all) {　　
+				link.click();　　
+			}　　
+			else {　　
+				var evt = document.createEvent("MouseEvents");　　
+				evt.initEvent("click", true, true);　　
+				link.dispatchEvent(evt);　　
+			}
+			window.URL.revokeObjectURL(link.href);
+		} catch(e) {
+			shalert("导出时出现问题，请联系管理员");
+			return false;
+		}
 	}
+
+}
 
 //连接断开
 socket.onclose = function(event) {

@@ -213,7 +213,7 @@ function senddata() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
-	if(typeof result == "string") {
+	if(typeof result=="string") {
 		result = JSON.parse(result);
 		if(result["error"]) {
 			shalert(result["error"]);
@@ -312,9 +312,17 @@ socket.onmessage = function(msg) {
 				}),
 				fileName = fileName1.split('/')[1];
 			var link = document.createElement('a');
+			window.URL=window.URL||window.webkitURL;
 			link.href = window.URL.createObjectURL(blob);
 			link.download = fileName;
-			link.click();
+			if(document.all) {　　
+				link.click();　　
+			}　　
+			else {　　
+				var evt = document.createEvent("MouseEvents");　　
+				evt.initEvent("click", true, true);　　
+				link.dispatchEvent(evt);　　
+			}
 			window.URL.revokeObjectURL(link.href);
 
 		} catch(e) {

@@ -49,7 +49,7 @@
 			</div>
 			<div class="portlet-body">
 				<!--日报表-->
-				<div class="row" id="divday">
+				<div class="row div_condition" id="divday">
 					<div class="col-md-4 text-left" style="padding-left: 20px;">
 						开始日期：<input type="text" id="startTime1" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss'})" class="Wdate" size="24" />
 					</div>
@@ -59,7 +59,7 @@
 				</div>
 
 				<!-- 月报表-->
-				<div class="row" id="divmonth" style="display: none;">
+				<div class="row div_condition" id="divmonth" style="display: none;">
 					<!-- 月报表-->
 					<div class="col-md-4 text-left" style="padding-left: 20px;">
 						日期：<input type="text" id="startTime2" onclick="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy-MM' })" class="Wdate" size="24" />
@@ -67,7 +67,7 @@
 				</div>
 
 				<!--年报表-->
-				<div class="row" id="divyear" style="display: none;">
+				<div class="row div_condition" id="divyear" style="display: none;">
 					<div class="col-md-4 text-left" style="padding-left: 20px;">
 						日期：<input type="text" id="startTime3" onclick="WdatePicker({skin: 'whyGreen', dateFmt: 'yyyy' })" class="Wdate" size="24" />
 					</div>
@@ -94,8 +94,9 @@
 		<script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
 		<script src="../js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="../js/socket.js"></script>
-		<script src="../js/Reporting.js"></script>
 		<script src="../js/layout.js"></script>
+		<script src="../js/Reporting.js"></script>
+		
 	</body>
 
 </html>

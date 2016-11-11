@@ -701,19 +701,19 @@ socket.onmessage = function(msg) {
 						};
 
 						AlarmTagData.push(obj);
-						
+
 						/*清空*/
 						$("#dot_Add_B").val("");
 						$("#inputdes_Add_B").val("");
 						$("#inputcall_Add_B").val("1");
 						$("#ItemAlarmBoolValue_B").val("0");
 						$("#type_Add_B").val("Boolean");
-						
+
 						/*动态的添加到页面*/
 						$("#tblSwitch tbody").prepend(AddtrSwitch(obj));
 					}
 					break;
-					
+
 				case "CollectorListByUsername":
 
 					if(result["data"].length == 0) {
@@ -734,9 +734,17 @@ socket.onmessage = function(msg) {
 			}),
 			fileName = fileName1; //'BaseTags.xls';
 		var link = document.createElement('a');
+		window.URL = window.URL || window.webkitURL;
 		link.href = window.URL.createObjectURL(blob);
 		link.download = fileName;
-		link.click();
+		if(document.all) {　　
+			link.click();　　
+		}　　
+		else {　　
+			var evt = document.createEvent("MouseEvents");　　
+			evt.initEvent("click", true, true);　　
+			link.dispatchEvent(evt);　　
+		}
 		window.URL.revokeObjectURL(link.href);
 	}
 }

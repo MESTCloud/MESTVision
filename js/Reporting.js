@@ -1,5 +1,10 @@
 var fileName1;
+var pConditionHeight = $(".div_condition").height();
+console.log(pConditionHeight);
+var height=pFrameHeight - pTitleHeight - pConditionHeight - 30;
 $(function() {
+	
+	
 	/*日历控件响应*/
 	switch(pType) {
 		case "day":
@@ -194,7 +199,8 @@ socket.onmessage = function(msg) {
 			if(result.indexOf("Login") >= 0) //初始化的时候返回的
 			{
 				/*显示excel*/
-				$("#ss1").attr("style", "height: 650px");
+				
+				$("#ss1").css("height",height);
 				$("#ss1").removeClass("imgstyle");
 				var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
 					sheetCount: 1
@@ -204,7 +210,7 @@ socket.onmessage = function(msg) {
 				$("#ss1").attr("style", "");
 				$("#ss1").removeClass("imgstyle");
 				$("#ss1").html(result);
-				$("#ss1").height("550px");
+				$("#ss1").css("height",height);
 			}
 		}
 	} else {
@@ -214,16 +220,34 @@ socket.onmessage = function(msg) {
 				}),
 				fileName = fileName1;
 			var link = document.createElement('a');
+			window.URL=window.URL||window.webkitURL;
 			link.href = window.URL.createObjectURL(blob);
 			link.download = fileName;
-			link.click();
+			if(document.all) {　　
+				link.click();　　
+			}　　
+			else {　　
+				var evt = document.createEvent("MouseEvents");　　
+				evt.initEvent("click", true, true);　　
+				link.dispatchEvent(evt);　　
+			}
 			window.URL.revokeObjectURL(link.href);
 		} catch(e) {
-			shalert("导出时出现问题，请联系管理员");
+			shalert("由于网络问题导出时出现问题,请联系管理员");
 			return false;
 		}
 	}
 
+}　
+function clickObj(obj) {　　
+	if(document.all) {　　
+		obj.click();　　
+	}　　
+	else {　　
+		var evt = document.createEvent("MouseEvents");　　
+		evt.initEvent("click", true, true);　　
+		obj.dispatchEvent(evt);　　
+	}　　
 }
 
 //连接断开
