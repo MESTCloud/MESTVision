@@ -1,14 +1,21 @@
 var fileName1;
 var pConditionHeight = $(".div_condition").height();
-console.log(pConditionHeight);
+
 var height=pFrameHeight - pTitleHeight - pConditionHeight - 30;
 $(function() {
 	
 	
 	/*日历控件响应*/
 	switch(pType) {
+		
 		case "day":
+		
+		   /* var sDate = new Date();
+		   
+		    $("#startTime1").val(formatDate(sDate, 0) + " 08：00：00");
+			$("#endTime1").val(formatDate(sDate, 0) + " 08：00：10");*/
 			$("#divday").show();
+			
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
@@ -148,7 +155,7 @@ $(function() {
 
 	/*导出execl*/
 	$("#btnOutputExcel").on("click", function() {
-		console.log($("link[rel=File-List]").attr("href"));
+		
 		if($("link[rel=File-List]").attr("href") != undefined) {
 			var rurl = $("link[rel=File-List]").attr("href").split('_');
 			fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
@@ -184,10 +191,11 @@ socket.onopen = function() {
 //收到消息
 socket.onmessage = function(msg) {
 	var result = msg.data;
+
 	if(typeof result == "string") {
 		var num = result.indexOf("exception");
 		if(num > 0) {
-			shalert("未找到模板文件");
+			/*shalert("未找到模板文件");*/
 			$("#ss1").attr("style", "height: 650px");
 			$("#ss1").removeClass("imgstyle");
 			$('#ss1 span').remove();
@@ -221,10 +229,16 @@ socket.onmessage = function(msg) {
 				fileName = fileName1;
 			var link = document.createElement('a');
 			window.URL=window.URL||window.webkitURL;
+			
+		  
 			link.href = window.URL.createObjectURL(blob);
+			
 			link.download = fileName;
+		
 			if(document.all) {　　
-				link.click();　　
+				link.click();　
+				window.URL.revokeObjectURL(link.href);
+			
 			}　　
 			else {　　
 				
@@ -232,9 +246,9 @@ socket.onmessage = function(msg) {
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			/*window.URL.revokeObjectURL(link.href);*/
+			
 		} catch(e) {
-			shalert("由于网络问题导出时出现问题,请联系管理员");
+			shalert("请使用谷歌/火狐/360浏览器导出文件");
 			return false;
 		}
 	}
