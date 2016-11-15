@@ -1,30 +1,41 @@
 var fileName1;
 var pConditionHeight = $(".div_condition").height();
 
-var height=pFrameHeight - pTitleHeight - pConditionHeight - 30;
+var height = pFrameHeight - pTitleHeight - pConditionHeight - 30;
 $(function() {
-	
-	
+
+	var sDate = new Date();
+	$("#endTime1").val(formatDate(sDate, 1));
+	var eDate = new Date(sDate.getTime() - 3600000);
+	$("#startTime1").val(formatDate(eDate, 1));
 	/*日历控件响应*/
 	switch(pType) {
-		
+
 		case "day":
-		
-		   /* var sDate = new Date();
-		   
-		    $("#startTime1").val(formatDate(sDate, 0) + " 08：00：00");
-			$("#endTime1").val(formatDate(sDate, 0) + " 08：00：10");*/
+			/*初始化*/
+
+			$("#endTime1").val(formatDate(sDate, 1));
+			var eDate = new Date(sDate.getTime() - 3600000);
+			$("#startTime1").val(formatDate(eDate, 1));
+
 			$("#divday").show();
-			
+
 			$("#divmonth").hide();
 			$("#divyear").hide();
 			break;
 		case "month":
+
+			var mt = sDate.getMonth() + 1;
+			var ye = sDate.getFullYear();
+			console.log(ye + "-" + mt)
+			$("#startTime2").val(ye + "-" + mt);
 			$("#divmonth").show();
 			$("#divday").hide();
 			$("#divyear").hide();
 			break;
 		case "year":
+			var ye = sDate.getFullYear();
+			$("#startTime3").val(ye)
 			$("#divyear").show();
 			$("#divday").hide();
 			$("#divmonth").hide();
@@ -95,6 +106,7 @@ $(function() {
 		switch(pType) {
 
 			case "day":
+
 				var startTime = $("#startTime1").val().trim();
 				var endTime = $("#endTime1").val().trim();
 
@@ -155,7 +167,7 @@ $(function() {
 
 	/*导出execl*/
 	$("#btnOutputExcel").on("click", function() {
-		
+
 		if($("link[rel=File-List]").attr("href") != undefined) {
 			var rurl = $("link[rel=File-List]").attr("href").split('_');
 			fileName1 = rurl[0] + "_" + rurl[1] + ".xls";
@@ -207,8 +219,8 @@ socket.onmessage = function(msg) {
 			if(result.indexOf("Login") >= 0) //初始化的时候返回的
 			{
 				/*显示excel*/
-				
-				$("#ss1").css("height",height);
+
+				$("#ss1").css("height", height);
 				$("#ss1").removeClass("imgstyle");
 				var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
 					sheetCount: 1
@@ -218,7 +230,7 @@ socket.onmessage = function(msg) {
 				$("#ss1").attr("style", "");
 				$("#ss1").removeClass("imgstyle");
 				$("#ss1").html(result);
-				$("#ss1").css("height",height);
+				$("#ss1").css("height", height);
 			}
 		}
 	} else {
@@ -228,25 +240,21 @@ socket.onmessage = function(msg) {
 				}),
 				fileName = fileName1;
 			var link = document.createElement('a');
-			window.URL=window.URL||window.webkitURL;
-			
-		  
+			window.URL = window.URL || window.webkitURL;
 			link.href = window.URL.createObjectURL(blob);
-			
 			link.download = fileName;
-		
 			if(document.all) {　　
 				link.click();　
 				window.URL.revokeObjectURL(link.href);
-			
+
 			}　　
 			else {　　
-				
+
 				var evt = document.createEvent("MouseEvents");　　
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			
+
 		} catch(e) {
 			shalert("请使用谷歌/火狐/360浏览器导出文件");
 			return false;
@@ -255,11 +263,10 @@ socket.onmessage = function(msg) {
 
 }　
 
-
 //连接断开
 socket.onclose = function(event) {
 	window.parent.location.href = "../Login.html";
-	
+
 }
 
 //发送
