@@ -729,7 +729,8 @@ socket.onmessage = function(msg) {
 		}
 
 	} else {
-		var blob = new Blob([msg.data], {
+		try{
+			var blob = new Blob([msg.data], {
 				type: "applicationnd.ms-excel"
 			}),
 			fileName = fileName1; //'BaseTags.xls';
@@ -738,14 +739,22 @@ socket.onmessage = function(msg) {
 		link.href = window.URL.createObjectURL(blob);
 		link.download = fileName;
 		if(document.all) {　　
-			link.click();　　
+			link.click();
+			window.URL.revokeObjectURL(link.href);　　
 		}　　
 		else {　　
 			var evt = document.createEvent("MouseEvents");　　
 			evt.initEvent("click", true, true);　　
 			link.dispatchEvent(evt);　　
 		}
-		/*window.URL.revokeObjectURL(link.href);*/
+		
+		}
+		catch(e)
+		{
+			shalert("请使用谷歌/火狐浏览器导出Excel");
+			return false;
+		}
+		
 	}
 }
 
