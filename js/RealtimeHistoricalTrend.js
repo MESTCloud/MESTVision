@@ -2,29 +2,30 @@ jQuery(document).ready(function() {
 	// ECHARTS
 	require.config({
 		paths: {
+
 			echarts: '../resource/echarts/'
 		}
 	});
-	var height=pFrameHeight - pTitleHeight - 30;
-	$(".rhTrendleft").css("height",height);
-	$(".rhTrendright").css("height",height);
-	$(".rhTrendright_right").css("height",height);
-	
-	$(".rhTrendright_top").css("height",height*0.3);
-	$(".rhTrendright_middle").css("height",height*0.35);
-	$(".rhTrendright_bottom").css("height",height*0.35);
-	$(".rhTrendright_right_top").css("height",height);
+	var height = pFrameHeight - pTitleHeight - 30;
+	$(".rhTrendleft").css("height", height);
+	$(".rhTrendright").css("height", height);
+	$(".rhTrendright_right").css("height", height);
+
+	$(".rhTrendright_top").css("height", height * 0.3);
+	$(".rhTrendright_middle").css("height", height * 0.35);
+	$(".rhTrendright_bottom").css("height", height * 0.35);
+	$(".rhTrendright_right_top").css("height", height);
 	/*.rhTrendright_middle,.rhTrendright_bottom*/
 	var timeTicket; /*定时器*/
-	var trId = "";/*存放点击id*/
-	var colorItem=0;/*存储颜色id*/
+	var trId = ""; /*存放点击id*/
+	var colorItem = 0; /*存储颜色id*/
 	// DEMOS
 	require(
 		[
 			'echarts',
-			
+
 			'echarts/chart/line',
-			
+
 		],
 		function(ec) {
 			/*查询*/
@@ -54,7 +55,7 @@ jQuery(document).ready(function() {
 					"description": "描述"
 				}]
 				/*模拟笔组集合 在选择笔组后保存到tagGropList*/
-			var tagGropList=[];
+			var tagGropList = [];
 
 			var echartData = {
 				seriesData: [{
@@ -94,19 +95,19 @@ jQuery(document).ready(function() {
 			}
 
 			var strokeGroupList = [{
-					"id": "1",
-					"Groupname": "空压机"
-				}, {
-					"id": "2",
-					"Groupname": "test"
-				}]
-				var colorArray = [
-						'#ff7f50',  '#87cefa', '#da70d6','#32cd32', '#6495ed',
-						'#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-						'#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-						'#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-					]; /*颜色初始化*/
-				//时间初始化
+				"id": "1",
+				"Groupname": "空压机"
+			}, {
+				"id": "2",
+				"Groupname": "test"
+			}]
+			var colorArray = [
+				'#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
+				'#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+				'#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+				'#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+			]; /*颜色初始化*/
+			//时间初始化
 
 			var sDate = new Date();
 
@@ -146,13 +147,13 @@ jQuery(document).ready(function() {
 			/*数据绑定*/
 			$(".rhTrendleft tbody").html(tagListbind(tagList));
 			/*tr 的点击事件*/
-			
+
 			$(".rhTrendleft tbody tr").on("click", function() {
-				
+
 				$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 				if(isExist($(this).attr("id"))) {
 					/*页面动态加载*/
-                    [tagList[$(this).attr("data-index")]][0]["Color"]=colorArray[colorItem];
+					[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 					$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
 					$(".rhTrendright_bottom tbody tr").click(function() {
 						colorStyle($(this));
@@ -193,35 +194,34 @@ jQuery(document).ready(function() {
 			$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
 			/*笔组切换*/
 			$("#input_strokegrouplist").on("change", function() {
-				var strokeGroup=[{
-				"id": "1",
-				"Tagname": "GPY00_N60_YM3_KC1",
-				"description": "描述",
-				"Color": "#0000FF",
+				var strokeGroup = [{
+					"id": "1",
+					"Tagname": "GPY00_N60_YM3_KC1",
+					"description": "描述",
+					"Color": "#0000FF",
 
-			}, {
-				"id": "3",
-				"Tagname": "GPY00_N60_YM3_KC3",
-				"description": "描述",
-				"Color": "#009DC7",
+				}, {
+					"id": "3",
+					"Tagname": "GPY00_N60_YM3_KC3",
+					"description": "描述",
+					"Color": "#009DC7",
 
-			}, {
-				"id": "5",
-				"Tagname": "GPY00_N60_YM3_KC5",
-				"description": "描述",
-				
-			}]
-             $.each(strokeGroup,function(index,data){
-             	if(isExist(data["id"]))
-             	{
-             		tagGropList.push(data);
-             	}
-             });
-			$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-				
+				}, {
+					"id": "5",
+					"Tagname": "GPY00_N60_YM3_KC5",
+					"description": "描述",
+
+				}]
+				$.each(strokeGroup, function(index, data) {
+					if(isExist(data["id"])) {
+						tagGropList.push(data);
+					}
+				});
+				$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
+
 				//$(this).val();
 				/*笔组关联点的数据加载*/
-				
+
 				/*点击笔组关联tr*/
 				$(".rhTrendright_bottom tbody tr").on("click", function() {
 
@@ -247,29 +247,23 @@ jQuery(document).ready(function() {
 			});
 			//删除笔
 			$("#btn_Delstroke").click(function() {
-			
-               if(trId!="")
-               {
-               	if(tagGropList!=null)
-               	{
-               		   
-               		   for(var i=0;i<tagGropList.length;i++)
-               		   {
-               		   	 if(("tagGrop"+tagGropList[i]["id"])==trId)
-               		   	 {
-               		   	 	
-               		   	 	tagGropList.splice(i,1);
-               		   	 }
-               		   }
-               	
-               		$("#"+trId).remove();
-               
-               		
-               	
-               	}
-               }else{
-               	shalert("请选择要删除的笔")
-               }
+
+				if(trId != "") {
+					if(tagGropList != null) {
+
+						for(var i = 0; i < tagGropList.length; i++) {
+							if(("tagGrop" + tagGropList[i]["id"]) == trId) {
+
+								tagGropList.splice(i, 1);
+							}
+						}
+
+						$("#" + trId).remove();
+
+					}
+				} else {
+					shalert("请选择要删除的笔")
+				}
 			});
 			/*颜色版加载*/
 
@@ -291,7 +285,7 @@ jQuery(document).ready(function() {
 							if(trId != "") {
 								$.each(tagGropList, function(index, data) {
 
-									if(("tagGrop"+data["id"]) == trId) {
+									if(("tagGrop" + data["id"]) == trId) {
 										$(this)[0]["Color"] = hex;
 
 									}
@@ -301,12 +295,10 @@ jQuery(document).ready(function() {
 
 									//	$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style", "background-color: #DAF3F5");
 									trId = $(this).attr("id");
-									
-							
+
 								});
 							}
 
-							
 						}
 					},
 
@@ -354,11 +346,11 @@ jQuery(document).ready(function() {
 			// --- LINE ---
 			var myChart = ec.init(document.getElementById('echarts_line'));
 			var option = {
-				
+
 				tooltip: {
 					trigger: 'axis'
 				},
-			
+
 				toolbox: {
 					show: true,
 					feature: {
@@ -374,7 +366,7 @@ jQuery(document).ready(function() {
 						}
 					}
 				},
-			
+
 				xAxis: [{
 					type: 'category',
 					boundaryGap: false,
@@ -453,7 +445,7 @@ jQuery(document).ready(function() {
 							name: ''
 						}],
 						series: []
-						
+
 					};
 
 					option.series = [];
@@ -507,7 +499,7 @@ jQuery(document).ready(function() {
 						lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
 						lastData = lastData.toFixed(1) - 0;
 
-						axisData = formatDate(new Date(), 0)+" " + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+						axisData = formatDate(new Date(), 0) + " " + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
 						var dataArray = new Array();
 
@@ -542,6 +534,8 @@ jQuery(document).ready(function() {
 					}, intervalValue);
 				}
 			});
+		
+
 			/*历史趋势*/
 			$("#btn_history").on("click", function() {
 				historyLineFunction();
