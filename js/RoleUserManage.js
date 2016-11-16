@@ -5,29 +5,11 @@ $(function() {
 
 	/*用户：设置自适应滚动条*/
 	$("#divuser").css("height", pFrameHeight - pTitleHeight - 30);
-
-	$("#checkAll").click(
-		function() {
-			if(this.checked) {
-
-				$("input[name='check_table']").prop('checked', true);
-
-			} else {
-				$("input[name='check_table']").prop('checked', false);
-
-			}
-		}
-	);
+	checkAll("#checkAll","check_table");
+	
 
 	$("tbody").bind("click", function() {
-		var $check = $("input[name='check_table']:checked");
-		var ototal = $check.length;
-
-		if($("input[name='check_table']").length == ototal) {
-			$("#checkAll").prop("checked", true);
-		} else {
-			$("#checkAll").prop("checked", false);
-		}
+		radioAll("#checkAll","check_table");
 	});
 
 	$("#RoleUser_Add").on("click", function() {

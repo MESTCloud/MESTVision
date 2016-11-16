@@ -59,50 +59,22 @@ $(function() {
 		}
 	});
 
-	/*全选 反选 模拟量*/
-	$("#checkAll").click(
-		function() {
-			if(this.checked) {
-				$("input[name='check_table']").prop('checked', true);
-			} else {
-				$("input[name='check_table']").prop('checked', false);
-			}
-		}
-	);
-
+    /*全选 反选 模拟量*/
+	checkAll("#checkAll","check_table");
 	/*全选 反选 开关量*/
-	$("#checkAll1").click(
-		function() {
-			if(this.checked) {
-				$("input[name='check_table1']").prop('checked', true);
-			} else {
-				$("input[name='check_table1']").prop('checked', false);
-			}
-		}
-	);
+	checkAll("#checkAll1","check_table1");
+
 
 	/*单选全选后,全选按钮选中*/
 	$("tbody").bind("click", function() {
 		/*模拟量*/
 		if(dataType == "DoubleFloat") {
-			var $check = $("input[name='check_table']:checked");
-			var ototal = $check.length;
-
-			if($("input[name='check_table']").length == ototal) {
-				$("#checkAll").prop("checked", true);
-			} else {
-				$("#checkAll").prop("checked", false);
-			}
+		
+			radioAll("#checkAll","check_table");
 		} else //开关量
 		{
-			var $check = $("input[name='check_table1']:checked");
-			var ototal = $check.length;
-
-			if($("input[name='check_table1']").length == ototal) {
-				$("#checkAll1").prop("checked", true);
-			} else {
-				$("#checkAll1").prop("checked", false);
-			}
+			radioAll("#checkAll1","check_table1");
+			
 		}
 	});
 

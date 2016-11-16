@@ -8,24 +8,10 @@ $(function() {
 	$("#divtable").css("height", pFrameHeight - pTitleHeight - 30);
 
 	/*全选 反选*/
-	$("#checkAll").click(
-		function() {
-			if(this.checked) {
-				$("input[name='check_table']").prop('checked', true);
-			} else {
-				$("input[name='check_table']").prop('checked', false);
-			}
-		}
-	);
-
+	checkAll("#checkAll","check_table");
+	/*单选全部选中后，全选按钮选中*/
 	$("tbody").bind("click", function() {
-		var $check = $("input[name='check_table']:checked");
-		var ototal = $check.length;
-		if($("input[name='check_table']").length == ototal) {
-			$("#checkAll").prop("checked", true);
-		} else {
-			$("#checkAll").prop("checked", false);
-		}
+		radioAll("#checkAll","check_table");
 	});
 
 	/*删除user_delete*/

@@ -42,26 +42,11 @@ function AddRole(datatable) {
 /*复选框操作*/
 $(function() {
 	/*全选 反选*/
-	$("#checkAll").click(
-		function() {
-			if(this.checked) {
-				$("input[name='check_table']").prop('checked', true);
-			} else {
-				$("input[name='check_table']").prop('checked', false);
-			}
-		}
-	);
-
+	
+	checkAll("#checkAll","check_table");
 	$("tbody").click(function() {
-		var $check = $("input[name='check_table']:checked");
-		var ototal = $check.length;
-
-		if($("input[name='check_table']").length == ototal) {
-			$("#checkAll").prop("checked", true);
-		} else {
-			$("#checkAll").prop("checked", false);
-		}
-
+	
+          radioAll("#checkAll","check_table");
 	});
 
 	/*删除user_delete*/

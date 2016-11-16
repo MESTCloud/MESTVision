@@ -70,3 +70,30 @@ function formatDate(date, type) {
 	}
 
 }
+
+	/*全选 反选 */
+	function checkAll(CheckClick,checkName)
+	{
+		$(CheckClick).click(
+		function() {
+			if(this.checked) {
+				$("input[name='"+checkName+"']").prop('checked', true);
+			} else {
+				$("input[name='"+checkName+"']").prop('checked', false);
+			}
+		}
+	);
+	}
+	/*单选全部选中后，全选按钮选中*/
+	function radioAll(checkAll,checkName)
+	{
+		var $check = $("input[name='"+checkName+"']:checked");
+			var ototal = $check.length;
+
+			if($("input[name='"+checkName+"']").length == ototal) {
+				$(checkAll).prop("checked", true);
+			} else {
+				$(checkAll).prop("checked", false);
+			}
+	}
+	
