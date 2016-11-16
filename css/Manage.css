@@ -137,13 +137,12 @@ tbody tr{cursor: pointer}
 
 .rhTrendright_top,.rhTrendright_middle,.rhTrendright_bottom{
 	border: 1px solid #e7ecf1;
-	
+	overflow: auto;
 }
 
 .rhTrendright_top{
 	height: 300px;
-	overflow-y: auto;
-    overflow-x: auto;
+	
 }
 
 .rhTrendright_top .row{
@@ -152,13 +151,11 @@ tbody tr{cursor: pointer}
 
 .rhTrendright_middle{
 	height: 250px;
-	overflow: auto;
 	border-top: 0px;
 }
 
 .rhTrendright_bottom{
 	height: 200px;
-	overflow: auto;
 	border-top: 0px;
 }
 
