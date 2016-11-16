@@ -3,8 +3,8 @@ var fileName1;
 
 $(document).ready(function() {
 	/*设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
-
+  	$(".rowcolor").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
+      
 	/*查询按钮点击事件*/
 	$("#btn_check").click(function() {
 
@@ -156,6 +156,7 @@ socket.onmessage = function(msg) {
 			link.download = fileName;
 			if(document.all) {　　
 				link.click();　　
+				window.URL.revokeObjectURL(link.href);
 			}　　
 			else {　　
 				alert()
@@ -163,9 +164,9 @@ socket.onmessage = function(msg) {
 				evt.initEvent("click", true, true);　　
 				link.dispatchEvent(evt);　　
 			}
-			/*window.URL.revokeObjectURL(link.href);*/
+			
 		} catch(e) {
-			shalert("导出时出现问题，请联系管理员");
+			shalert("请使用谷歌/火狐浏览器导出EXCEL");
 			return false;
 		}
 	}

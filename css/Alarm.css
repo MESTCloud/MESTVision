@@ -29,12 +29,9 @@
 
 .rowcolor {
 	width: 100%;
+	overflow: auto;
 }
 
-body {
-	-webkit-overflow-scrolling: touch;
-	overflow-scrolling: touch;
-}
 
 
 /*iphone5*/
@@ -42,16 +39,16 @@ body {
 
 @media screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: landscape) {
 	.rowcolor {
-		width: 500px;
+		width: 568px;
 	}
 }
 
 @media screen and (min-device-width: 320px) and (max-device-width: 568px) and (orientation: portrait) {
 	.rowcolor {
-		width: 315px;
+		width: 320px;
 	}
 	.portlet-title {
-		width: 315px;
+		width: 320px;
 	}
 }
 
@@ -60,16 +57,16 @@ body {
 /*横屏*/
 @media screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) {
 	.rowcolor {
-		width: 600px;
+		width: 667px;
 	}
 }
 
 @media screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: portrait) {
 	.rowcolor {
-		width: 355px;
+		width: 375px;
 	}
 	.portlet-title {
-		width: 360px;
+		width: 375px;
 	}
 }
 
@@ -78,12 +75,15 @@ body {
 /*横屏*/
 @media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
 	.rowcolor {
-		width: 600px;
+		width: 736px;
 	}
 }
 
 @media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: portrait) {
 	.rowcolor {
+		width: 414px;
+	}
+	.portlet-title {
 		width: 414px;
 	}
 }

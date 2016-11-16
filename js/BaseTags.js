@@ -22,7 +22,7 @@ var fileName1;
 // 页面加载
 $(function() {
 	/*设置自适应滚动条*/
-	$("#divtable").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
+	$(".rowcolor").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
 
 	$("[name='my-checkbox']").bootstrapSwitch();
 

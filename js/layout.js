@@ -34,18 +34,17 @@ for(var i = 0; i < ptitle.length; i++) {
 var u = navigator.userAgent;
 
 if(u.indexOf('iPhone') > -1) { //苹果手机
-	alert()
+	
+
 	window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
 		if(window.orientation === 180 || window.orientation === 0) {
-			var width=$(window).width();
-			console.log(width);
-			/*  alert('竖屏状态！');  */
+			var width=window.screen.width;
+		
 			$(".rowcolor").css("width",width);//.width(height);
 		}
 		if(window.orientation === 90 || window.orientation === -90) {
-			/*alert('横屏状态！');*/
-			var height=$(window).height()
-			console.log(height);
+			
+			var height=window.screen.height;
 			$(".rowcolor").css("width",height);//.width("550px");
 
 		}
