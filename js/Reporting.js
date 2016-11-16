@@ -219,7 +219,7 @@ socket.onmessage = function(msg) {
 			if(result.indexOf("Login") >= 0) //初始化的时候返回的
 			{
 				/*显示excel*/
-
+                $("#ss1").html("");
 				$("#ss1").css("height", height);
 				$("#ss1").removeClass("imgstyle");
 				var spread = new GcSpread.Sheets.Spread(document.getElementById('ss1'), {
@@ -242,6 +242,7 @@ socket.onmessage = function(msg) {
 			var link = document.createElement('a');
 			window.URL = window.URL || window.webkitURL;
 			link.href = window.URL.createObjectURL(blob);
+		    
 			link.download = fileName;
 			if(document.all) {　　
 				link.click();　
@@ -257,6 +258,7 @@ socket.onmessage = function(msg) {
 
 		} catch(e) {
 			shalert("请使用谷歌/火狐/360浏览器导出文件");
+			
 			return false;
 		}
 	}

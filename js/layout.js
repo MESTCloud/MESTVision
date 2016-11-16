@@ -1,3 +1,4 @@
+/*编辑区域的高度begin*/
 /*屏幕高度*/
 var pFrameHeight = $(window).height();
 
@@ -6,7 +7,7 @@ var pTitleHeight = $(".portlet-title").height();
 
 /*查询条件高度*/
 var pConditionHeight = $("#div_condition").height();
-
+/*end-----------------------------------------------*/
 /*获得Url参数值*/
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -29,23 +30,29 @@ for(var i = 0; i < ptitle.length; i++) {
 		$("#divTitle").append("<span>-</span>");
 	}
 }
+/*begin判断浏览器*/
 var u = navigator.userAgent;
 
 if(u.indexOf('iPhone') > -1) { //苹果手机
+	alert()
 	window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
 		if(window.orientation === 180 || window.orientation === 0) {
+			var width=$(window).width();
+			console.log(width);
 			/*  alert('竖屏状态！');  */
-			$(".rowcolor").width("320px");
+			$(".rowcolor").css("width",width);//.width(height);
 		}
 		if(window.orientation === 90 || window.orientation === -90) {
 			/*alert('横屏状态！');*/
-			$(".rowcolor").width("550px");
+			var height=$(window).height()
+			console.log(height);
+			$(".rowcolor").css("width",height);//.width("550px");
 
 		}
 	}, false);
 }
-
-/*时间*/
+/*end----------------------------------------*/
+/*begin时间*/
 function formatTen(num) {
 	return num > 9 ? (num + "") : ("0" + num);
 }
