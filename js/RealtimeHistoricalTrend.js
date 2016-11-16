@@ -22,23 +22,9 @@ jQuery(document).ready(function() {
 	require(
 		[
 			'echarts',
-			'echarts/chart/bar',
-			'echarts/chart/chord',
-			'echarts/chart/eventRiver',
-			'echarts/chart/force',
-			'echarts/chart/funnel',
-			'echarts/chart/gauge',
-			'echarts/chart/heatmap',
-			'echarts/chart/k',
+			
 			'echarts/chart/line',
-			'echarts/chart/map',
-			'echarts/chart/pie',
-			'echarts/chart/radar',
-			'echarts/chart/scatter',
-			'echarts/chart/tree',
-			'echarts/chart/treemap',
-			'echarts/chart/venn',
-			'echarts/chart/wordCloud'
+			
 		],
 		function(ec) {
 			/*查询*/
@@ -166,7 +152,7 @@ jQuery(document).ready(function() {
 				$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 				if(isExist($(this).attr("id"))) {
 					/*页面动态加载*/
-                    console.log([tagList[$(this).attr("data-index")]][0]["Color"]=colorArray[colorItem]);
+                    [tagList[$(this).attr("data-index")]][0]["Color"]=colorArray[colorItem];
 					$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
 					$(".rhTrendright_bottom tbody tr").click(function() {
 						colorStyle($(this));
@@ -315,12 +301,12 @@ jQuery(document).ready(function() {
 
 									//	$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style", "background-color: #DAF3F5");
 									trId = $(this).attr("id");
-									console.log(trId);
-									//$('.demo').val("#612d2d");
+									
+							
 								});
 							}
 
-							//console.log(hex);
+							
 						}
 					},
 
@@ -368,17 +354,11 @@ jQuery(document).ready(function() {
 			// --- LINE ---
 			var myChart = ec.init(document.getElementById('echarts_line'));
 			var option = {
-				//title: {
-				//    text: '实时趋势',
-				//    x: 'center',
-				//    y: 'top'
-				//},
+				
 				tooltip: {
 					trigger: 'axis'
 				},
-				//legend: {
-				//    data: ['最新成交价']
-				//},
+			
 				toolbox: {
 					show: true,
 					feature: {
@@ -394,11 +374,7 @@ jQuery(document).ready(function() {
 						}
 					}
 				},
-				//dataZoom: {
-				//    show: true,
-				//    start: 0,
-				//    end: 100
-				//},
+			
 				xAxis: [{
 					type: 'category',
 					boundaryGap: false,
@@ -477,46 +453,7 @@ jQuery(document).ready(function() {
 							name: ''
 						}],
 						series: []
-							/*[
-								{
-														name: 'High',
-														type: 'line',
-														data: [12, 11, 15, 13, 12, 13, 10],
-														markPoint: {
-															data: [{
-																type: 'max',
-																name: 'Max'
-															}, {
-																type: 'min',
-																name: 'Min'
-															}]
-														},
-														markLine: {
-															data: [{
-																type: 'average',
-																name: 'Mean'
-															}]
-														}
-													}, {
-														name: 'Low',
-														type: 'line',
-														data: [1, -2, 2, 5, 3, 2, 0],
-														markPoint: {
-															data: [{
-																name: 'Lowest',
-																value: -2,
-																xAxis: 1,
-																yAxis: -1.5
-															}]
-														},
-														markLine: {
-															data: [{
-																type: 'average',
-																name: 'Mean'
-															}]
-														}
-													}
-							]*/
+						
 					};
 
 					option.series = [];
@@ -617,9 +554,7 @@ jQuery(document).ready(function() {
 				});
 				window.clearInterval(timeTicket);
 				var sign = 0;
-				/*var xAxisData = new Array();
-				var seriesData = new Array();
-*/
+
 				var sign9 = 0;
 
 				myChart.clear();

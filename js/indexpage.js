@@ -27,7 +27,7 @@ function changeTab() {
 	var contents = DOM.children(DOM.next(this.parentNode));
 
 	for(var i = 0; i < contents.length; i++) {
-		console.log(contents[i]);
+		
 		DOM.removeClass(contents[i], "selectedContent");
 	}
 
