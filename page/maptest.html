@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Bootstrap 实例 - 模态框（Modal）插件</title>
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5dEsfUlwMV0GdHlxoqgvlxE0"></script>
+	</head>
+
+	<body>
+		<h2>创建模态框（Modal）</h2>
+		<!-- 按钮触发模态框 -->
+		<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="createMap">
+		   开始演示模态框
+		</button>-->
+
+		<!-- 模态框（Modal） -->
+		<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >-->
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+		                  &times;
+		            </button>
+						<h4 class="modal-title" id="myModalLabel">
+					               模态框（Modal）标题
+					    </h4>
+					</div>
+					<div class="modal-body" id="maps" style="height:400px;">
+						在这里添加一些文本
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary">提交更改</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		<!--</div>-->
+		<script type="text/javascript">
+		
+		var lon;
+		var lat;
+			$(function() {
+				
+				// 单次位置请求执行的函数              
+				function getLocation() {
+				
+					navigator.geolocation.getCurrentPosition(mapIt, locationError);
+				}
+				
+				//定位成功时，执行的函数 
+				function mapIt(position) {
+						alert(1);
+					 lon = position.coords.longitude;
+					 lat = position.coords.latitude;
+					// alert("您位置的经度是："+lon+" 纬度是："+lat); 
+					/*var map = new BMap.Map("allmap");
+					var point = new BMap.Point("" + lon + "", "" + lat + "");
+					map.centerAndZoom(point, 19);
+					var gc = new BMap.Geocoder();
+					translateCallback = function(point) {
+						var marker = new BMap.Marker(point);
+						map.addOverlay(marker);
+						map.setCenter(point);
+						gc.getLocation(point, function(rs) {
+							var addComp = rs.addressComponents;
+							if(addComp.province !== addComp.city) {
+								var sContent =
+									"<div><h4 style='margin:0 0 5px 0;padding:0.2em 0'>你当前的位置是：</h4>" +
+									"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>" + addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber + "</p>" +
+									"</div>";
+							} else {
+								var sContent =
+									"<div><h4 style='margin:0 0 5px 0;padding:0.2em 0'>你当前的位置是：</h4>" +
+									"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>" + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber + "</p>" +
+									"</div>";
+							}
+							var infoWindow = new BMap.InfoWindow(sContent);
+							map.openInfoWindow(infoWindow, point);
+						});
+					}
+					BMap.Convertor.translate(point, 0, translateCallback);*/
+				}
+				
+				// 定位失败时，执行的函数 
+				function locationError(error) {
+					switch(error.code) {
+						case error.PERMISSION_DENIED:
+							alert("User denied the request for Geolocation.");
+							break;
+						case error.POSITION_UNAVAILABLE:
+							alert("Location information is unavailable.");
+							break;
+						case error.TIMEOUT:
+							alert("The request to get user location timed out.");
+							break;
+						case error.UNKNOWN_ERROR:
+							alert("An unknown error occurred.");
+							break;
+					}
+				}
+				
+				
+				/*$("#createMap").click(function() {*/
+					setTimeout(function() { //添加延时加载。解决问题
+						//getLocation();
+						
+						/*var map = new BMap.Map("maps");
+						var myCity = new BMap.LocalCity();
+						console.log(myCity);
+						myCity.get(function(res) {
+							map.centerAndZoom(res.center, res.level);
+						*/
+						var map = new BMap.Map("maps");
+						var point = new BMap.Point(116.331398,39.897445);
+						map.centerAndZoom(point,12);
+						 
+						var geolocation = new BMap.Geolocation();
+						geolocation.getCurrentPosition(function(r){
+						if(this.getStatus() == BMAP_STATUS_SUCCESS){
+						var mk = new BMap.Marker(r.point);
+						map.addOverlay(mk);
+						map.panTo(r.point);
+						alert('您的位置：'+r.point.lng+','+r.point.lat);
+}
+					}, 300);
+					});
+				/*});*/
+				
+				// 页面加载时执行getLocation函数 
+				//window.onload = getLocation;
+			});
+		</script>
+	</body>
+
+</html>
