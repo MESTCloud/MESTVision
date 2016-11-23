@@ -1,44 +1,56 @@
-var type;
-
+/*地图注记信息*/
 var markerArr;
 
 $(function() {
-	//map_load();
-	$("#delete_Add").hide();
+	/*添加按钮点击事件*/
+	$("#btn_Add").click(function() {
+		$("#longitude_Add").val("");
+		document.getElementById("longitude_Add").disabled = true;
+
+		$("#divDataList").hide();
+		$("#divAddData").show();
+		$("#divEditData").hide();
+	});
+
+	/*添加模块：取消按钮点击事件*/
+	$("#Return_Add").click(function() {
+		$("#divDataList").show();
+		$("#divAddData").hide();
+		$("#divEditData").hide();
+	});
+
+	/*修改模块：取消按钮点击事件*/
+	$("#Return_Edit").click(function() {
+		$("#divDataList").show();
+		$("#divAddData").hide();
+		$("#divEditData").hide();
+	});
+
+	/*添加区块:确定按钮点击事件*/
 	$("#save_Add").click(function() {
 		if($("#name_Add").val().trim() == "") {
-			shalert("名称不能为空！");
 			$("#name_Add").focus();
+			shalert("名称不能为空！");
 			return false;
 		}
 		if($("#longitude_Add").val().trim() == "") {
-			shalert("经纬度不能为空！");
 			$("#longitude_Add").focus();
+			shalert("经纬度不能为空！");
 			return false;
 		}
 		if($("#address_Add").val().trim() == "") {
-			shalert("地址不能为空！");
 			$("#address_Add").focus();
+			shalert("地址不能为空！");
 			return false;
 		}
 		if($("#link_Add").val().trim() == "") {
-			shalert("链接不能为空！");
 			$("#link_Add").focus();
+			shalert("链接不能为空！");
 			return false;
 		}
-		/*修改*/
-		if(type == "edit") {
 
-			var jsStr = "UpdateUser {\"id\":\"" + userid + "\",\"realname\":\"" + $("#name_Update").val().trim() + "\",\"mobile\":\"" + $("#inputphone_Update").val().trim() + "\",\"role\":\"" + $("#select_role_update").val().trim() + "\"}";
-
-			//send(jsStr);
-
-		} else { //新增
-			var jsStr = "AddMap {\"name\":\"" + $("#name_Add").val().trim() + "\",\"xyz\":\"" + $("#longitude_Add").val().trim() + "\",\"desc\":\"" + $("#address_Add").val().trim() + "\",\"url\":\"" + $("#link_Add").val().trim() + "\"}";
-			console.log(jsStr);
-			send(jsStr);
-		}
-
+		var jsStr = "AddMap {\"name\":\"" + $("#name_Add").val().trim() + "\",\"xyz\":\"" + $("#longitude_Add").val().trim() + "\",\"desc\":\"" + $("#address_Add").val().trim() + "\",\"url\":\"" + $("#link_Add").val().trim() + "\"}";
+		send(jsStr);
 	});
 
 	/*清除按钮点击事件*/
@@ -51,6 +63,8 @@ $(function() {
 		$("#address_Add").val("");
 		/*链接*/
 		$("#link_Add").val("");
+
+		document.getElementById("longitude_Add").disabled = true;
 	});
 
 	/*删除按钮点击事件*/
@@ -65,27 +79,6 @@ $(function() {
 	});
 });
 
-/*var markerArr = [{
-	title: "峨眉山",
-	point: "103.352223, 29.573007",
-	address: "四川省峨眉山市名山西路46号",
-	tel: "18500000000",
-	linkaddres: "SVGAnalysis.html?name=AHHX_008"
-}, {
-	title: "苹果专卖店(三里屯店)",
-	point: "116.460982, 39.940673",
-	address: "北京市朝阳区三里屯路19号院",
-	tel: "12306",
-	linkaddres: "SVGAnalysis.html?name=AHHX_002"
-
-}, {
-	title: "农夫山泉红河谷工厂",
-	point: "107.774868, 34.165504",
-	address: "陕西省宝鸡市 ",
-	tel: "18500000000",
-	linkaddres: "SVGAnalysis.html?name=AHHX_003"
-}];*/
-
 var map; //Map实例  
 function map_init() {
 	map = new BMap.Map("map");
@@ -96,12 +89,6 @@ function map_init() {
 
 	//第2步：初始化地图,设置中心点坐标和地图级别。  
 	map.centerAndZoom(point, 5);
-
-	/*var tilelayer = new BMap.TileLayer(); // 创建地图层实例    
-	tilelayer.getTilesUrl = function() { // 设置图块路径     
-		return "layer.gif";
-	};
-	map.addTileLayer(tilelayer);*/
 
 	/*去掉道路*/
 	map.setMapStyle({
@@ -147,6 +134,7 @@ function map_init() {
 
 	//右击获取屏幕经纬度
 	map.addEventListener("rightclick", function(e) {
+		document.getElementById("longitude_Add").disabled = false;
 		document.getElementById("longitude_Add").value = e.point.lng + "," + e.point.lat;
 	});
 }
@@ -212,17 +200,13 @@ function addInfoWindow(marker, poi) {
 	});
 
 	var openInfoWinFun = function() {
-		type = "edit";
-
-		/*显示删除按钮*/
-		$("#delete_Add").show();
 
 		/*文本框获取数据*/
-		$("#name_Add").val(poi.name);
+		/*$("#name_Add").val(poi.name);
 		$("#longitude_Add").val(poi.xyz);
-		/*$("#latitude_Add").val(poi.xyz);*/
+		/*$("#latitude_Add").val(poi.xyz);
 		$("#address_Add").val(poi.description);
-		$("#link_Add").val(poi.url);
+		$("#link_Add").val(poi.url);*/
 
 		marker.openInfoWindow(infoWindow);
 	};
@@ -237,6 +221,65 @@ function map_load() {
 	var load = document.createElement("script");
 	load.src = "http://api.map.baidu.com/api?v=2.0&ak=5dEsfUlwMV0GdHlxoqgvlxE0&callback=map_init";
 	document.body.appendChild(load);
+}
+
+/*获取集合*/
+function bindTable(datatable) {
+	if(datatable.length > 0) {
+		var str = "";
+		$.each(datatable, function(index, data) {
+
+			if(parseInt(index) / 2 == 0) {
+				str += "<tr class='gradeX odd' role='row' data-value='" + index + "'>"
+			} else {
+				str += "<tr class='gradeX even' role='row' data-value='" + index + "'>"
+			}
+			str += "<td style='word-break: break-all; word-wrap:break-word;'>" + data["name"] + "</td>";
+			str += "<td>";
+			str += "<button type='button' class='btn btn1 btn-success btnEdit'>";
+			str += "<span>修改</span></button>";
+			str += "</td>";
+			str += "<td>";
+			str += "<button type='button' class='btn btn1 btn-success btnDelete' data-value='" + data["id"] + "'>";
+			str += "<span>删除</span></button>";
+			str += "</td>";
+			str += "</tr>";
+		});
+	}
+
+	return str;
+}
+
+// 修改事件
+function EditFactoryData(pFactoryID) {
+
+	//$("#save_Edit").unbind("click");
+	$("#save_Edit").click(function() {
+		if($("#name_Edit").val().trim() == "") {
+			$("#name_Edit").focus();
+			shalert("名称不能为空！");
+			return false;
+		}
+		if($("#longitude_Edit").val().trim() == "") {
+			$("#longitude_Edit").focus();
+			shalert("经纬度不能为空！");
+			return false;
+		}
+		if($("#address_Edit").val().trim() == "") {
+			$("#address_Edit").focus();
+			shalert("地址不能为空！");
+			return false;
+		}
+		if($("#link_Edit").val().trim() == "") {
+			$("#link_Edit").focus();
+			shalert("链接不能为空！");
+			return false;
+		}
+
+		var jsStr = "ModifyMap {\"name\":\"" + $("#name_Edit").val().trim() + "\",\"xyz\":\"" + $("#longitude_Edit").val().trim() + "\",\"desc\":\"" + $("#address_Edit").val().trim() + "\",\"url\":\"" + $("#link_Edit").val().trim() + "\",\"id\":\"" + pFactoryID + "\"}";
+		console.log(jsStr);
+		send(jsStr);
+	});
 }
 
 //连接成功
@@ -254,6 +297,7 @@ socket.onmessage = function(msg) {
 	var result = msg.data;
 	result = JSON.parse(result);
 
+	console.log(result);
 	if(result["error"]) {
 		shalert(result["error"]);
 	}
@@ -267,27 +311,72 @@ socket.onmessage = function(msg) {
 
 				markerArr = result["data"];
 				map_load();
+
+				$("tbody").html(bindTable(result["data"]));
+
+				$("tbody tr").click(function() {
+					var pNum = $(this).attr("data-value");
+					
+					var p0 = markerArr[pNum]["xyz"].split(",")[0];
+					var p1 = markerArr[pNum]["xyz"].split(",")[1];
+					var maker = addMarker(new window.BMap.Point(p0, p1), i);
+					console.log(maker);
+				});
+
+				/*修改按钮点击事件*/
+				$(".btnEdit").click(function() {
+					var pIndex = $(this).parent().parent().attr("data-value");
+					console.log(pIndex);
+					var pFactoryID = markerArr[pIndex]["id"]
+					console.log(pFactoryID);
+					$("#divDataList").hide();
+					$("#divAddData").hide();
+					$("#divEditData").show();
+
+					$("#name_Edit").val(markerArr[pIndex]["name"]);
+					$("#longitude_Edit").val(markerArr[pIndex]["xyz"]);
+					$("#address_Edit").val(markerArr[pIndex]["description"]);
+					$("#link_Edit").val(markerArr[pIndex]["url"]);
+
+					//EditFactoryData(pFactoryID);
+				});
+
+				/*删除按钮点击事件*/
+				$(".btnDelete").click(function() {
+					var pDelete = this.getAttribute("data-value");
+					shconfirm("确定要删除吗", function(result) {
+						if(result) {
+							var jsStr = "DeleteMap {\"id\":\"" + pDelete + "\"}";
+							console.log(jsStr);
+							send(jsStr);
+						}
+					});
+				});
+
 				break;
 
 			case "AddMap":
-				shalert("新增成功");
+				shalert("添加成功");
+
+				$("#divDataList").show();
+				$("#divAddData").hide();
+				$("#divEditData").hide();
 
 				send("GetMapList");
+				break;
 
-				console.log(markerArr);
+			case "ModifyMap":
+				shalert("修改成功");
+
+				$("#divDataList").show();
+				$("#divAddData").hide();
+				$("#divEditData").hide();
+
+				send("GetMapList");
 				break;
 			case "DeleteMap":
 
 				shalert("删除成功");
-
-				/*名称*/
-				$("#name_Add").val("");
-				/*经纬度*/
-				$("#longitude_Add").val("");
-				/*地址*/
-				$("#address_Add").val("");
-				/*链接*/
-				$("#link_Add").val("");
 
 				send("GetMapList");
 
