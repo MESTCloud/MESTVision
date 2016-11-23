@@ -64,18 +64,14 @@ var echartData = {
 	xAxisData: ["2016-11-03 11:42:10", "2016-11-03 11:42:20", "2016-11-03 11:42:30", "2016-11-03 11:42:40", "2016-11-03 11:42:50"]
 }
 
-var strokeGroupList = [{
-	"id": "1",
-	"Groupname": "空压机"
-}, {
-	"id": "2",
-	"Groupname": "test"
-}]
+var strokeGroupList = [];
 var colorArray = [
 	'#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
 	'#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
 	'#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-	'#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+	'#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0',
+	'#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
+	'#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0'
 ]; /*颜色初始化*/
 var timeTicket; /*定时器*/
 var trId = ""; /*存放点击id*/
@@ -85,9 +81,9 @@ $(".rhTrendleft").css("height", height);
 $(".rhTrendright").css("height", height);
 $(".rhTrendright_right").css("height", height);
 
-$(".rhTrendright_top").css("height", height * 0.25);
-$(".rhTrendright_middle").css("height", height * 0.4);
-$("#echarts_line").css("height", height * 0.36);
+$(".rhTrendright_top").css("height", height * 0.2);
+$(".rhTrendright_middle").css("height", height * 0.45);
+$("#echarts_line").css("height", height * 0.41);
 $(".rhTrendright_bottom").css("height", height * 0.35);
 $(".rhTrendright_right_top").css("height", height);
 var tags = new Array();
@@ -121,57 +117,7 @@ jQuery(document).ready(function() {
 
 			/*数据绑定*/
 			/*$(".rhTrendleft tbody").html(tagListbind(tagList));*/
-			/*笔组加载*/
-			function strokeGroupbind(datatable) {
-				var str = "";
-				if(datatable != null) {
-					$.each(datatable, function(index, data) {
 
-						str += "<option value='" + data["id"] + "'>";
-						str += data["Groupname"];
-
-						str += "</option>";
-					});
-				}
-
-				return str;
-			}
-			$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
-			/*笔组切换*/
-			$("#input_strokegrouplist").on("change", function() {
-					var strokeGroup = [{
-						"id": "1",
-						"Tagname": "GPY00_N60_YM3_KC1",
-						"description": "描述",
-						"Color": "#0000FF",
-
-					}, {
-						"id": "3",
-						"Tagname": "GPY00_N60_YM3_KC3",
-						"description": "描述",
-						"Color": "#009DC7",
-
-					}, {
-						"id": "5",
-						"Tagname": "GPY00_N60_YM3_KC5",
-						"description": "描述",
-
-					}]
-					$.each(strokeGroup, function(index, data) {
-						if(isExist(data["id"])) {
-							tagGropList.push(data);
-						}
-					});
-					$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-
-					//$(this).val();
-					/*笔组关联点的数据加载*/
-
-					//------------end-----------------------------------------
-
-				}
-
-			);
 			/*颜色版加载*/
 
 			$('.demo').each(function() {
@@ -199,10 +145,10 @@ jQuery(document).ready(function() {
 								});
 								$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
 								$(".rhTrendright_bottom tbody tr").on("click", function() {
-
+									$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
 									//	$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style", "background-color: #DAF3F5");
-									trId = $(this).attr("id");
 
+									colorStyle($(this));
 								});
 							}
 
@@ -275,23 +221,44 @@ jQuery(document).ready(function() {
 					myChart.resize(); //使第一个图表适应
 
 				}
-				/*实时趋势点的id值*/
+				/*笔组关联点的name值*/
 			function realTag(tagGropList) {
+
+				tags = [];
 				$.each(tagGropList, function(index, data) {
 					tags.push(data["Tagname"]);
 
 				})
 				return tags;
 			}
+			/*笔组关联点的name值*/
+			function IDTag(tagGropList) {
+				var id = [];
+				$.each(tagGropList, function(index, data) {
+					id.push(data["ID"]);
+
+				})
+				return id;
+			}
+			/*笔组关联点的颜色*/
+			function ColorTag(tagGropList) {
+				var color = [];
+
+				$.each(tagGropList, function(index, data) {
+					color.push(data["Color"]);
+
+				})
+				return color;
+			}
 			/*实时趋势*/
 			//全局Socket对象
-				var socket1;
-				var readyStatus1 = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
-				var host1 = "ws://36.110.66.3:29001";
+
+			var socket1;
+			var readyStatus1 = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
+			var host1 = "ws://36.110.66.3:29001";
 
 			$("#btn_real").on("click", function() {
-				if(socket1!=null)
-				{
+				if(socket1 != null) {
 					socket1.close();
 				}
 				//尝试连接至服务器
@@ -389,6 +356,7 @@ jQuery(document).ready(function() {
 								}
 								return res;
 							})()
+
 						});
 					});
 
@@ -413,25 +381,26 @@ jQuery(document).ready(function() {
 					}
 
 					var lastData = 11;
-                    
+
 					timeTicket = setTimeout(function() {
-                       console.log(timeTicket)
-						
-                      socket1.send(tags);
+
+						socket1.send(tags);
 					}, intervalValue);
 				}
 
-				
-				
 				socket1.onmessage = function(msg) {
 					if(!msg.data) return;
 					if(msg.data == "确认连接成功") return;
 
 					var tagsArray = JSON.parse(msg.data);
-					console.log(tagsArray);
-					if(tagsArray.length==0)
-					{
-						shalert("此点没有数据，请选择其他点！");return false;
+
+					if(tagsArray.length == 0) {
+						shalert("此点没有数据，请选择其他点！");
+						window.clearTimeout(timeTicket);
+						if(socket1 != null) {
+							socket1.close();
+						}
+						return false;
 					}
 					dataIndex = 0;
 					lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
@@ -440,74 +409,68 @@ jQuery(document).ready(function() {
 					axisData = tagsArray[0].TimeStamp; // formatDate(new Date(), 0) + " " + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
 					var dataArray = new Array();
-                    console.log(tagsArray)
+
 					$.each(tagsArray, function(item, data) {
 						/*if(item == 0) {*/
-							dataArray.push(
-								[
-									item, // 系列索引
-									data.Value, // 新增数据Math.round(Math.random() * 1000), // 新增数据
-									false, // 新增数据是否从队列头部插入
-									false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
-									axisData // 坐标轴标签
-								]
-							);
-						/*}*/ /*else {
-							dataArray.push(
-								[
+						dataArray.push(
+							[
+								item, // 系列索引
+								data.Value, // 新增数据Math.round(Math.random() * 1000), // 新增数据
+								false, // 新增数据是否从队列头部插入
+								false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+								axisData // 坐标轴标签
+							]
+						);
 
-
-									dataIndex, // 系列索引
-									data.Value, //Math.round(Math.random() * 1000), // 新增数据
-									false, // 新增数据是否从队列头部插入
-									false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
-									axisData // 坐标轴标签
-								]);
-						}*/
-						
 					});
-
 					// 动态数据接口 addData
 					myChart.addData(dataArray);
-
 				}
-
 			});
 
 			/*历史趋势*/
 			$("#btn_history").on("click", function() {
-				socket1.close();
-			    window.clearTimeout(timeTicket);
+				if(socket1 != null) {
+					socket1.close();
+				}
+				window.clearTimeout(timeTicket);
 				historyLineFunction();
 
 			});
 			/*查询*/
 			$("#bg_checkColl").on("click", function() {
-				var pDescription = "";
-				var pTagName = $("#input_name").val();
-				var dataType = "DoubleFloat";
-				send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
+				var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
+				send(jsStr);
 
 			});
 
 			function historyLineFunction() {
 
-				myChart.showLoading({
+				var tags = realTag(tagGropList).join(',');
+				var start = $("#startTime").val().replace(/\：/g, ':');
+				var end = $("#endTime").val().replace(/\：/g, ':');
+				var cvalue = $("#cycleValue").val().trim();
+				var ctyle = $("#cycleType").val().trim();
+				var jsStr = "GetHistoryData {\"tags\":\"" + tags + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
+
+				send(jsStr);
+				/*myChart.showLoading({
 					text: "图表数据正在努力加载..."
 				});
 				window.clearTimeout(timeTicket);
-				var sign = 0;
-
-				var sign9 = 0;
 
 				myChart.clear();
+			
+				var sign = 0;
+				var sign9 = 0;
 				if(sign9 == 0 && echartData.xAxisData.length > 0) {
 
 					option.xAxis[0].data = echartData.xAxisData;
 					option.series = echartData.seriesData;
 					myChart.setOption(option);
 				}
-				myChart.hideLoading();
+				myChart.hideLoading();*/
+
 			}
 
 			/*前进*/
@@ -574,11 +537,29 @@ jQuery(document).ready(function() {
 			/*保存笔组*/
 			$("#btn_Savestrokegroup").click(function() {
 				var strokeGroup = $("#input_strokegroup").val();
+				if(strokeGroup.trim() == "") {
+					shalert("请填写笔组名称");
+					return false;
+				}
+				var tagids = IDTag(tagGropList).join(',');
+				var colors = ColorTag(tagGropList).join(',');
+				var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+
+				send(jsStr);
 
 			});
 			//删除笔组\n
 			$("#btn_Delstrokegroup").click(function() {
+				var strokeGroup = $("#input_strokegrouplist").find("option:selected").text();
 
+				shconfirm("确定要删除吗", function(result) {
+
+					if(result) {
+						var jsStr = "DeleteGroup {\"name\":\"" + strokeGroup + "\"}";
+						send(jsStr);
+					}
+
+				});
 			});
 			//删除笔
 			$("#btn_Delstroke").click(function() {
@@ -587,7 +568,8 @@ jQuery(document).ready(function() {
 					if(tagGropList != null) {
 
 						for(var i = 0; i < tagGropList.length; i++) {
-							if(("tagGrop" + tagGropList[i]["id"]) == trId) {
+							alert(tagGropList[i]["ID"]);
+							if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
 
 								tagGropList.splice(i, 1);
 							}
@@ -599,6 +581,7 @@ jQuery(document).ready(function() {
 				} else {
 					shalert("请选择要删除的笔")
 				}
+
 			});
 
 			/*end*/
@@ -608,9 +591,9 @@ jQuery(document).ready(function() {
 
 				if($(".rhTrendright_right").is(":hidden")) {
 					if($(".rhTrendleft").is(":hidden")) {
-						$(".rhTrendright").width("80%"); //如果元素为隐藏,则将它显现
+						$(".rhTrendright").width("84%"); //如果元素为隐藏,则将它显现
 					} else {
-						$(".rhTrendright").width("60%"); //如果元素为隐藏,则将它显现
+						$(".rhTrendright").width("69%"); //如果元素为隐藏,则将它显现
 					}
 
 					$(".rhTrendright_right").css('display', 'block');
@@ -618,7 +601,7 @@ jQuery(document).ready(function() {
 					if($(".rhTrendleft").is(":hidden")) {
 						$(".rhTrendright").width("100%"); //如果元素为隐藏,则将它显现
 					} else {
-						$(".rhTrendright").width("80%"); //如果元素为隐藏,则将它显现
+						$(".rhTrendright").width("84%"); //如果元素为隐藏,则将它显现
 					}
 					$(".rhTrendright_right").css('display', 'none');
 
@@ -629,9 +612,9 @@ jQuery(document).ready(function() {
 			$("#CList").on("click", function() {
 				if($(".rhTrendleft").is(":hidden")) {
 					if($(".rhTrendright_right").is(":hidden")) {
-						$(".rhTrendright").width("80%");
+						$(".rhTrendright").width("84%");
 					} else {
-						$(".rhTrendright").width("60%");
+						$(".rhTrendright").width("69%");
 					}
 
 					$(".rhTrendleft").css('display', 'block');
@@ -639,7 +622,7 @@ jQuery(document).ready(function() {
 					if($(".rhTrendright_right").is(":hidden")) {
 						$(".rhTrendright").width("100%");
 					} else {
-						$(".rhTrendright").width("80%");
+						$(".rhTrendright").width("84%");
 					}
 					$(".rhTrendleft").css('display', 'none');
 
@@ -650,169 +633,323 @@ jQuery(document).ready(function() {
 			$("#Ccheck").on("click", function() {
 
 				if($(".rhTrendright_bottom").is(":hidden")) {
-					$(".rhTrendright_middle").css("height", height * 0.35);
-					$("#echarts_line").css("height", height * 0.32);
+					$(".rhTrendright_middle").css("height", height * 0.45);
+					$("#echarts_line").css("height", height * 0.42);
 
 					$(".rhTrendright_bottom").css('display', 'block');
 				} else {
-					$("#echarts_line").css("height", height * 0.66);
-					$(".rhTrendright_middle").css("height", height * 0.7);
+					$("#echarts_line").css("height", height * 0.76);
+					$(".rhTrendright_middle").css("height", height * 0.8);
 					$(".rhTrendright_bottom").css('display', 'none');
 
 				}
 				myChart.resize();
 			});
 
-		});
+			function tagListbind(datatable) {
+				var str = "";
 
-	function tagListbind(datatable) {
-		var str = "";
+				if(datatable.length > 0) {
 
-		if(datatable.length > 0) {
+					$.each(datatable, function(index, data) {
 
-			$.each(datatable, function(index, data) {
+						str += "<tr id=" + data["ID"] + " data-index=" + index + ">";
+						str += "<td>" + data["Tagname"] + "</td>";
+						str += "</tr>";
+					});
+				}
 
-				str += "<tr id=" + data["ID"] + " data-index=" + index + ">";
-				str += "<td>" + data["Tagname"] + "</td>";
-				str += "</tr>";
+				return str;
+			}
+			/*tr 的点击事件*/
+			function tagleftClick() {
+				$(".rhTrendleft tbody tr").on("click", function() {
+
+					$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
+					if(isExist($(this).attr("ID"))) {
+						/*页面动态加载*/
+						[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
+						$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
+						$(".rhTrendright_bottom tbody tr").click(function() {
+							$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
+							colorStyle($(this));
+						});
+
+						tagGropList.push(tagList[$(this).attr("data-index")]);
+						colorItem++;
+					}
+
+				});
+
+			}
+
+			/*判定点击的此行是否已经存在*/
+			function isExist(id) {
+				var boolE = true;
+				$.each(tagGropList, function(index, data) {
+
+					if(data["ID"] == id) {
+						boolE = false;
+					}
+
+				});
+
+				return boolE;
+			}
+			/*笔组切换*/
+			function selectGroup() {
+				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
+
+				send(jsStr);
+			}
+			$("#input_strokegrouplist").on("change", function() {
+
+					selectGroup();
+				}
+
+			);
+
+			/*笔组加载*/
+			function strokeGroupbind(datatable) {
+				var str = "";
+				if(datatable != null) {
+					$.each(datatable, function(index, data) {
+
+						str += "<option value='" + data["GId"] + "'>";
+						str += data["GroupName"];
+
+						str += "</option>";
+					});
+				}
+
+				return str;
+			}
+			/*笔组点表关联数据加载*/
+			function tagGropListbind(datatable) {
+				var str = "";
+				if(datatable != null) {
+					$.each(datatable, function(index, data1) {
+
+						str += "<tr id=tagGrop" + data1["ID"] + " style='color:" + data1["Color"] + "'>";
+						str += "<td>" + data1["Tagname"] + "</td>";
+						str += "<td>" + data1["Description"] + "</td>";
+						str += "</tr>";
+					});
+				}
+
+				return str;
+			}
+			/*点击笔组关联tr*/
+			$(".rhTrendright_bottom tbody tr").on("click", function() {
+
+				$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
+				colorStyle($(this));
+
 			});
-		}
+			
+				/*获取点击的id号，修改颜色*/
+			function colorStyle(_this) {
+				trId = _this.attr("ID");
 
-		return str;
-	}
-	/*tr 的点击事件*/
-	function tagleftClick() {
-		$(".rhTrendleft tbody tr").on("click", function() {
+				$('.demo').val(RGBToHex(_this.css("color")));
+				$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
+				$(".rhTrendright_bottom tbody tr").on("click", function() {
 
-			$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
-			if(isExist($(this).attr("ID"))) {
-				/*页面动态加载*/
-				[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
-				$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-				$(".rhTrendright_bottom tbody tr").click(function() {
+					$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
 					colorStyle($(this));
 				});
-				tagGropList.push(tagList[$(this).attr("data-index")]);
-				colorItem++;
+			}
+			/*Rgb 格式转为16进制*/
+
+			function RGBToHex(rgb) {
+				var regexp = /[0-9]{0,3}/g;
+				var re = rgb.match(regexp); //利用正则表达式去掉多余的部分，将rgb中的数字提取
+				var hexColor = "#";
+				var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+				for(var i = 0; i < re.length; i++) {
+					var r = null,
+						c = re[i],
+						l = c;
+					var hexAr = [];
+					while(c > 16) {
+						r = c % 16;
+						c = (c / 16) >> 0;
+						hexAr.push(hex[r]);
+					}
+					hexAr.push(hex[c]);
+					if(l < 16 && l != "") {
+						hexAr.push(0)
+					}
+					hexColor += hexAr.reverse().join('');
+				}
+
+				return hexColor;
+			}
+			/*获取笔组点*/
+			function GroupList(strokeid) {
+				var dataList = [];
+
+				$.each(tagList, function(index, data) {
+
+					if(data["ID"] === strokeid) {
+
+						dataList.push(data);
+					}
+
+				});
+
+				return dataList;
+
 			}
 
+			//尝试连接至服务器
+			try {
+				socket = new WebSocket(host);
+			} catch(exception) {
+				shalert("对不起，您所使用的浏览器不支持WebSocket.");
+				return false;
+			}
+			//连接成功
+			socket.onopen = function() {
+				if($.cookie("user") && $.cookie("password")) {
+					socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+				}
+
+				send("GetTagList");
+				send("GetGroupList");
+			}
+
+			//收到消息
+			socket.onmessage = function(msg) {
+
+				var result = msg.data;
+
+				result = JSON.parse(result);
+
+				if(result["error"]) {
+					shalert(result["error"]);
+					return false;
+				} else if(result["exception"]) {
+					shalert(result["exception"]);
+					return false;
+				} else {
+					switch(result["Function"]) {
+
+						case "GetTagList":
+							tagList = result["data"];
+
+							$(".rhTrendleft tbody").html(tagListbind(result["data"]));
+							tagleftClick();
+							break;
+						case "SelectTagList":
+							tagList = result["data"];
+							$(".rhTrendleft tbody").html(tagListbind(result["data"]));
+							tagleftClick();
+							break;
+						case "GetGroupList":
+
+							strokeGroupList = result["data"];
+							$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
+							break;
+
+						case "SelectGroup":
+
+							var strokeGroup = result["data"];
+
+							tagGropList = [];
+							$.each(strokeGroup, function(index, data) {
+								if(isExist(data["ID"])) {
+									tagGropList.push(data);
+								}
+							});
+
+							/*{"Function":"GetHistoryData","data":[{"ID":1650,"Color":"#ff7f50"},{"ID":1709,"Color":"#87cefa"},{"ID":1641,"Color":"#da70d6"},{"ID":1883,"Color":"#32cd32"},{"ID":1889,"Color":"#6495ed"},{"ID":1901,"Color":"#ff69b4"},{"ID":1861,"Color":"#ba55d3"},{"ID":1941,"Color":"#cd5c5c"}]}*/
+							$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
+							break;
+						case "AddGroup":
+							shalert("添加成功！")
+							send("GetGroupList");
+							break;
+						case "DeleteGroup":
+							shalert(result["info"])
+							send("GetGroupList");
+							break;
+
+						case "GetHistoryData":
+
+							var dataList = result["data"];
+							myChart.showLoading({
+								text: "图表数据正在努力加载..."
+							});
+							window.clearTimeout(timeTicket);
+
+							myChart.clear();
+
+							var sign = 0;
+							var xAxisData = new Array();
+							var seriesData = new Array();
+
+							var sign9 = 0;
+							$.each(tagGropList, function(item, data) {
+								lineData = [];
+								xAxisData = [];
+								/*在此处发送请求，后台交互*/
+
+								if($("#cycleType").val() == 0) {
+									for(var i = dataList.length - 1; i >= 0; i--) {
+										if(sign == 0) xAxisData.push(dataList[i]["TimeStamp"]);
+										lineData.push(dataList[i]["Value"] * (item + 1));
+									}
+								} else {
+
+									for(var i = 0; i < dataList.length; i++) {
+
+										if(sign == 0) xAxisData.push(dataList[i]["TimeStamp"]);
+
+										lineData.push(dataList[i]["Value"] * (item + 1));
+									}
+								}
+
+								seriesData.push({
+									name: data.Tagname,
+									type: "line",
+									smooth: true,
+									data: lineData,
+									itemStyle: {
+										normal: {
+											color: data.Color
+										}
+									}
+								});
+
+							});
+
+							myChart.clear();
+							if(sign9 == 0 && xAxisData.length > 0) {
+								option.xAxis[0].data = xAxisData;
+								option.series = seriesData;
+								myChart.setOption(option);
+							}
+							myChart.hideLoading();
+							break;
+
+					}
+				}
+			}
+
+			//连接断开
+			socket.onclose = function(event) {
+				window.parent.location.href = "../Login.html";
+			}
+
+			//发送
+			function send(msg) {
+				socket.send(msg);
+			}
+
+			//断开连接
+			function disconnect() {
+				socket.close();
+			}
 		});
-
-	}
-	/*判定点击的此行是否已经存在*/
-	function isExist(id) {
-		var boolE = true;
-		$.each(tagGropList, function(index, data) {
-
-			if(data["ID"] == id) {
-				boolE = false;
-			}
-
-		});
-
-		return boolE;
-	}
-	/*笔组点表关联数据加载*/
-	function tagGropListbind(datatable) {
-		var str = "";
-		if(datatable != null) {
-			$.each(datatable, function(index, data1) {
-
-				str += "<tr id=tagGrop" + data1["ID"] + " data-index=" + index + " style='color:" + data1["Color"] + "'>";
-				str += "<td>" + data1["Tagname"] + "</td>";
-				str += "<td>" + data1["Description"] + "</td>";
-				str += "</tr>";
-			});
-		}
-
-		return str;
-	}
-	/*点击笔组关联tr*/
-	$(".rhTrendright_bottom tbody tr").on("click", function() {
-
-		//$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style","background-color: #DAF3F5");
-		colorStyle($(this));
-	});
-	/*获取点击的id号，修改颜色*/
-	function colorStyle(_this) {
-		trId = _this.attr("ID");
-
-		$('.demo').val(RGBToHex(_this.css("color")));
-		$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
-	}
-	/*Rgb 格式转为16进制*/
-
-	function RGBToHex(rgb) {
-		var regexp = /[0-9]{0,3}/g;
-		var re = rgb.match(regexp); //利用正则表达式去掉多余的部分，将rgb中的数字提取
-		var hexColor = "#";
-		var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-		for(var i = 0; i < re.length; i++) {
-			var r = null,
-				c = re[i],
-				l = c;
-			var hexAr = [];
-			while(c > 16) {
-				r = c % 16;
-				c = (c / 16) >> 0;
-				hexAr.push(hex[r]);
-			}
-			hexAr.push(hex[c]);
-			if(l < 16 && l != "") {
-				hexAr.push(0)
-			}
-			hexColor += hexAr.reverse().join('');
-		}
-
-		return hexColor;
-	}
-
-	//连接成功
-	socket.onopen = function() {
-		if($.cookie("user") && $.cookie("password")) {
-			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-		}
-		var pDescription = "";
-		var pTagName = "";
-		var dataType = "DoubleFloat";
-		send("AlarmTagInfo {\"username\":\"" + $.cookie("user") + "\",\"DataType\":\"" + dataType + "\",\"tagName\":\"" + pTagName + "\",\"Description\":\"" + pDescription + "\"}");
-	}
-
-	//收到消息
-	socket.onmessage = function(msg) {
-
-		var result = msg.data;
-		result = JSON.parse(result);
-		if(result["error"]) {
-			shalert(result["error"]);
-		} else if(result["exception"]) {
-			shalert(result["exception"]);
-		} else {
-			switch(result["Function"]) {
-
-				case "AlarmTagInfo":
-					tagList = result["data"];
-					console.log(tagList);
-					$(".rhTrendleft tbody").html(tagListbind(result["data"]));
-					tagleftClick();
-					break;
-			}
-		}
-	}
-
-	//连接断开
-	socket.onclose = function(event) {
-		window.parent.location.href = "../Login.html";
-	}
-
-	//发送
-	function send(msg) {
-		socket.send(msg);
-	}
-
-	//断开连接
-	function disconnect() {
-		socket.close();
-	}
-
 });
