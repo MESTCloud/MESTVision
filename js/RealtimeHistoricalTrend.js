@@ -1,68 +1,8 @@
 /*查询*/
-var tagList = [{
-		"id": "1",
-		"Tagname": "GPY00_N60_YM3_KC1",
-		"description": "描述",
-		"Color": "#0000FF",
-	}, {
-		"id": "2",
-		"Tagname": "GPY00_N60_YM3_KC2",
-		"description": "描述",
-		"Color": "#0000FF"
-	}, {
-		"id": "3",
-		"Tagname": "GPY00_N60_YM3_KC3",
-		"description": "描述",
-		"Color": "#009DC7"
-	}, {
-		"id": "4",
-		"Tagname": "GPY00_N60_YM3_KC4",
-		"description": "描述",
-		"Color": "#0000FF"
-	}, {
-		"id": "5",
-		"Tagname": "GPY00_N60_YM3_KC5",
-		"description": "描述"
-	}]
+var tagList = [];
 	/*模拟笔组集合 在选择笔组后保存到tagGropList*/
 var tagGropList = [];
 
-var echartData = {
-	seriesData: [{
-			data: [400, 300, 100, 20, 30],
-			itemStyle: {
-				normal: {
-					color: "#0000FF"
-				}
-			},
-			name: "GPY00_N60_YM3_KC1",
-			type: "line",
-			smooth: true,
-		}, {
-			"data": [1400, 700, 100, 600, 30],
-			"itemStyle": {
-				normal: {
-					color: "#0000FF"
-				}
-			},
-			name: "GPY00_N60_YM3_KC2",
-			type: "line",
-			smooth: true,
-		}, {
-			"data": [200, 900, 1000, 20, 300],
-			"itemStyle": {
-				normal: {
-					color: "#0000FF"
-				}
-			},
-			name: "GPY00_N60_YM3_KC3",
-			type: "line",
-			smooth: true,
-		}
-
-	],
-	xAxisData: ["2016-11-03 11:42:10", "2016-11-03 11:42:20", "2016-11-03 11:42:30", "2016-11-03 11:42:40", "2016-11-03 11:42:50"]
-}
 
 var strokeGroupList = [];
 var colorArray = [
