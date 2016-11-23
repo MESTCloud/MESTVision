@@ -1,50 +1,4 @@
-$(function() {
-	map_load();
-});
-
-var markerArr = [{
-		/*title: "名称：广州火车站",
-		point: "113.264531,23.157003",
-		address: "广东省广州市广州火车站",
-		tel: "12306",
-		linkaddres: "SVGAnalysis.html?name=AHHX_002"*/
-		title: "名称：峨眉山",
-		point: "103.352223, 29.573007",
-		address: "四川省峨眉山市名山西路46号",
-		tel: "18500000000",
-		linkaddres: "SVGAnalysis.html?name=AHHX_008"
-	}, {
-		/*title: "名称：广州动物园",
-		point: "113.312213,23.147267",
-		address: "广东省广州市广州动物园",
-		tel: "18500000000",
-		linkaddres: "SVGAnalysis.html?name=AHHX_008"*/
-		title: "名称：苹果专卖店(三里屯店)",
-		point: "116.460982, 39.940673",
-		address: "北京市朝阳区三里屯路19号院",
-		tel: "12306",
-		linkaddres: "SVGAnalysis.html?name=AHHX_002"
-		
-	}, {
-		/*title: "名称：广州塔（赤岗塔）",
-		point: "113.330934,23.113401",
-		address: "广东省广州市广州塔（赤岗塔） ",
-		tel: "18500000000",
-		linkaddres: "SVGAnalysis.html?name=AHHX_003"*/
-		title: "名称：农夫山泉红河谷工厂",
-		point: "107.774868, 34.165504",
-		address: "陕西省宝鸡市 ",
-		tel: "18500000000",
-		linkaddres: "SVGAnalysis.html?name=AHHX_003"
-	},
-	/*{
-		title: "名称：天河公园",
-		point: "113.372867,23.134274",
-		address: "广东省广州市天河公园",
-		tel: "18500000000"
-	}*/
-];
-
+var markerArr;
 var map; //Map实例  
 function map_init() {
 	map = new BMap.Map("map");
@@ -81,8 +35,8 @@ function map_init() {
 
 	//第7步：绘制点    
 	for(var i = 0; i < markerArr.length; i++) {
-		var p0 = markerArr[i].point.split(",")[0];
-		var p1 = markerArr[i].point.split(",")[1];
+		var p0 = markerArr[i].xyz.split(",")[0];
+		var p1 = markerArr[i].xyz.split(",")[1];
 		var maker = addMarker(new window.BMap.Point(p0, p1), i);
 		addInfoWindow(maker, markerArr[i], i);
 	}
@@ -106,18 +60,18 @@ function addMarker(point, index) {
 function addInfoWindow(marker, poi) {
 	
 	//pop弹窗标题  
-	var title = '<div style="font-weight:bold;color:#CE5521;font-size:14px">' + poi.title + '</div>';
+	var title = '<div style="font-weight:bold;color:#CE5521;font-size:14px">' + poi.name + '</div>';
 
 	//pop弹窗信息  
 	var html = [];
 	html.push('<table cellspacing="0" style="table-layout:fixed;width:100%;font:12px arial,simsun,sans-serif"><tbody>');
 	html.push('<tr>');
 	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">地址:</td>');
-	html.push('<td style="vertical-align:top;line-height:16px">' + poi.address + ' </td>');
+	html.push('<td style="vertical-align:top;line-height:16px">' + poi.description + ' </td>');
 	html.push('</tr>');
 	html.push('<tr>');
 	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">链接:</td>');
-	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.linkaddres + ' >' + poi.linkaddres + '</a></td>');
+	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.url + ' >' + poi.url + '</a></td>');
 	html.push('</tr>');
 	html.push('</tbody></table>');
 	var infoWindow = new BMap.InfoWindow(html.join(""), {
@@ -138,4 +92,53 @@ function map_load() {
 	var load = document.createElement("script");
 	load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
 	document.body.appendChild(load);
+}
+
+//连接成功
+socket.onopen = function() {
+	if($.cookie("user") && $.cookie("password")) {
+		socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+	}
+
+	send("GetMapList");
+}
+
+//收到消息
+socket.onmessage = function(msg) {
+
+	var result = msg.data;
+	result = JSON.parse(result);
+
+	if(result["error"]) {
+		shalert(result["error"]);
+	}
+	/*else if(result["exception"]) {
+		shalert(result["exception"]);
+	} */
+	else {
+		switch(result["Function"]) {
+
+			case "GetMapList":
+
+				markerArr = result["data"];
+				map_load();
+				break;
+		}
+	}
+}
+
+//连接断开
+socket.onclose = function(event) {
+	console.log("Socket状态:" + readyStatus[socket.readyState]);
+	window.parent.location.href = "../Login.html";
+}
+
+//发送
+function send(msg) {
+	socket.send(msg);
+}
+
+//断开连接
+function disconnect() {
+	socket.close();
 }
