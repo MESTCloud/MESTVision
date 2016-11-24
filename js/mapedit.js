@@ -4,6 +4,7 @@ var markerArr;
 $(function() {
 	/*添加按钮点击事件*/
 	$("#btn_Add").click(function() {
+		/*经纬度栏位设置不可用*/
 		$("#longitude_Add").val("");
 		document.getElementById("longitude_Add").disabled = true;
 
@@ -52,31 +53,6 @@ $(function() {
 		var jsStr = "AddMap {\"name\":\"" + $("#name_Add").val().trim() + "\",\"xyz\":\"" + $("#longitude_Add").val().trim() + "\",\"desc\":\"" + $("#address_Add").val().trim() + "\",\"url\":\"" + $("#link_Add").val().trim() + "\"}";
 		send(jsStr);
 	});
-
-	/*清除按钮点击事件*/
-	$("#clear_Add").click(function() {
-		/*名称*/
-		$("#name_Add").val("");
-		/*经纬度*/
-		$("#longitude_Add").val("");
-		/*地址*/
-		$("#address_Add").val("");
-		/*链接*/
-		$("#link_Add").val("");
-
-		document.getElementById("longitude_Add").disabled = true;
-	});
-
-	/*删除按钮点击事件*/
-	$("#delete_Add").click(function() {
-		shconfirm("确定要删除吗", function(result) {
-			if(result) {
-				var jsStr = "DeleteMap {\"name\":\"" + $("#name_Add").val().trim() + "\"}";
-				console.log(jsStr);
-				send(jsStr);
-			}
-		});
-	});
 });
 
 var map; //Map实例  
@@ -85,12 +61,12 @@ function map_init() {
 
 	//第1步：设置地图中心点，广州市  
 	//var point = new BMap.Point(113.312213, 23.147267);
-	var point = new BMap.Point(116.460982, 39.940673);
+	var point = new BMap.Point(105.238631,35.890566);
 
 	//第2步：初始化地图,设置中心点坐标和地图级别。  
 	map.centerAndZoom(point, 5);
 
-	/*去掉道路*/
+	/*去掉道路显示*/
 	map.setMapStyle({
 		styleJson: [{
 			"featureType": "highway",
@@ -136,30 +112,9 @@ function map_init() {
 	map.addEventListener("rightclick", function(e) {
 		document.getElementById("longitude_Add").disabled = false;
 		document.getElementById("longitude_Add").value = e.point.lng + "," + e.point.lat;
+		
+		document.getElementById("longitude_Edit").value = e.point.lng + "," + e.point.lat;
 	});
-}
-
-/*获取经纬度*/
-function searchByStationName() {
-
-	var keyword = document.getElementById("text_").value;
-
-	var localSearch = new BMap.LocalSearch(map);
-
-	localSearch.setSearchCompleteCallback(function(searchResult) {
-		var poi = searchResult.getPoi(0);
-		document.getElementById("longitude_Add").value = poi.point.lng + "," + poi.point.lat;
-		map.centerAndZoom(poi.point, 14);
-		var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat)); // 创建标注，为要查询的地址对应的经纬度
-		map.addOverlay(marker);
-		/*	var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
-			var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
-			marker.addEventListener("click", function() {
-				this.openInfoWindow(infoWindow);
-			}); */
-		// marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-	});
-	localSearch.search(keyword);
 }
 
 // 添加标注  
@@ -167,8 +122,9 @@ function addMarker(point, index) {
 	var myIcon = new BMap.Icon("../img/markers.png",
 		new BMap.Size(23, 25), {
 			offset: new BMap.Size(10, 25),
-			imageOffset: new BMap.Size(0, 0 - index * 25)
+			imageOffset: new BMap.Size(0, 0 - 11 * 25)
 		});
+	//myIcon.width = 10px;	
 	var marker = new BMap.Marker(point, {
 		icon: myIcon
 	});
@@ -178,7 +134,21 @@ function addMarker(point, index) {
 
 // 添加信息窗口  
 function addInfoWindow(marker, poi) {
+	
+	/*获取弹窗显示内容*/
+	var infoWindow = GetinfoWindow(poi);
 
+	var openInfoWinFun = function() {
+		marker.openInfoWindow(infoWindow);
+	};
+
+	marker.addEventListener("click", openInfoWinFun);
+
+	return openInfoWinFun;
+}
+
+/*获取弹窗显示内容*/
+function GetinfoWindow(poi) {
 	//pop弹窗标题  
 	var title = '<div style="font-weight:bold;color:#CE5521;font-size:14px">' + poi.name + '</div>';
 
@@ -199,21 +169,7 @@ function addInfoWindow(marker, poi) {
 		width: 200
 	});
 
-	var openInfoWinFun = function() {
-
-		/*文本框获取数据*/
-		/*$("#name_Add").val(poi.name);
-		$("#longitude_Add").val(poi.xyz);
-		/*$("#latitude_Add").val(poi.xyz);
-		$("#address_Add").val(poi.description);
-		$("#link_Add").val(poi.url);*/
-
-		marker.openInfoWindow(infoWindow);
-	};
-
-	marker.addEventListener("click", openInfoWinFun);
-
-	return openInfoWinFun;
+	return infoWindow;
 }
 
 //异步调用百度js  
@@ -223,12 +179,11 @@ function map_load() {
 	document.body.appendChild(load);
 }
 
-/*获取集合*/
+/*右边列表区块绑定*/
 function bindTable(datatable) {
 	if(datatable.length > 0) {
 		var str = "";
 		$.each(datatable, function(index, data) {
-
 			if(parseInt(index) / 2 == 0) {
 				str += "<tr class='gradeX odd' role='row' data-value='" + index + "'>"
 			} else {
@@ -236,11 +191,11 @@ function bindTable(datatable) {
 			}
 			str += "<td style='word-break: break-all; word-wrap:break-word;'>" + data["name"] + "</td>";
 			str += "<td>";
-			str += "<button type='button' class='btn btn1 btn-success btnEdit'>";
+			str += "<button type='button' class='btn btn-success btnEdit' style='padding: 3px 7px;'>";
 			str += "<span>修改</span></button>";
 			str += "</td>";
 			str += "<td>";
-			str += "<button type='button' class='btn btn1 btn-success btnDelete' data-value='" + data["id"] + "'>";
+			str += "<button type='button' class='btn btn-success btnDelete' data-value='" + data["id"] + "' style='padding: 3px 7px;'>";
 			str += "<span>删除</span></button>";
 			str += "</td>";
 			str += "</tr>";
@@ -252,7 +207,6 @@ function bindTable(datatable) {
 
 // 修改事件
 function EditFactoryData(pFactoryID) {
-
 	//$("#save_Edit").unbind("click");
 	$("#save_Edit").click(function() {
 		if($("#name_Edit").val().trim() == "") {
@@ -277,7 +231,6 @@ function EditFactoryData(pFactoryID) {
 		}
 
 		var jsStr = "ModifyMap {\"name\":\"" + $("#name_Edit").val().trim() + "\",\"xyz\":\"" + $("#longitude_Edit").val().trim() + "\",\"desc\":\"" + $("#address_Edit").val().trim() + "\",\"url\":\"" + $("#link_Edit").val().trim() + "\",\"id\":\"" + pFactoryID + "\"}";
-		console.log(jsStr);
 		send(jsStr);
 	});
 }
@@ -293,11 +246,8 @@ socket.onopen = function() {
 
 //收到消息
 socket.onmessage = function(msg) {
-
 	var result = msg.data;
 	result = JSON.parse(result);
-
-	console.log(result);
 	if(result["error"]) {
 		shalert(result["error"]);
 	}
@@ -314,21 +264,24 @@ socket.onmessage = function(msg) {
 
 				$("tbody").html(bindTable(result["data"]));
 
+				/*table行点击事件:地图显示开窗*/
 				$("tbody tr").click(function() {
 					var pNum = $(this).attr("data-value");
-					
 					var p0 = markerArr[pNum]["xyz"].split(",")[0];
 					var p1 = markerArr[pNum]["xyz"].split(",")[1];
 					var maker = addMarker(new window.BMap.Point(p0, p1), i);
-					console.log(maker);
+					var poi = markerArr[pNum];
+					var infoWindow = GetinfoWindow(poi);
+					maker.openInfoWindow(infoWindow);
 				});
 
 				/*修改按钮点击事件*/
 				$(".btnEdit").click(function() {
+					/*获取行索引值*/
 					var pIndex = $(this).parent().parent().attr("data-value");
-					console.log(pIndex);
-					var pFactoryID = markerArr[pIndex]["id"]
-					console.log(pFactoryID);
+					
+					/*获取注记ID*/
+					var pFactoryID = markerArr[pIndex]["id"];
 					$("#divDataList").hide();
 					$("#divAddData").hide();
 					$("#divEditData").show();
@@ -338,7 +291,7 @@ socket.onmessage = function(msg) {
 					$("#address_Edit").val(markerArr[pIndex]["description"]);
 					$("#link_Edit").val(markerArr[pIndex]["url"]);
 
-					//EditFactoryData(pFactoryID);
+					EditFactoryData(pFactoryID);
 				});
 
 				/*删除按钮点击事件*/
@@ -358,6 +311,12 @@ socket.onmessage = function(msg) {
 			case "AddMap":
 				shalert("添加成功");
 
+				/*添加成功后清空栏位*/
+				$("#name_Add").val("");
+				$("#longitude_Add").val("");
+				$("#address_Add").val("");
+				$("#link_Add").val("");
+
 				$("#divDataList").show();
 				$("#divAddData").hide();
 				$("#divEditData").hide();
@@ -368,6 +327,12 @@ socket.onmessage = function(msg) {
 			case "ModifyMap":
 				shalert("修改成功");
 
+				/*修改成功后清空栏位*/
+				$("#name_Edit").val("");
+				$("#longitude_Edit").val("");
+				$("#address_Edit").val("");
+				$("#link_Edit").val("");
+
 				$("#divDataList").show();
 				$("#divAddData").hide();
 				$("#divEditData").hide();
@@ -375,13 +340,9 @@ socket.onmessage = function(msg) {
 				send("GetMapList");
 				break;
 			case "DeleteMap":
-
 				shalert("删除成功");
-
 				send("GetMapList");
-
 				break;
-
 		}
 	}
 }
@@ -401,3 +362,27 @@ function send(msg) {
 function disconnect() {
 	socket.close();
 }
+
+
+/*获取经纬度*/
+/*function searchByStationName() {
+
+	var keyword = document.getElementById("text_").value;
+
+	var localSearch = new BMap.LocalSearch(map);
+
+	localSearch.setSearchCompleteCallback(function(searchResult) {
+		var poi = searchResult.getPoi(0);
+		document.getElementById("longitude_Add").value = poi.point.lng + "," + poi.point.lat;
+		map.centerAndZoom(poi.point, 14);
+		var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat)); // 创建标注，为要查询的地址对应的经纬度
+		map.addOverlay(marker);
+			var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+			var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+			marker.addEventListener("click", function() {
+				this.openInfoWindow(infoWindow);
+			}); 
+		// marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	});
+	localSearch.search(keyword);
+}*/

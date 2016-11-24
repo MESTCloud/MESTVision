@@ -47,7 +47,7 @@ function addMarker(point, index) {
 	var myIcon = new BMap.Icon("../img/markers.png",
 		new BMap.Size(23, 25), {
 			offset: new BMap.Size(10, 25),
-			imageOffset: new BMap.Size(0, 0 - index * 25)
+			imageOffset: new BMap.Size(0, 0 - 11 * 25)
 		});
 	var marker = new BMap.Marker(point, {
 		icon: myIcon
