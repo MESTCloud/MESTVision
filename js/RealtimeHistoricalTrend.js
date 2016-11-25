@@ -376,6 +376,7 @@ jQuery(document).ready(function() {
 			$("#bg_checkColl").on("click", function() {
 				$(".rhTrendleft tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 				var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
+
 				send(jsStr);
 
 			});
@@ -397,22 +398,6 @@ jQuery(document).ready(function() {
 				var jsStr = "GetHistoryData {\"tags\":\"" + tags + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
 
 				send(jsStr);
-				/*myChart.showLoading({
-					text: "图表数据正在努力加载..."
-				});
-				window.clearTimeout(timeTicket);
-
-				myChart.clear();
-			
-				var sign = 0;
-				var sign9 = 0;
-				if(sign9 == 0 && echartData.xAxisData.length > 0) {
-
-					option.xAxis[0].data = echartData.xAxisData;
-					option.series = echartData.seriesData;
-					myChart.setOption(option);
-				}
-				myChart.hideLoading();*/
 
 			}
 
@@ -640,7 +625,7 @@ jQuery(document).ready(function() {
 						[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 						$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
 						bottomtr();
-						//ContextMenu();
+						ContextMenu();
 						tagGropList.push(tagList[$(this).attr("data-index")]);
 						colorItem++;
 					}
@@ -718,163 +703,47 @@ jQuery(document).ready(function() {
 			}
 
 			/*右键删除*/
-			/*function ContextMenu() {
+			function ContextMenu() {
+				
 				var table1 = $(".rhTrendright_bottom tbody tr");
+				table1.bind("mousedown", (function(e) {
+					  trId=$(this).attr("ID");
+					if(e.which == 3) {
 
-				for(var i = 0; i < table1.length; i++) {
-					var MM = new csMenu(table1[i], document.getElementById("Menu1"));
-
-				}
-				//var MM = new csMenu(table1, document.getElementById("Menu1"));
-
-				$("#Menu1 li").on("click", function() {
-					$(".rhTrendright_bottom tbody tr").unbind("click");
-					if(trId != "") {
-						if(tagGropList != null) {
-
-							for(var i = 0; i < tagGropList.length; i++) {
-
-								if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
-
-									tagGropList.splice(i, 1);
-								}
-							}
-
-							$("#" + trId).remove();
-
-							$("#Menu1").hide();
-
-						}
-						trId = "";
-					
-					} else {
-						shalert("请先点击要删除的行，右击删除");
-						return false;
-					}
-
-				});
-
-				function csMenu(_object, _menu) {
-
-					this.IEventHander = null;
-					this.IFrameHander = null;
-					this.IContextMenuHander = null;
-
-					this.Show = function(_menu) {
-						var e = window.event || event;
-						if(e.button == 2) {
-							if(window.document.all) {
-								this.IContextMenuHander = function() {
-									return false;
-								};
-								document.attachEvent("oncontextmenu", this.IContextMenuHander);
-							} else {
-								this.IContextMenuHander = document.oncontextmenu;
-								document.oncontextmenu = function() {
-									return false;
-								};
-							}
-
-							window.csMenu$Object = this;
-							this.IEventHander = function() {
-								window.csMenu$Object.Hide(_menu);
-							};
-
-							if(window.document.all)
-								document.attachEvent("onmousedown", this.IEventHander);
-							else
-								document.addEventListener("mousedown", this.IEventHander, false);
-
-							_menu.style.left = e.clientX + "px";
-							_menu.style.top = e.clientY - 18 + "px";
-							_menu.style.display = "";
-
-							if(this.IFrameHander) {
-								var _iframe = document.getElementById(this.IFrameHander);
-								_iframe.style.left = e.clientX;
-								_iframe.style.top = e.clientY;
-								_iframe.style.height = _menu.offsetHeight;
-								_iframe.style.width = _menu.offsetWidth;
-								_iframe.style.display = "";
-							}
-						}
-					};
-
-					this.Hide = function(_menu) {
-						var e = window.event || event;
-						var _element = e.srcElement;
-						do {
-							if(_element == _menu) {
-								return false;
-							}
-						}
-						while ((_element = _element.offsetParent));
-
-						if(window.document.all)
-							document.detachEvent("on" + e.type, this.IEventHander);
-						else
-							document.removeEventListener(e.type, this.IEventHander, false);
-
-						if(this.IFrameHander) {
-							var _iframe = document.getElementById(this.IFrameHander);
-							_iframe.style.display = "none";
-						}
-
-						_menu.style.display = "none";
-
-						if(window.document.all)
-							document.detachEvent("oncontextmenu", this.IContextMenuHander);
-						else
-							document.oncontextmenu = this.IContextMenuHander;
-					};
-
-					this.initialize = function(_object, _menu) {
-						window._csMenu$Object = this;
-
-						var _eventHander = function() {
-							window._csMenu$Object.Show(_menu);
+						var opertionn = {
+							name: "",
+							offsetX: 2,
+							offsetY: 2,
+							textLimit: 10,
+							beforeShow: $.noop,
+							afterShow: $.noop
 						};
 
-						_menu.style.position = "absolute";
-						_menu.style.display = "none";
-						_menu.style.zIndex = "1000000";
-
-						if(window.document.all) {
-							var _iframe = document.createElement('iframe');
-							document.body.insertBefore(_iframe, document.body.firstChild);
-							_iframe.id = _menu.id + "_iframe";
-							this.IFrameHander = _iframe.id;
-
-							_iframe.style.position = "absolute";
-							_iframe.style.display = "none";
-							_iframe.style.zIndex = "999999";
-							_iframe.style.border = "0px";
-							_iframe.style.height = "0px";
-							_iframe.style.width = "0px";
-
-							_object.attachEvent("onmouseup", _eventHander);
-						} else {
-
-							_object.addEventListener("mouseup", _eventHander, false);
-						}
-					};
-
-					this.initialize(_object, _menu);
-				}
+						var imageMenuData = [
+							[{
+								text: "删除",
+								func: function() {
+									$(this).css("padding", "10px");
+									$("#btn_Delstroke").click();
+								}
+							}],
+							
+							
+						];
+				
+						$(this).smartMenu(imageMenuData, opertionn);
+					}
+				}));
 
 			}
-*/
+
 			/*获取点击的id号，修改颜色*/
 			function colorStyle(_this) {
 				trId = _this.attr("ID");
 
 				$('.demo').val(RGBToHex(_this.css("color")));
 				$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
-				/*$(".rhTrendright_bottom tbody tr").on("click", function() {
-
-					$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-					colorStyle($(this));
-				});*/
+				
 				bottomtr();
 			}
 			/*Rgb 格式转为16进制*/
@@ -982,11 +851,7 @@ jQuery(document).ready(function() {
 								}
 							});
 							$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-							/*	$(".rhTrendright_bottom tbody tr").on("click", function() {
-
-									$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-									colorStyle($(this));
-								});*/
+							
 							bottomtr();
 							break;
 						case "AddGroup":
