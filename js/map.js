@@ -5,7 +5,7 @@ function map_init() {
 
 	//第1步：设置地图中心点，广州市  
 	//var point = new BMap.Point(113.312213, 23.147267);
-	var point = new BMap.Point(116.460982, 39.940673);
+	var point = new BMap.Point(110.171588,36.159581);
 
 	//第2步：初始化地图,设置中心点坐标和地图级别。  
 	map.centerAndZoom(point, 5);
