@@ -156,19 +156,21 @@ function GetinfoWindow(poi) {
 	var html = [];
 	html.push('<table cellspacing="0" style="table-layout:fixed;width:100%;font:12px arial,simsun,sans-serif"><tbody>');
 	html.push('<tr>');
-	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">地址:</td>');
+	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all;padding-bottom: 5px;">地址:</td>');
 	html.push('<td style="vertical-align:top;line-height:16px">' + poi.description + ' </td>');
 	html.push('</tr>');
 	html.push('<tr>');
 	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">链接:</td>');
-	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.url + ' >' + poi.url + '</a></td>');
+	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.url + '>');
+	html.push('<button type="button" ><span>详情</span></button></a></td>');
 	html.push('</tr>');
 	html.push('</tbody></table>');
+	
 	var infoWindow = new BMap.InfoWindow(html.join(""), {
 		title: title,
-		width: 200
+		width: 100
 	});
-
+	
 	return infoWindow;
 }
 
@@ -207,7 +209,7 @@ function bindTable(datatable) {
 
 // 修改事件
 function EditFactoryData(pFactoryID) {
-	//$("#save_Edit").unbind("click");
+	$("#save_Edit").unbind("click");
 	$("#save_Edit").click(function() {
 		if($("#name_Edit").val().trim() == "") {
 			$("#name_Edit").focus();

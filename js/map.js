@@ -12,6 +12,17 @@ function map_init() {
 
 	//第3步：启用滚轮放大缩小  
 	map.enableScrollWheelZoom(true);
+	
+	/*去掉道路显示*/
+	map.setMapStyle({
+		styleJson: [{
+			"featureType": "highway",
+			"elementType": "all",
+			"stylers": {
+				"visibility": "off"
+			}
+		}]
+	});
 
 	//第4步：向地图中添加缩放控件  
 	var ctrlNav = new window.BMap.NavigationControl({
@@ -66,17 +77,18 @@ function addInfoWindow(marker, poi) {
 	var html = [];
 	html.push('<table cellspacing="0" style="table-layout:fixed;width:100%;font:12px arial,simsun,sans-serif"><tbody>');
 	html.push('<tr>');
-	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">地址:</td>');
+	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all;padding-bottom: 5px;padding-top: 5px;">地址:</td>');
 	html.push('<td style="vertical-align:top;line-height:16px">' + poi.description + ' </td>');
 	html.push('</tr>');
 	html.push('<tr>');
 	html.push('<td style="vertical-align:top;line-height:16px;width:38px;white-space:nowrap;word-break:keep-all">链接:</td>');
-	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.url + ' >' + poi.url + '</a></td>');
+	html.push('<td style="vertical-align:top;line-height:16px"><a href=' + poi.url + '>');
+	html.push('<button type="button" ><span>详情</span></button></a></td>');
 	html.push('</tr>');
 	html.push('</tbody></table>');
 	var infoWindow = new BMap.InfoWindow(html.join(""), {
 		title: title,
-		width: 200
+		width: 100
 	});
 
 	var openInfoWinFun = function() {
@@ -90,7 +102,7 @@ function addInfoWindow(marker, poi) {
 //异步调用百度js  
 function map_load() {
 	var load = document.createElement("script");
-	load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
+	load.src = "http://api.map.baidu.com/api?v=2.0&ak=5dEsfUlwMV0GdHlxoqgvlxE0&callback=map_init";
 	document.body.appendChild(load);
 }
 
