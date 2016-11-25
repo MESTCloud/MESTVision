@@ -25,6 +25,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/public.css" />
 		<link rel="stylesheet" type="text/css" href="../css/Manage.css" />
   <link rel="stylesheet" type="text/css" href="../css/smartMenu.css"/>
+  <link href="../resource/layout/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
 	</head>
 
 	<body>
@@ -104,12 +105,13 @@
 															<label>结束时间：</label> <input type="text" id="endTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH：mm：ss' })" class="Wdate" size="24" />
 														</div>
 														<div class="col-md-4 text-left">
-															<button type="button" class="btn btn-success" id="btn_real">
+<!--															<button type="button" class="btn btn-success" id="btn_real">
                                 实时趋势
                             </button>
 															<button type="button" class="btn btn-success" id="btn_history">
                                历史趋势
-                            </button>
+                            </button>-->
+                            <input id="switchlight" type="checkbox" name="my-checkbox" checked data-on-color="success" data-off-color="warning">
 														</div>
 													</div>
 												</div>
@@ -150,9 +152,7 @@
 															<button type="button" class="btn btn-success" id="btn_Delstrokegroup">
                                删除笔组
                             </button>
-															<button type="button" class="btn btn-success" id="btn_Delstroke">
-                              删除笔
-                            </button>
+
 														</div>
 													</div>
 												</div>
@@ -220,6 +220,9 @@
 														</th>
 														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
 															<span>描述</span>
+														</th>
+														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 80px;">
+															<span>删除</span>
 														</th>
 													</tr>
 												</thead>
@@ -295,7 +298,9 @@ text-align: center;">
 <script src="../js/jquery.cookie.js"></script>
 <script src="../js/layout.js"></script>
 <script type="text/javascript" src="../js/socket.js"></script>
-
+<!--开关-->
+<script src="../resource/layout/scripts/switch_Trend.js" type="text/javascript"></script>
+<script src="../resource/layout/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
 <!--颜色表-->
 <script src="../resource/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 <script src='../resource/jquery-minicolors/jquery.minicolors.min.js'></script>

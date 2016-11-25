@@ -2,7 +2,7 @@
 var tagList = [];
 /*模拟笔组集合 在选择笔组后保存到tagGropList*/
 var tagGropList = [];
-
+var colorid=0;
 var strokeGroupList = [];
 var colorArray = [
 	'#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
@@ -29,6 +29,13 @@ var leftheight = $(".rhTrendleftTitle").height();
 $(".rhTrendleft .portlet-body").css("height", height - leftheight);
 var tags = new Array();
 jQuery(document).ready(function() {
+	$("[name='my-checkbox']").bootstrapSwitch();
+
+	$("#switchlight").bootstrapSwitch({
+		size: "large",
+		state: true
+	});
+
 	// ECHARTS
 	require.config({
 		paths: {
@@ -186,8 +193,25 @@ jQuery(document).ready(function() {
 			var socket1;
 			var readyStatus1 = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
 			var host1 = "ws://36.110.66.3:29001";
+			$("#switchlight").on('switchChange.bootstrapSwitch', function(e, state) {
+				if(state) {
+					real();
 
-			$("#btn_real").on("click", function() {
+				} else {
+					/*历史趋势*/
+					if(socket1 != null) {
+						socket1.close();
+					}
+					
+					window.clearTimeout(timeTicket);
+					historyLineFunction();
+					seriesData=[];
+
+				}
+
+			});
+			/*实时趋势*/
+			function real() {
 				if(tagGropList.length == 0) {
 					shalert("请选择点！");
 					return false;
@@ -361,17 +385,9 @@ jQuery(document).ready(function() {
 					// 动态数据接口 addData
 					myChart.addData(dataArray);
 				}
-			});
 
-			/*历史趋势*/
-			$("#btn_history").on("click", function() {
-				if(socket1 != null) {
-					socket1.close();
-				}
-				window.clearTimeout(timeTicket);
-				historyLineFunction();
+			}
 
-			});
 			/*查询*/
 			$("#bg_checkColl").on("click", function() {
 				$(".rhTrendleft tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
@@ -380,7 +396,8 @@ jQuery(document).ready(function() {
 				send(jsStr);
 
 			});
-
+               var xAxisData = new Array();
+                var seriesData = new Array();
 			function historyLineFunction() {
 				/*判定*/
 				if(tagGropList.length == 0) {
@@ -390,14 +407,20 @@ jQuery(document).ready(function() {
 				myChart.showLoading({
 					text: "图表数据正在努力加载..."
 				});
-				var tags = realTag(tagGropList).join(',');
+				var tags = realTag(tagGropList);
 				var start = $("#startTime").val().replace(/\：/g, ':');
 				var end = $("#endTime").val().replace(/\：/g, ':');
 				var cvalue = $("#cycleValue").val().trim();
 				var ctyle = $("#cycleType").val().trim();
-				var jsStr = "GetHistoryData {\"tags\":\"" + tags + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
-
-				send(jsStr);
+				colorid=0;
+				//seriesData=[];
+				for(var i=0;i<tags.length;i++)
+				{
+					
+					var jsStr = "GetHistoryData {\"tags\":\"" + tags[i] + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
+				     send(jsStr);
+				}
+				
 
 			}
 
@@ -516,7 +539,7 @@ jQuery(document).ready(function() {
 				});
 			});
 			//删除笔
-			$("#btn_Delstroke").click(function() {
+			function deletegroup(trId) {
 
 				if(trId != "") {
 					if(tagGropList != null) {
@@ -535,8 +558,7 @@ jQuery(document).ready(function() {
 				} else {
 					shalert("请选择要删除的笔")
 				}
-
-			});
+			}
 
 			/*end*/
 
@@ -624,10 +646,15 @@ jQuery(document).ready(function() {
 						/*页面动态加载*/
 						[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 						$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
+						$(".rhTrendright_bottom tbody button").click(function() {
+
+							deletegroup($(this).parent().parent().attr("ID"));
+						});
 						bottomtr();
 						ContextMenu();
 						tagGropList.push(tagList[$(this).attr("data-index")]);
 						colorItem++;
+
 					}
 
 				});
@@ -686,6 +713,10 @@ jQuery(document).ready(function() {
 						str += "<tr id=tagGrop" + data1["ID"] + " style='color:" + data1["Color"] + "'>";
 						str += "<td>" + data1["Tagname"] + "</td>";
 						str += "<td>" + data1["Description"] + "</td>";
+						str += "<td>";
+						str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 3px 7px;'>";
+						str += "<span>删除</span></button>";
+						str += "</td>";
 						str += "</tr>";
 					});
 				}
@@ -704,10 +735,10 @@ jQuery(document).ready(function() {
 
 			/*右键删除*/
 			function ContextMenu() {
-				
+
 				var table1 = $(".rhTrendright_bottom tbody tr");
 				table1.bind("mousedown", (function(e) {
-					  trId=$(this).attr("ID");
+					trId = $(this).attr("ID");
 					if(e.which == 3) {
 
 						var opertionn = {
@@ -724,13 +755,13 @@ jQuery(document).ready(function() {
 								text: "删除",
 								func: function() {
 									$(this).css("padding", "10px");
-									$("#btn_Delstroke").click();
+
+									deletegroup(trId);
 								}
 							}],
-							
-							
+
 						];
-				
+
 						$(this).smartMenu(imageMenuData, opertionn);
 					}
 				}));
@@ -743,7 +774,7 @@ jQuery(document).ready(function() {
 
 				$('.demo').val(RGBToHex(_this.css("color")));
 				$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
-				
+
 				bottomtr();
 			}
 			/*Rgb 格式转为16进制*/
@@ -851,7 +882,7 @@ jQuery(document).ready(function() {
 								}
 							});
 							$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-							
+
 							bottomtr();
 							break;
 						case "AddGroup":
@@ -867,6 +898,7 @@ jQuery(document).ready(function() {
 						case "GetHistoryData":
 
 							var dataList = result["data"];
+							console.log(dataList)
 							myChart.showLoading({
 								text: "图表数据正在努力加载..."
 							});
@@ -874,52 +906,44 @@ jQuery(document).ready(function() {
 
 							myChart.clear();
 
-							var sign = 0;
-							var xAxisData = new Array();
-							var seriesData = new Array();
 
-							var sign9 = 0;
-							$.each(tagGropList, function(item, data) {
-								lineData = [];
+							
+							//console.log(tagGropList.length);
+
+							//$.each(tagGropList, function(item, data) {
+								lineData =[];
 								xAxisData = [];
-								/*在此处发送请求，后台交互*/
-
-								if($("#cycleType").val() == 0) {
-									for(var i = dataList.length - 1; i >= 0; i--) {
-										if(sign == 0) xAxisData.push(dataList[i]["TimeStamp"]);
-										lineData.push(dataList[i]["Value"] * (item + 1));
-									}
-								} else {
-
 									for(var i = 0; i < dataList.length; i++) {
-
-										if(sign == 0) xAxisData.push(dataList[i]["TimeStamp"]);
-
-										lineData.push(dataList[i]["Value"] * (item + 1));
+										 xAxisData.push(dataList[i]["TimeStamp"]);
+                                        //lineData.push(dataList[i]["Value"] * (item + 1));
+										lineData.push(dataList[i]["Value"]);
 									}
-								}
-
-								seriesData.push({
-									name: data.Tagname,
+							     console.log(colorid);
+                                //console.log(lineData);
+							     	seriesData.push({
+									name: tagGropList[colorid].Tagname,
 									type: "line",
 									smooth: true,
 									data: lineData,
 									itemStyle: {
 										normal: {
-											color: data.Color
+											color: tagGropList[colorid].Color
 										}
 									}
 								});
 
-							});
-
+							//});
+							colorid++;
 							myChart.clear();
-							if(sign9 == 0 && xAxisData.length > 0) {
+							if(xAxisData.length > 0) {
+								//console.log(xAxisData);
+								console.log(seriesData);
 								option.xAxis[0].data = xAxisData;
 								option.series = seriesData;
 								myChart.setOption(option);
 							}
 							myChart.hideLoading();
+							
 							break;
 
 					}
