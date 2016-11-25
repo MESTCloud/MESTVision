@@ -1,8 +1,7 @@
 /*查询*/
 var tagList = [];
-	/*模拟笔组集合 在选择笔组后保存到tagGropList*/
+/*模拟笔组集合 在选择笔组后保存到tagGropList*/
 var tagGropList = [];
-
 
 var strokeGroupList = [];
 var colorArray = [
@@ -26,6 +25,8 @@ $(".rhTrendright_middle").css("height", height * 0.45);
 $("#echarts_line").css("height", height * 0.41);
 $(".rhTrendright_bottom").css("height", height * 0.35);
 $(".rhTrendright_right_top").css("height", height);
+var leftheight = $(".rhTrendleftTitle").height();
+$(".rhTrendleft .portlet-body").css("height", height - leftheight);
 var tags = new Array();
 jQuery(document).ready(function() {
 	// ECHARTS
@@ -47,17 +48,10 @@ jQuery(document).ready(function() {
 
 		],
 		function(ec) {
-
 			//时间初始化
-
 			var sDate = new Date();
-
 			$("#startTime").val(formatDate(sDate, 0) + " 08：00：00");
 			$("#endTime").val(formatDate(sDate, 0) + " 08：00：10");
-
-			/*数据绑定*/
-			/*$(".rhTrendleft tbody").html(tagListbind(tagList));*/
-
 			/*颜色版加载*/
 
 			$('.demo').each(function() {
@@ -84,12 +78,7 @@ jQuery(document).ready(function() {
 									}
 								});
 								$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-								$(".rhTrendright_bottom tbody tr").on("click", function() {
-									$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-									//	$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style", "background-color: #DAF3F5");
-
-									colorStyle($(this));
-								});
+								bottomtr();
 							}
 
 						}
@@ -128,6 +117,7 @@ jQuery(document).ready(function() {
 						saveAsImage: {
 							show: true
 						}
+
 					}
 				},
 
@@ -198,6 +188,10 @@ jQuery(document).ready(function() {
 			var host1 = "ws://36.110.66.3:29001";
 
 			$("#btn_real").on("click", function() {
+				if(tagGropList.length == 0) {
+					shalert("请选择点！");
+					return false;
+				}
 				if(socket1 != null) {
 					socket1.close();
 				}
@@ -232,6 +226,7 @@ jQuery(document).ready(function() {
 
 						tooltip: {
 							trigger: 'axis'
+
 						},
 						toolbox: {
 							show: true,
@@ -379,13 +374,21 @@ jQuery(document).ready(function() {
 			});
 			/*查询*/
 			$("#bg_checkColl").on("click", function() {
+				$(".rhTrendleft tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 				var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
 				send(jsStr);
 
 			});
 
 			function historyLineFunction() {
-
+				/*判定*/
+				if(tagGropList.length == 0) {
+					shalert("请选择点！");
+					return false;
+				}
+				myChart.showLoading({
+					text: "图表数据正在努力加载..."
+				});
 				var tags = realTag(tagGropList).join(',');
 				var start = $("#startTime").val().replace(/\：/g, ':');
 				var end = $("#endTime").val().replace(/\：/g, ':');
@@ -476,26 +479,52 @@ jQuery(document).ready(function() {
 			});
 			/*保存笔组*/
 			$("#btn_Savestrokegroup").click(function() {
-				var strokeGroup = $("#input_strokegroup").val();
+				var strokeGroup = $("#input_strokegroup").val().trim();
 				if(strokeGroup.trim() == "") {
 					shalert("请填写笔组名称");
 					return false;
 				}
 				var tagids = IDTag(tagGropList).join(',');
 				var colors = ColorTag(tagGropList).join(',');
-				var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+				if(!isStrokeGroup(strokeGroup)) {
 
-				send(jsStr);
+					shconfirm("确定要覆盖原来的数据", function(result) {
+
+						if(result) {
+
+							var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+
+							send(jsStr);
+						}
+
+					});
+				} else {
+
+					var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+					send(jsStr);
+				}
 
 			});
+			/*判定此笔组是否已经存在*/
+			function isStrokeGroup(strokeGroup) {
+				var isStroke = true;
+				$.each(strokeGroupList, function(index, data) {
+					if(data["GroupName"] == strokeGroup) {
+						isStroke = false;
+
+					}
+				});
+				return isStroke;
+			}
 			//删除笔组\n
 			$("#btn_Delstrokegroup").click(function() {
-				var strokeGroup = $("#input_strokegrouplist").find("option:selected").text();
+				var strokeGroup = $("#input_strokegrouplist").val().trim();
 
 				shconfirm("确定要删除吗", function(result) {
 
 					if(result) {
-						var jsStr = "DeleteGroup {\"name\":\"" + strokeGroup + "\"}";
+						var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
+						console.log(jsStr)
 						send(jsStr);
 					}
 
@@ -508,7 +537,7 @@ jQuery(document).ready(function() {
 					if(tagGropList != null) {
 
 						for(var i = 0; i < tagGropList.length; i++) {
-							alert(tagGropList[i]["ID"]);
+
 							if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
 
 								tagGropList.splice(i, 1);
@@ -610,11 +639,8 @@ jQuery(document).ready(function() {
 						/*页面动态加载*/
 						[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 						$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-						$(".rhTrendright_bottom tbody tr").click(function() {
-							$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-							colorStyle($(this));
-						});
-
+						bottomtr();
+						//ContextMenu();
 						tagGropList.push(tagList[$(this).attr("data-index")]);
 						colorItem++;
 					}
@@ -638,10 +664,12 @@ jQuery(document).ready(function() {
 			}
 			/*笔组切换*/
 			function selectGroup() {
+
 				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
 
 				send(jsStr);
 			}
+
 			$("#input_strokegrouplist").on("change", function() {
 
 					selectGroup();
@@ -651,7 +679,7 @@ jQuery(document).ready(function() {
 
 			/*笔组加载*/
 			function strokeGroupbind(datatable) {
-				var str = "";
+				var str = "<option></option>";
 				if(datatable != null) {
 					$.each(datatable, function(index, data) {
 
@@ -680,24 +708,174 @@ jQuery(document).ready(function() {
 				return str;
 			}
 			/*点击笔组关联tr*/
-			$(".rhTrendright_bottom tbody tr").on("click", function() {
+			function bottomtr() {
+				$(".rhTrendright_bottom tbody tr").on("click", function() {
 
-				$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-				colorStyle($(this));
+					$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
+					colorStyle($(this));
 
-			});
-			
-				/*获取点击的id号，修改颜色*/
+				});
+			}
+
+			/*右键删除*/
+			/*function ContextMenu() {
+				var table1 = $(".rhTrendright_bottom tbody tr");
+
+				for(var i = 0; i < table1.length; i++) {
+					var MM = new csMenu(table1[i], document.getElementById("Menu1"));
+
+				}
+				//var MM = new csMenu(table1, document.getElementById("Menu1"));
+
+				$("#Menu1 li").on("click", function() {
+					$(".rhTrendright_bottom tbody tr").unbind("click");
+					if(trId != "") {
+						if(tagGropList != null) {
+
+							for(var i = 0; i < tagGropList.length; i++) {
+
+								if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+
+									tagGropList.splice(i, 1);
+								}
+							}
+
+							$("#" + trId).remove();
+
+							$("#Menu1").hide();
+
+						}
+						trId = "";
+					
+					} else {
+						shalert("请先点击要删除的行，右击删除");
+						return false;
+					}
+
+				});
+
+				function csMenu(_object, _menu) {
+
+					this.IEventHander = null;
+					this.IFrameHander = null;
+					this.IContextMenuHander = null;
+
+					this.Show = function(_menu) {
+						var e = window.event || event;
+						if(e.button == 2) {
+							if(window.document.all) {
+								this.IContextMenuHander = function() {
+									return false;
+								};
+								document.attachEvent("oncontextmenu", this.IContextMenuHander);
+							} else {
+								this.IContextMenuHander = document.oncontextmenu;
+								document.oncontextmenu = function() {
+									return false;
+								};
+							}
+
+							window.csMenu$Object = this;
+							this.IEventHander = function() {
+								window.csMenu$Object.Hide(_menu);
+							};
+
+							if(window.document.all)
+								document.attachEvent("onmousedown", this.IEventHander);
+							else
+								document.addEventListener("mousedown", this.IEventHander, false);
+
+							_menu.style.left = e.clientX + "px";
+							_menu.style.top = e.clientY - 18 + "px";
+							_menu.style.display = "";
+
+							if(this.IFrameHander) {
+								var _iframe = document.getElementById(this.IFrameHander);
+								_iframe.style.left = e.clientX;
+								_iframe.style.top = e.clientY;
+								_iframe.style.height = _menu.offsetHeight;
+								_iframe.style.width = _menu.offsetWidth;
+								_iframe.style.display = "";
+							}
+						}
+					};
+
+					this.Hide = function(_menu) {
+						var e = window.event || event;
+						var _element = e.srcElement;
+						do {
+							if(_element == _menu) {
+								return false;
+							}
+						}
+						while ((_element = _element.offsetParent));
+
+						if(window.document.all)
+							document.detachEvent("on" + e.type, this.IEventHander);
+						else
+							document.removeEventListener(e.type, this.IEventHander, false);
+
+						if(this.IFrameHander) {
+							var _iframe = document.getElementById(this.IFrameHander);
+							_iframe.style.display = "none";
+						}
+
+						_menu.style.display = "none";
+
+						if(window.document.all)
+							document.detachEvent("oncontextmenu", this.IContextMenuHander);
+						else
+							document.oncontextmenu = this.IContextMenuHander;
+					};
+
+					this.initialize = function(_object, _menu) {
+						window._csMenu$Object = this;
+
+						var _eventHander = function() {
+							window._csMenu$Object.Show(_menu);
+						};
+
+						_menu.style.position = "absolute";
+						_menu.style.display = "none";
+						_menu.style.zIndex = "1000000";
+
+						if(window.document.all) {
+							var _iframe = document.createElement('iframe');
+							document.body.insertBefore(_iframe, document.body.firstChild);
+							_iframe.id = _menu.id + "_iframe";
+							this.IFrameHander = _iframe.id;
+
+							_iframe.style.position = "absolute";
+							_iframe.style.display = "none";
+							_iframe.style.zIndex = "999999";
+							_iframe.style.border = "0px";
+							_iframe.style.height = "0px";
+							_iframe.style.width = "0px";
+
+							_object.attachEvent("onmouseup", _eventHander);
+						} else {
+
+							_object.addEventListener("mouseup", _eventHander, false);
+						}
+					};
+
+					this.initialize(_object, _menu);
+				}
+
+			}
+*/
+			/*获取点击的id号，修改颜色*/
 			function colorStyle(_this) {
 				trId = _this.attr("ID");
 
 				$('.demo').val(RGBToHex(_this.css("color")));
 				$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
-				$(".rhTrendright_bottom tbody tr").on("click", function() {
+				/*$(".rhTrendright_bottom tbody tr").on("click", function() {
 
 					$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
 					colorStyle($(this));
-				});
+				});*/
+				bottomtr();
 			}
 			/*Rgb 格式转为16进制*/
 
@@ -754,30 +932,35 @@ jQuery(document).ready(function() {
 				if($.cookie("user") && $.cookie("password")) {
 					socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
 				}
-
 				send("GetTagList");
 				send("GetGroupList");
+				$(".rhTrendleft tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
+
 			}
 
 			//收到消息
 			socket.onmessage = function(msg) {
-
 				var result = msg.data;
-
 				result = JSON.parse(result);
 
 				if(result["error"]) {
-					shalert(result["error"]);
-					return false;
+					if($.cookie("user") == "" || $.cookie("user") == null) {
+						shconfirm1(result["error"], function(result) {
+							if(result) {
+
+								window.parent.location.href = "../Login.html";
+							}
+						});
+					} else {
+						shalert(result["error"]);
+					}
 				} else if(result["exception"]) {
 					shalert(result["exception"]);
 					return false;
 				} else {
 					switch(result["Function"]) {
-
 						case "GetTagList":
 							tagList = result["data"];
-
 							$(".rhTrendleft tbody").html(tagListbind(result["data"]));
 							tagleftClick();
 							break;
@@ -787,24 +970,24 @@ jQuery(document).ready(function() {
 							tagleftClick();
 							break;
 						case "GetGroupList":
-
 							strokeGroupList = result["data"];
 							$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
 							break;
-
 						case "SelectGroup":
-
 							var strokeGroup = result["data"];
-
 							tagGropList = [];
 							$.each(strokeGroup, function(index, data) {
 								if(isExist(data["ID"])) {
 									tagGropList.push(data);
 								}
 							});
-
-							/*{"Function":"GetHistoryData","data":[{"ID":1650,"Color":"#ff7f50"},{"ID":1709,"Color":"#87cefa"},{"ID":1641,"Color":"#da70d6"},{"ID":1883,"Color":"#32cd32"},{"ID":1889,"Color":"#6495ed"},{"ID":1901,"Color":"#ff69b4"},{"ID":1861,"Color":"#ba55d3"},{"ID":1941,"Color":"#cd5c5c"}]}*/
 							$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
+							/*	$(".rhTrendright_bottom tbody tr").on("click", function() {
+
+									$(this).css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
+									colorStyle($(this));
+								});*/
+							bottomtr();
 							break;
 						case "AddGroup":
 							shalert("添加成功！")
@@ -813,6 +996,7 @@ jQuery(document).ready(function() {
 						case "DeleteGroup":
 							shalert(result["info"])
 							send("GetGroupList");
+							$(".rhTrendright_bottom tbody").html("");
 							break;
 
 						case "GetHistoryData":
