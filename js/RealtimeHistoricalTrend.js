@@ -414,6 +414,7 @@ jQuery(document).ready(function() {
 				var ctyle = $("#cycleType").val().trim();
 				colorid=0;
 				//seriesData=[];
+				console.log(tags);
 				for(var i=0;i<tags.length;i++)
 				{
 					
@@ -912,7 +913,18 @@ jQuery(document).ready(function() {
 
 							//$.each(tagGropList, function(item, data) {
 								lineData =[];
-								xAxisData = [];
+								
+								if(dataList.length==0)
+								{
+									seriesData.push({
+									name: tagGropList[colorid].Tagname,
+									type: "line",
+									smooth: true,
+									data: []
+									});
+									
+								}else{
+									xAxisData = [];
 									for(var i = 0; i < dataList.length; i++) {
 										 xAxisData.push(dataList[i]["TimeStamp"]);
                                         //lineData.push(dataList[i]["Value"] * (item + 1));
@@ -931,6 +943,8 @@ jQuery(document).ready(function() {
 										}
 									}
 								});
+								}
+									
 
 							//});
 							colorid++;
