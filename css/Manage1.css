@@ -1,0 +1,336 @@
+/*userManage*/
+
+#del {
+	width: 400px;
+	height: 200px;
+	border-radius: 5px;
+	border: 1px solid gainsboro;
+	background: white;
+	position: absolute;
+	left: 51%;
+	top: 50px;
+	margin-left: -200px;
+}
+
+#User_Check {
+	width: 400px;
+	height: 200px;
+	border-radius: 5px;
+	border: 1px solid gainsboro;
+	background: white;
+	position: absolute;
+	left: 50%;
+	top: 50px;
+	margin-left: -200px;
+}
+
+
+/*index*/
+
+.login {
+	float: left;
+	display: block;
+	width: 235px;
+	height: 50px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+}
+
+
+/*MenuManage*/
+
+.tree {
+	background: white;
+}
+
+.row_tree {
+	width: 100%;
+	border-radius: 4px;
+}
+
+.left_row {
+	height: 800px;
+	width: 35%;
+	float: left;
+	margin-right: 1%;
+	border: 1px solid #0088cc;
+}
+
+.right_row {
+	width: 64%;
+	float: left;
+	height: 800px;
+	border: 1px solid #0088cc;
+}
+
+.portlet.box.blue {
+	border: 0px;
+}
+
+tbody tr {
+	cursor: pointer
+}
+
+.userMenu_left,
+.userMenu_right,
+.RoleMenu_left,
+.RoleMenu_right,
+.userRole_left,
+.userRole_right,
+.Roleuser_left,
+.Roleuser_right,
+.UserCollector_left,
+.UserCollector_right,
+.RoleCollector_left,
+.RoleCollector_right {
+	border: 1px solid #0088cc;
+	float: left;
+}
+
+.userMenu_left,
+.RoleMenu_left,
+.userRole_left,
+.Roleuser_left,
+.UserCollector_left,
+.RoleCollector_left {
+	width: 35%;
+	margin-right: 1%;
+	overflow-x: auto;
+}
+
+.userMenu_right,
+.RoleMenu_right,
+.userRole_right,
+.Roleuser_right,
+.UserCollector_right,
+.RoleCollector_right {
+	width: 64%;
+	overflow-x: auto;
+}
+
+.shadow {
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-ms-border-radius: 4px 4px 0 0;
+	-o-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: 1px;
+}
+
+
+/*趋势*/
+
+.rhTrendleft {
+	border: 1px solid #e7ecf1;
+	/*border-bottom:1px solid #e7ecf1;*/
+	margin-left: 1%;
+	/* overflow: auto;*/
+	background: #fff;
+	float: left;
+}
+
+
+/*.rhTrendleft table tr td {
+	white-space:nowrap;
+}*/
+
+.modal-dialog1 {
+	width: 1000px;
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width: 568px) {
+	.modal-dialog1 {
+		width: 94%;
+	}
+		.modal-body1 {
+		padding: 5px;
+	}
+	.modal-footer1 {
+		padding: 5px;
+	}
+	.modal-header1 {
+		padding: 5px;
+	}
+}
+
+.div1 .portlet-body {
+	overflow: auto;
+}
+
+
+
+.modal-body1 {
+	padding: 10px;
+}
+
+.modal-footer1 {
+	padding: 8px;
+}
+
+.modal-header1 {
+	padding: 8px;
+}
+
+
+@media screen and (min-device-width: 375px) and (max-device-width: 667px)  {
+		.modal-dialog1 {
+		width: 94%;
+	}
+		.modal-body1 {
+		padding: 5px;
+	}
+	.modal-footer1 {
+		padding: 5px;
+	}
+	.modal-header1 {
+		padding: 5px;
+	}
+}
+
+
+@media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
+		.modal-dialog1 {
+		width: 94%;
+	}
+		.modal-body1 {
+		padding: 5px;
+	}
+	.modal-footer1 {
+		padding: 5px;
+	}
+	.modal-header1 {
+		padding: 5px;
+	}
+	
+}
+
+body,
+tbody {
+	-webkit-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+}
+
+
+/*长时间按住页面出现闪退*/
+
+element {
+	-webkit-touch-callout: none;
+}
+
+.div1 .portlet-body {
+	overflow: auto;
+	-webkit-touch-callout: none;
+}
+
+
+/*.rhTrendleft{
+	 	width: 98%;
+	 }*/
+
+.portlet {
+	margin-bottom: 0px;
+}
+
+.rhTrendleftTitle {
+	background-color: #EDF1F5;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-ms-border-radius: 4px 4px 0 0;
+	-o-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+	min-height: 41px;
+}
+
+.rhTrendleftTitle .actions {
+	padding-top: 5px;
+}
+
+.rhTrendleft .container-fluid {
+	margin-left: 10%;
+	padding-left: 10%;
+}
+
+.rhTrendleft .row {
+	margin-left: 0px;
+}
+
+.rhTrendleft .portlet.box>.portlet-body {
+	padding: 5px;
+}
+
+.table-scrollable {
+	width: 100%;
+	overflow: auto;
+	border: 0;
+}
+
+.rhTrendright {
+	width: 100%;
+	margin-top: 0;
+	float: left;
+}
+
+.rhTrendright_right {
+	width: 15%;
+	margin-top: 0;
+	float: left;
+	border: 1px solid #e7ecf1;
+}
+
+.rhTrendright_right_top {
+	overflow-x: auto;
+}
+
+.rhTrendright_top,
+.rhTrendright_middle,
+.rhTrendright_bottom,
+.rhTrendright_top_top {
+	border: 1px solid #e7ecf1;
+	overflow: auto;
+}
+
+.rhTrendright_top_top {
+	border-bottom: 0;
+}
+
+.rhTrendright_top .row {
+	padding: 2px 0;
+}
+
+.rhTrendright .form-group {
+	margin-bottom: 0;
+}
+
+.rhTrendright input,
+.rhTrendright #input_strokegrouplist {
+	border-radius: 5px;
+	height: 28px;
+	outline: none;
+	border: 1px solid #ccc;
+	width: 200px;
+}
+
+.rhTrendright_middle,
+.rhTrendright_bottom {
+	border-top: 0px;
+}
+
+.portlet-margin {
+	padding-top: 15px;
+	background-color: #fff;
+}
+
+.col-md-3 {
+	margin-left: -12px;
+}
+
+
+/*全屏显示时 top边框*/
+
+.topboder {
+	border-top: 1px solid #e7ecf1;
+}
