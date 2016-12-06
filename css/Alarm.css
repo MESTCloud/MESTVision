@@ -30,6 +30,7 @@
 .rowcolor {
 	width: 100%;
 	overflow: auto;
+	margin-top: 5px;
 }
 
 
