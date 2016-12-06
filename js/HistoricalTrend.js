@@ -1331,7 +1331,7 @@ jQuery(document).ready(function() {
 							break;
 
 						case "GetHistoryData":
-							alert("返回数据")
+							
 							var dataList = result["data"];
 							console.log(dataList);
 
