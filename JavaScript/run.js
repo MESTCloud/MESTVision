@@ -12,11 +12,11 @@ var yValues = new Array();
 var currentTime = 0;
 var cacheDb = null;
 var snapshotData;
-var timeTag = "#time";
+var timeTag = "#time"; 
 
-window.parent.$("#user_close").on("click", function(){
+/*window.parent.$("#user_close").on("click", function(){
 	socket.close();
-}); 
+});*/
 
 /*刷新按钮点击事件*/
 window.parent.$("#user_Refresh").on("click", function(){

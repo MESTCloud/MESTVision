@@ -16,16 +16,14 @@
 	<body>
 		<div class="portlet box blue " style="margin:0 0;">
 			<div class="portlet-title">
-				<div class="caption" id="divTitle">
-					
-				</div>
-				<div id="divAlarm" class="caption" style="font-size: 20px;color: red;display: none;">（与服务器中断）</div>
+				<div class="caption" id="divTitle"></div>
+				<div id="divAlarm" class="caption" style="font-size: 25px;color:#FF0000 ;display: none;"><span id="element" >（与服务器中断）</span></div>
 				<div class="actions ">
-					<button type="button" class="btn btn-warning" data-toggle="modal" id="user_close">
+					<!--<button type="button" class="btn btn-warning" data-toggle="modal" id="user_close">
                     <i class="fa fa-search-plus"></i>
                     <span >断开</span>
-                </button>
-                <button type="button" class="btn btn-warning" data-toggle="modal" id="user_Enlarge">
+                </button>-->
+					<button type="button" class="btn btn-warning" data-toggle="modal" id="user_Enlarge">
                     <i class="fa fa-search-plus"></i>
                     <span >放大</span>
                 </button>
@@ -37,8 +35,8 @@
                     <i class="fa fa-file" ></i>
                     <span>还原</span>                   
                 </button>
-                <button type="button" class="btn btn-success" id="user_Refresh">
-                    <i class="fa fa-file" ></i>
+					<button type="button" class="btn btn-success" id="user_Refresh">
+                    <i class="fa fa-refresh" ></i>
                     <span>刷新</span>                   
                 </button>
 
@@ -82,4 +80,5 @@
 		<script src="../resource/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
 		<script src="../resource/jquery-ui-1.11.1.custom/sh_alert.js"></script>
 	</body>
+
 </html>

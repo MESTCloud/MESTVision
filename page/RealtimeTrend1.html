@@ -36,13 +36,41 @@
 						<div class="portlet box blue ">
 							<div class="portlet-title">
 								<div class="caption" id="divTitle"></div>
+								<div id="divAlarm" class="caption" style="font-size: 25px;color:#FF0000 ;display: none;"><span id="element" >（与服务器中断）</span></div>
 								<div class="actions">
+									<button type="button" class="btn green" id="user_close" >
+										    <i class="fa fa-plus"></i>
+							                <span>断开</span>
+								    </button>
 									<button type="button" class="btn green" id="btn_AddList" data-toggle="modal" data-target="#myModalTend_Add">
 										    <i class="fa fa-plus"></i>
-							                <span>添加笔</span>
+							                <span>添加标签</span>
 								    </button>
-									<button type="button" class="btn green" style="display: none;" id="btn_savegroup" data-toggle="modal" data-target="#myStrokegroup_Add">
-										    <i class="fa fa-plus"></i>
+									<button type="button" class="btn green" id="btn_AddList">
+										    <i class="fa fa-gear"></i>
+							                <!--<span>笔組列表配置</span>-->
+							                <div class="btn-group">
+                                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="color: white;text-decoration:none;"> 笔組列表配置
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li style="display: none;" id="li_savegroup1">
+                                                        <a href="#myStrokegroup_Add" data-toggle="modal" > 保存笔組 </a>
+                                                    </li>
+                                                    <li class="divider" style="display: none;" id="li_savegroup2"> </li>
+                                                    <li>
+                                                        <a href="#myStrokegroup_List" data-toggle="modal"> 选择笔組列表 </a>
+                                                    </li>
+                                                    <li class="divider"> </li>
+                                                    <li>
+                                                        <a href="#myStrokegroup_Drop" data-toggle="modal"> 删除笔組列表 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+								    </button>
+
+									<!--<button type="button" class="btn green" style="display: none;" id="btn_savegroup" data-toggle="modal" data-target="#myStrokegroup_Add">
+										    <i class="fa fa-save"></i>
 							                <span>保存笔組</span>
 								    </button>
 									<button type="button" class="btn green" id="btn_checkgroup" data-toggle="modal" data-target="#myStrokegroup_List">
@@ -52,111 +80,112 @@
 									<button type="button" class="btn green" id="btn_deletegroup" data-toggle="modal" data-target="#myStrokegroup_Drop">
 									    <i class="fa fa-times-circle"></i>
 						                <span>删除笔組列表</span>
-							    	</button>
+							    	</button>-->
 									<button type="button" class="btn btn-success" id="Ccheck">
 							    		<i class="fa fa-flash"></i>
 							    		<span>隐藏列表</span>			    		
 							    </button>
-									<button type="button" class="btn green" id="btn_real">
+									<!--<button type="button" class="btn green" id="btn_real">
 									    <i class="fa fa-line-chart"></i>
 						                <span>折线图</span>
-							   		</button>
+							   		</button>-->
 								</div>
 							</div>
 
 							<!--笔組列表-->
-							<div class="portlet-margin">
-								<div class="rhTrendright">
-									<div class="container-fluid">
-										<div class="rhTrendright_bottom">
-											<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
-												<thead>
-													<tr role="row">
-														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
-															<span>别名</span>
-														</th>
-														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
-															<span>描述</span>
-														</th>
-														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 80px;">
-															<span>操作</span>
-														</th>
-													</tr>
-												</thead>
-												<tbody></tbody>
-											</table>
-										</div>
-										<div class="rhTrendright_middle">
-											<div class="table-scrollable">
-												<div id="echarts_line" style="height=200px;"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="rhTrendright_right" style="display: none;">
-									<div class="portlet box blue">
-										<div class="portlet-title">
-											<div class="caption">颜色配置</div>
-										<div class="form-group">
-
-											<div class="pull-right">
-												<button type="button" id="btn_Color" class="btn btn-success">关闭</button>
-											</div>
-										</div>
-										</div>
-										
-									</div>
-									<div class="rhTrendright_right_top">
+							<!--<div id="divtable" style="overflow-y: auto;overflow-x: hidden;">-->
+								<div class="portlet-margin">
+									<div class="rhTrendright">
 										<div class="container-fluid">
-											<form action="#" id="form-username" class="form-horizontal form-bordered">
+
+											<div class="rhTrendright_middle">
+												<div class="table-scrollable">
+													<div id="echarts_line"></div>
+												</div>
+											</div>
+											<div id="rhTrendright_bottom" style="display: none;">
+												<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable1 no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+													<thead>
+														<tr role="row">
+															<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
+																<span>别名</span>
+															</th>
+															<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
+																<span>描述</span>
+															</th>
+															<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 80px;">
+																<span>操作</span>
+															</th>
+														</tr>
+													</thead>
+													<tbody></tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<!--颜色配置-->
+									<div class="rhTrendright_right" style="display: none;">
+										<div class="portlet box blue">
+											<div class="portlet-title">
+												<div class="caption">颜色配置</div>
 												<div class="form-group">
-													<label class="control-label">颜色:</label>
-													<div>
-														<input type="text" id="hue-demo" class="form-control demo" data-control="hue" value="#ff6161" style="min-width: 172px;">
+
+													<div class="pull-right">
+														<button type="button" id="btn_Color" class="btn btn-success">关闭</button>
 													</div>
 												</div>
-											</form>
+											</div>
+
+										</div>
+										<div class="rhTrendright_right_top">
+											<div class="container-fluid">
+												<form action="#" id="form-username" class="form-horizontal form-bordered">
+													<div class="form-group">
+														<label class="control-label">颜色:</label>
+														<div>
+															<input type="text" id="hue-demo" class="form-control demo" data-control="hue" value="#ff6161" style="min-width: 172px;">
+														</div>
+													</div>
+												</form>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="container" id="Add">
-									<div class="modal fade" id="myModalTend_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
-										<div class="modal-dialog modal-dialog1">
-											<div class="modal-content">
-												<div class="modal-header modal-header1">
-													<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-													<h4 class="modal-title" id="myModalLabel_Add">添加笔</h4>
-												</div>
-												<div class="modal-body modal-body1">
-													<div class="div1">
-														<!--<div class="portlet box blue">-->
+									<!--END-->
+									<!--添加标签-->
+									<div class="container" id="Add">
+										<div class="modal fade" id="myModalTend_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
+											<div class="modal-dialog modal-dialog1">
+												<div class="modal-content">
+													<div class="modal-header modal-header1">
+														<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+														<h4 class="modal-title" id="myModalLabel_Add">添加标签</h4>
+													</div>
+													<div class="modal-body modal-body1">
+														<div class="div1">
+															<!--<div class="portlet box blue">-->
 															<div class="rhTrendleftTitle">
 																<div class="actions">
 																	<div class="container-fluid">
 																		<div class="row" style="padding-left: 10px;padding-right: 5px;">
-																			<div class="col-md-6" >
-																				<input type="text" class="shadow input-sm " style="width: 80%;" id="input_name" placeholder="点名"  size="4"/>
-																				<button type="button" class="btn btn-success btn-sm" id="bg_checkColl" >
-					                                                              <i class="fa fa-search"></i>查询
-					                                                              </button>
-																			</div>
-																			<!--<div class="col-md-4">
+																			<div class="col-md-6">
+																				<input type="text" class="shadow input-sm " style="width: 80%;" id="input_name" placeholder="标签名/描述" size="4" />
 																				<button type="button" class="btn btn-success btn-sm" id="bg_checkColl">
 					                                                              <i class="fa fa-search"></i>查询
 					                                                              </button>
-																			</div>-->
+																			</div>
 																		</div>
 																	</div>
 																</div>
 															</div>
 															<div class="portlet-body">
 																<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
-																	<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
+																	<table class="table table-striped table-bordered table-hover table-checkable order-column dataTable1 no-footer" id="sample_3" role="grid" aria-describedby="sample_3_info">
 																		<thead>
 																			<tr role="row">
-																				<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 46px;">
+																				<th class="table-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 7%;">
 																				</th>
-																				<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="min-width: 100px;width: 40%;"> 点表列表
+																				<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="min-width: 100px;width: 53%;"> 标签名
 																				</th>
 																				<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="min-width: 100px;width: 40%;"> 描述
 																				</th>
@@ -166,100 +195,105 @@
 																	</table>
 																</div>
 															</div>
-														<!--</div>-->
+															<!--</div>-->
+														</div>
+													</div>
+													<div class="modal-footer modal-footer1">
+														<button type="button" class="btn btn-default" id="close_Check">确定</button>
 													</div>
 												</div>
-												<div class="modal-footer modal-footer1">
-													<button type="button" class="btn btn-default" id="close_Check">确定</button>
+											</div>
+										</div>
+									</div>
+
+									<!--END-->
+									<!--保存笔組-->
+									<div class="modal fade" id="myStrokegroup_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+													<h4 class="modal-title" id="myModalLabel_Add">添加笔組</h4>
+												</div>
+												<div class="modal-body">
+													<form role="form">
+														<div class="form-group">
+															<div class="row">
+																<label for="Name_Add" class="col-md-3 text-right" style="height: 34px; line-height: 34px;"
+>名称：</label>
+																<div class="col-md-9">
+																	<input type="text" class="form-control" id="input_strokegroup" placeholder="添加笔組名称">
+																</div>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" id="btn_Savestrokegroup">确定</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+														</div>
+													</form>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<!--保存笔組-->
-								<div class="modal fade" id="myStrokegroup_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-												<h4 class="modal-title" id="myModalLabel_Add">添加笔組</h4>
-											</div>
-											<div class="modal-body">
-												<form role="form">
-													<div class="form-group">
-														<div class="row">
-															<label for="Name_Add" class="col-md-3 text-right">名称：</label>
-															<div class="col-md-9">
-																<input type="text" class="form-control" id="input_strokegroup" placeholder="名称">
+									<!--END-->
+									<!--选择笔組列表-->
+									<div class="modal fade" id="myStrokegroup_List" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+													<h4 class="modal-title">选择笔组列表</h4>
+												</div>
+												<div class="modal-body">
+													<form role="form">
+														<div class="form-group">
+															<div class="row">
+																<label for="Name_Add" class="col-md-3 text-right" style="height: 34px; line-height: 34px;">笔组列表：</label>
+																<div class="col-md-9">
+																	<select style="max-width: 200px;" class="form-control" id="input_strokegrouplist"></select>
+																</div>
 															</div>
 														</div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" id="btn_Savestrokegroup">确定</button>
-														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-													</div>
-												</form>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" id="btn_input">确定</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+														</div>
+													</form>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-
-								<!--选择笔組列表-->
-								<div class="modal fade" id="myStrokegroup_List" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-												<h4 class="modal-title">选择笔组列表</h4>
-											</div>
-											<div class="modal-body">
-												<form role="form">
-													<div class="form-group">
-														<div class="row">
-															<label for="Name_Add" class="col-md-3 text-right">笔组列表：</label>
-															<div class="col-md-9">
-																<select style="max-width: 200px;" class="form-control" id="input_strokegrouplist"></select>
+									<!--END-->
+									<!--删除笔組列表-->
+									<div class="modal fade" id="myStrokegroup_Drop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+													<h4 class="modal-title">删除笔组列表</h4>
+												</div>
+												<div class="modal-body">
+													<form role="form">
+														<div class="form-group">
+															<div class="row">
+																<label for="Name_Add" class="col-md-3 text-right" style="height: 34px; line-height: 34px;">笔组列表：</label>
+																<div class="col-md-9">
+																	<select style="max-width: 200px;" class="form-control" id="delete_strokegrouplist" ></select>
+																</div>
 															</div>
 														</div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" id="btn_input">确定</button>
-														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-													</div>
-												</form>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" id="btn_Delstrokegroup">确定</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+														</div>
+													</form>
+												</div>
 											</div>
 										</div>
 									</div>
+									<!--END-->
 								</div>
-
-								<!--删除笔組列表-->
-								<div class="modal fade" id="myStrokegroup_Drop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_Add" aria-hidden="true" data-backdrop="static">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
-												<h4 class="modal-title">删除笔组列表</h4>
-											</div>
-											<div class="modal-body">
-												<form role="form">
-													<div class="form-group">
-														<div class="row">
-															<label for="Name_Add" class="col-md-3 text-right">笔组列表：</label>
-															<div class="col-md-9">
-																<select style="max-width: 200px;" class="form-control" id="delete_strokegrouplist"></select>
-															</div>
-														</div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" id="btn_Delstrokegroup">确定</button>
-														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<!--</div>-->
 						</div>
 					</div>
 				</div>

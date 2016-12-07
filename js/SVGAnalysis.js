@@ -3,6 +3,7 @@ $(function() {
 	/*获得数据*/
 	if(getQueryString("name")) {
 		$("#SVGBox").append("<embed id='ShowSVG' src='" + "../ProcessWatching/" + getQueryString("name") + ".svg" + "' type='image/svg+xml' width='100%' />");
+		console.log($("#SVGBox"));
 	}
 
 	/*设置自适应滚动条*/
@@ -32,7 +33,7 @@ $(function() {
 			svg.setAttribute("height", "100%");
 		}
 	);
-	
+
 	/*二维码的点击事件*/
 	$("#QRcode").on("click", function() {
 		var pbody = window.parent.document.body; /*获得父页面的body*/
@@ -40,7 +41,6 @@ $(function() {
 		var urlstr = "http://www.proficyrtoi.com:82/Cloud/" + $(pbody).find("iframe").attr("src").split('&')[0];
 		var str = "BarCode {\"url\":\"" + urlstr + "\"}";
 		send(str);
-
 	});
 });
 
@@ -135,7 +135,7 @@ socket.onmessage = function(msg) {
 				$("#QRcodeImg").attr("src", "data:image/png;base64," + result["info"]);
 				$("#div_QRcode").toggle("slow");
 				break;
-				
+
 			case "OPCWriteValue":
 				shalert(result["info"]);
 				$("#bg_Dialog").hide();

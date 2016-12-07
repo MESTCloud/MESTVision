@@ -181,7 +181,7 @@ tbody tr {
 		width: 94%;
 	}
 		.modal-body1 {
-		padding: 5px;
+		padding: 10px;
 	}
 	.modal-footer1 {
 		padding: 5px;
@@ -197,7 +197,7 @@ tbody tr {
 		width: 94%;
 	}
 		.modal-body1 {
-		padding: 5px;
+		padding: 10px;
 	}
 	.modal-footer1 {
 		padding: 5px;
@@ -285,6 +285,7 @@ element {
 	overflow-x: auto;
 }
 
+#rhTrendright_bottom,
 .rhTrendright_top,
 .rhTrendright_middle,
 .rhTrendright_bottom,
@@ -333,4 +334,9 @@ element {
 
 .topboder {
 	border-top: 1px solid #e7ecf1;
+}
+
+
+table.dataTable1 tbody td{
+	padding: 7px 18px;
 }
