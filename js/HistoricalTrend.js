@@ -20,11 +20,12 @@ var height = pFrameHeight - pTitleHeight - 30;
 $("#Dialog").css("height", height - 50);
 $(".rhTrendright").css("height", height);
 $(".rhTrendright_right").css("height", height);
-$(".rhTrendright_top_top").css("height", "120px");
+/*$(".rhTrendright_top_top").css("height", "120px");*/
 $(".rhTrendright_top").css("height", height * 0.12);
-$(".rhTrendright_middle").css("height", height * 0.45);
-$("#echarts_line").css("height", height * 0.41);
-$(".rhTrendright_bottom").css("height", height * 0.35);
+$(".rhTrendright_middle").css("height", height * 0.7);
+$("#echarts_line").css("height", height * 0.66);
+$("#echarts_bar").css("height", height * 0.66);
+$(".rhTrendright_bottom").css("height", height * 0.2);
 $(".rhTrendright_right_top").css("height", height);
 var leftheight = $(".rhTrendleftTitle").height();
 //$(".div1 .portlet-body").css("height", height - leftheight);
@@ -33,7 +34,7 @@ jQuery(document).ready(function() {
 	/*采集周期的修改*/
 	$("#cycleValue").attr("disabled", true);
 	$("#cycleType").attr("disabled", true);
-	
+
 	/*判定点击的此行是否已经存在*/
 	function isExist(id) {
 		var boolE = true;
@@ -47,13 +48,6 @@ jQuery(document).ready(function() {
 
 		return boolE;
 	}
-
-	$("[name='my-checkbox']").bootstrapSwitch();
-
-	$("#switchlight").bootstrapSwitch({
-		size: "large",
-		state: true
-	});
 
 	// ECHARTS
 	require.config({
@@ -267,6 +261,7 @@ jQuery(document).ready(function() {
 				/*判断开始结束时间段的差，如果相差*/
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				historyLineFunction();
 				seriesData = [];
 
@@ -278,13 +273,14 @@ jQuery(document).ready(function() {
 				seriesData = [];
 				$("#echarts_line").css("display", "none");
 				$("#echarts_bar").css("display", "block");
+
 				bar();
 			});
 			//柱状图的数据加载
 			function bar() {
 				/*判定*/
 				if(tagGropList.length == 0) {
-					shalert("请选择点！");
+					shalert("请选择标签！");
 					disabled_btn();
 					return false;
 				}
@@ -436,7 +432,7 @@ jQuery(document).ready(function() {
 			function historyLineFunction() {
 				/*判定*/
 				if(tagGropList.length == 0) {
-					shalert("请选择点！");
+					shalert("请选择标签！");
 					disabled_btn();
 					return false;
 				}
@@ -518,8 +514,7 @@ jQuery(document).ready(function() {
 					$("#cycleType").val("4");
 					value = 30 * 24 * 4;
 					type = 3;
-				}else
-				{
+				} else {
 					$("#cycleValue").attr("disabled", false);
 					$("#cycleType").attr("disabled", false);
 					$("#cycleValue").val("1");
@@ -626,10 +621,13 @@ jQuery(document).ready(function() {
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				var sDate = new Date();
-				$("#startTime").val(formatDate(sDate, 0) + " 08：00：00");
-				$("#endTime").val(formatDate(sDate, 0) + " 08：00：10");
+
 				$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
 				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");
 				$("#cycleValue").attr("disabled", true);
@@ -646,14 +644,19 @@ jQuery(document).ready(function() {
 				seriesData = [];
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				$("#btnToday").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
 				$("#btnMonth_3").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnMonth_6").attr("disabled", true);
 				$("#btnYear").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				var year = sDate.getFullYear();
 				var month = sDate.getMonth() + 1;
 				var day = new Date(year, month, 0);
@@ -667,14 +670,96 @@ jQuery(document).ready(function() {
 				type = 3;
 				historyLineFunction();
 			});
+
+			/*本周*/
+			$("#btnWeek").on("click", function() {
+				$("#echarts_line").css("display", "block");
+				$("#echarts_bar").css("display", "none");
+				colorid = 0;
+				seriesData = [];
+				$("#btnMonth").attr("disabled", true);
+				$("#btnMonth_3").attr("disabled", true);
+				$("#btnMonth_6").attr("disabled", true);
+				$("#btnYear").attr("disabled", true);
+				$("#btnGo").attr("disabled", true);
+				$("#btnBack").attr("disabled", true);
+				$("#btnYesterday").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
+				$("#btnYesteryear").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
+
+				var now = new Date(); //当前日期 
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天 
+				var nowDay = now.getDate(); //当前日 
+				var nowMonth = now.getMonth(); //当前月 
+				var nowYear = now.getYear(); //当前年 
+				nowYear += (nowYear < 2000) ? 1900 : 0; // 
+				var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+				var weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
+				$("#startTime").val(formatDate(weekStartDate, 0) + " 00：00：00");
+				$("#endTime").val(formatDate(weekEndDate, 0) + " 23：59：59");
+				/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
+				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
+				$("#cycleValue").attr("disabled", true);
+				$("#cycleType").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
+				$("#cycleValue").val("24");
+				$("#cycleType").val("3");
+				value = 24;
+				type = 3;
+				historyLineFunction();
+			});
+			/*上周*/
+			$("#btnYesterWeek").on("click", function() {
+				$("#echarts_line").css("display", "block");
+				$("#echarts_bar").css("display", "none");
+				colorid = 0;
+				seriesData = [];
+				$("#btnMonth").attr("disabled", true);
+				$("#btnMonth_3").attr("disabled", true);
+				$("#btnMonth_6").attr("disabled", true);
+				$("#btnYear").attr("disabled", true);
+				$("#btnGo").attr("disabled", true);
+				$("#btnBack").attr("disabled", true);
+				$("#btnYesterday").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
+				$("#btnYesteryear").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
+
+				$("#btnWeek").attr("disabled", true);
+				//$("#btnYesterWeek").attr("disabled", true);
+				var now = new Date(); //当前日期 
+				var nowDayOfWeek = now.getDay(); //今天本周的第几天 
+				var nowDay = now.getDate(); //当前日 
+				var nowMonth = now.getMonth(); //当前月 
+				var nowYear = now.getYear(); //当前年 
+				nowYear += (nowYear < 2000) ? 1900 : 0; // 
+				var getUpWeekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
+				var getUpWeekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek - 7));
+				$("#startTime").val(formatDate(getUpWeekStartDate, 0) + " 00：00：00");
+				$("#endTime").val(formatDate(getUpWeekEndDate, 0) + " 23：59：59");
+				/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
+				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
+				$("#cycleValue").attr("disabled", true);
+				$("#cycleType").attr("disabled", true);
+				$("#cycleValue").val("24");
+				$("#cycleType").val("3");
+				value = 24;
+				type = 3;
+				historyLineFunction();
+			});
 			/*三个月*/
 			$("#btnMonth_3").on("click", function() {
 				colorid = 0;
 				seriesData = [];
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				$("#btnToday").attr("disabled", true);
 				$("#btnMonth").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				//$("#btnMonth_3").attr("disabled", true);
 				$("#btnMonth_6").attr("disabled", true);
 				$("#btnYear").attr("disabled", true);
@@ -682,6 +767,9 @@ jQuery(document).ready(function() {
 				$("#btnBack").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				var year = sDate.getFullYear();
 				var yeartay = sDate.getFullYear();
 				var monthTay = sDate.getMonth() + 1;
@@ -714,17 +802,22 @@ jQuery(document).ready(function() {
 			$("#btnMonth_6").on("click", function() {
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				colorid = 0;
 				seriesData = [];
 				$("#btnToday").attr("disabled", true);
 				$("#btnMonth").attr("disabled", true);
 				$("#btnMonth_3").attr("disabled", true);
 				//$("#btnMonth_6").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnYear").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				var year = sDate.getFullYear();
 				var yeartay = sDate.getFullYear();
 				var monthTay = sDate.getMonth() + 1;
@@ -763,6 +856,7 @@ jQuery(document).ready(function() {
 			$("#btnYear").on("click", function() {
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				colorid = 0;
 				seriesData = [];
 				$("#btnToday").attr("disabled", true);
@@ -770,10 +864,14 @@ jQuery(document).ready(function() {
 				$("#btnMonth_3").attr("disabled", true);
 				$("#btnMonth_6").attr("disabled", true);
 				//$("#btnYear").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				var year = sDate.getFullYear();
 
 				$("#startTime").val(year + '-' + "01" + '-01' + " 00：00：00");
@@ -792,15 +890,20 @@ jQuery(document).ready(function() {
 				seriesData = [];
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				$("#btnToday").attr("disabled", true);
 				$("#btnMonth").attr("disabled", true);
 				$("#btnMonth_3").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnMonth_6").attr("disabled", true);
 				$("#btnYear").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
 				//$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				//var start = $("#startTime").val().toString();
 				var start = new Date($("#startTime").val().replace(/\：/g, ':'));
 				//var et = new Date($("#endTime").val().replace(/\：/g, ':'));
@@ -826,14 +929,19 @@ jQuery(document).ready(function() {
 				seriesData = [];
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				$("#btnToday").attr("disabled", true);
 				$("#btnMonth").attr("disabled", true);
 				$("#btnMonth_3").attr("disabled", true);
 				$("#btnMonth_6").attr("disabled", true);
 				$("#btnYear").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
+				$("#btnYesterMonth").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
 				$("#btnYesterday").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
 				//$("#btnYesteryear").attr("disabled", true);
 				var start = new Date($("#startTime").val().replace(/\：/g, ':'));
 				//  console.log(start.getFullYear()-1)
@@ -856,6 +964,7 @@ jQuery(document).ready(function() {
 				seriesData = [];
 				$("#echarts_line").css("display", "block");
 				$("#echarts_bar").css("display", "none");
+
 				$("#btnToday").attr("disabled", true);
 				$("#btnMonth").attr("disabled", true);
 				$("#btnMonth_3").attr("disabled", true);
@@ -863,6 +972,9 @@ jQuery(document).ready(function() {
 				$("#btnYear").attr("disabled", true);
 				$("#btnGo").attr("disabled", true);
 				$("#btnBack").attr("disabled", true);
+				$("#btnWeek").attr("disabled", true);
+				$("#btnselect").attr("disabled", true);
+				$("#btnYesterWeek").attr("disabled", true);
 				//$("#btnYesterday").attr("disabled", true);
 				$("#btnYesteryear").attr("disabled", true);
 				//var start = $("#startTime").val().toString();
@@ -908,9 +1020,9 @@ jQuery(document).ready(function() {
 			/*关闭全屏*/
 			$("#close_treed").on("click", function() {
 				$("#close_treed").css('display', 'none');
-				$(".rhTrendright_middle").css("height", height * 0.45);
-				$("#echarts_line").css("height", height * 0.42);
-				$("#echarts_bar").css("height", height * 0.42);
+				$(".rhTrendright_middle").css("height", height * 0.7);
+				$("#echarts_line").css("height", height * 0.66);
+				$("#echarts_bar").css("height", height * 0.66);
 				$(".rhTrendright_middle").removeClass("topboder");
 				$(".rhTrendright_bottom").css('display', 'block');
 				$(".bottom_title").css('display', 'block');
@@ -926,6 +1038,7 @@ jQuery(document).ready(function() {
 			});
 			/*保存笔组*/
 			$("#btn_Savestrokegroup").click(function() {
+
 				var strokeGroup = $("#input_strokegroup").val().trim();
 				if(strokeGroup.trim() == "") {
 					shalert("请填写笔组名称");
@@ -967,7 +1080,7 @@ jQuery(document).ready(function() {
 			$("#btn_Delstrokegroup").click(function() {
 				var strokeGroup = $("#input_strokegrouplist").val().trim();
 
-				shconfirm("确定要删除吗", function(result) {
+				shconfirm("确定要删除此笔组？", function(result) {
 
 					if(result) {
 						var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
@@ -982,7 +1095,9 @@ jQuery(document).ready(function() {
 
 				if(trId != "") {
 					if(tagGropList != null) {
+						//shconfirm("确定要删除此笔？", function(result) {
 
+						//if(result) {
 						for(var i = 0; i < tagGropList.length; i++) {
 
 							if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
@@ -992,6 +1107,9 @@ jQuery(document).ready(function() {
 						}
 
 						$("#" + trId).remove();
+						//}
+
+						//});
 
 					}
 				} else {
@@ -1068,17 +1186,19 @@ jQuery(document).ready(function() {
 			$("#Ccheck").on("click", function() {
 
 				if($(".rhTrendright_bottom").is(":hidden")) {
-					$(".rhTrendright_middle").css("height", height * 0.45);
-					$("#echarts_line").css("height", height * 0.42);
-					$("#echarts_bar").css("height", height * 0.42);
+					$(".rhTrendright_middle").css("height", height * 0.7);
+					$("#echarts_line").css("height", height * 0.66);
+					$("#echarts_bar").css("height", height * 0.66);
 					$(".rhTrendright_bottom").css('display', 'block');
-					$("#Ccheck").text("隐藏列表");
+					$("#Ccheck").text(" 隐藏列表");
+					$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
 				} else {
 					$("#echarts_line").css("height", height * 0.76);
 					$("#echarts_bar").css("height", height * 0.76);
 					$(".rhTrendright_middle").css("height", height * 0.8);
 					$(".rhTrendright_bottom").css('display', 'none');
-					$("#Ccheck").text("显示列表");
+					$("#Ccheck").text(" 显示列表");
+					$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
 				}
 				if(btnTrend == myChart) {
 					myChart.resize();
@@ -1122,9 +1242,63 @@ jQuery(document).ready(function() {
 
 							[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 							$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-							$(".rhTrendright_bottom tbody button").click(function() {
+							$(".delgrop").click(function() {
+								var trId = "tagGrop" + $(this).attr("data-value");
+								if(trId != "") {
+									shconfirm("确定要删除吗？", function(result) {
+										if(result) {
+											if(tagGropList != null) {
+												for(var i = 0; i < tagGropList.length; i++) {
+													if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+														tagGropList.splice(i, 1);
+													}
+												}
 
-								deletegroup("tagGrop" + $(this).attr("data-value"));
+												$("#" + trId).remove();
+												console.log(tagGropList.length)
+												if(tagGropList.length > 0) {
+													$("#btn_history").click();
+												} else if(tagGropList.length == 0) {
+													/*  	alert()
+                                                	option.xAxis[0].data = xAxisData;
+								if(btnTrend == myChart1) {
+									option.xAxis[0].boundaryGap = true;
+									
+								} else {
+									option.xAxis[0].boundaryGap = false;
+								}*/
+													if(btnTrend == "myChar1") {
+														$("#echarts_bar").css("display", "none");
+													} else {
+														$("#echarts_line").css("display", "none");
+													}
+
+												}
+
+												//shalert("删除成功！");
+											}
+										}
+									});
+
+								} else {
+									shalert("请选择要删除的笔")
+								}
+
+								/*$("#echarts_line").css("display", "block");
+				              $("#echarts_bar").css("display", "none");*/
+
+								/*if(!$("#echarts_line").is(":hidden") || !$("#echarts_bar").is(":hidden")) {
+									
+									if(tagGropList.length!=0)
+									{
+										alert();
+										
+											
+										
+										
+									}
+									
+								}*/
 							});
 							bottomtr();
 							Ccolor();
@@ -1155,7 +1329,27 @@ jQuery(document).ready(function() {
 				}
 
 			);
+			/*选择笔组列表*/
+			$("#btn_input").on("click", function() {
 
+				$("#myStrokegroup_List").modal('hide');
+				$("#btn_history").click();
+				if(tagGropList.length > 0) {
+
+					$("#rhTrendright_bottom").show();
+					$("#li_savegroup1").show();
+					$("#li_savegroup2").show();
+				} else {
+					$("#li_savegroup1").hide();
+					$("#li_savegroup2").hide();
+				}
+
+			});
+			/*删除笔组*/
+			$("#btn_Delstrokegroup").on("click", function() {
+				$("#myStrokegroup_Drop").modal('hide');
+
+			});
 			/*笔组加载*/
 			function strokeGroupbind(datatable) {
 				var str = "<option></option>";
@@ -1171,6 +1365,23 @@ jQuery(document).ready(function() {
 
 				return str;
 			}
+			$("#btn_Delstrokegroup").click(function() {
+				var strokeGroup = $("#delete_strokegrouplist").val().trim();
+
+				if(strokeGroup == "") {
+					shalert("请选择笔组名称");
+					return false;
+				} else {
+					shconfirm("确定要删除吗？", function(result) {
+						if(result) {
+							var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
+
+							send(jsStr);
+						}
+					});
+				}
+			});
+
 			/*笔组点表关联数据加载*/
 			function tagGropListbind(datatable) {
 				var str = "";
@@ -1201,7 +1412,26 @@ jQuery(document).ready(function() {
 
 				});
 			}
+			/*添加标签的确定按钮*/
+			$("#close_Check").on("click", function() {
+				/*关闭模态框*/
+				$("#myModalTend_Add").modal('hide');
+				$("#btn_history").click();
+				if(tagGropList.length > 0) {
 
+					$("#rhTrendright_bottom").show();
+					$("#li_savegroup1").show();
+					$("#li_savegroup2").show();
+				} else {
+					$("#li_savegroup1").hide();
+					$("#li_savegroup2").hide();
+				}
+
+			});
+			/*自定义查询*/
+			$("#btn_select").on("click", function() {
+				$("#btn_history").click();
+			});
 			/*获取点击的id号，修改颜色*/
 			function colorStyle(_this) {
 				trId = _this.attr("ID");
@@ -1306,6 +1536,8 @@ jQuery(document).ready(function() {
 						case "GetGroupList":
 							strokeGroupList = result["data"];
 							$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
+							$("#delete_strokegrouplist").html(strokeGroupbind(strokeGroupList));
+
 							break;
 						case "SelectGroup":
 							var strokeGroup = result["data"];
@@ -1323,6 +1555,7 @@ jQuery(document).ready(function() {
 						case "AddGroup":
 							shalert("添加成功！")
 							send("GetGroupList");
+							$("#myStrokegroup_Add").model("hide");
 							break;
 						case "DeleteGroup":
 							shalert(result["info"])
@@ -1331,7 +1564,7 @@ jQuery(document).ready(function() {
 							break;
 
 						case "GetHistoryData":
-							
+
 							var dataList = result["data"];
 							console.log(dataList);
 
@@ -1419,11 +1652,7 @@ jQuery(document).ready(function() {
 								option.xAxis[0].data = xAxisData;
 								if(btnTrend == myChart1) {
 									option.xAxis[0].boundaryGap = true;
-									//	option.xAxis[0].axisLabel=rotate: 60;
-									/*									axisLabel: {
-									                              rotate: 60,
-									},*/
-									//console.log(option.xAxis[0])
+
 								} else {
 									option.xAxis[0].boundaryGap = false;
 								}
@@ -1464,25 +1693,42 @@ jQuery(document).ready(function() {
 				$("#btnBack").attr("disabled", false);
 				$("#btnYesterday").attr("disabled", false);
 				$("#btnYesteryear").attr("disabled", false);
+				$("#btnYesterMonth").attr("disabled", false);
+				$("#btnWeek").attr("disabled", false);
+				$("#btnYesterWeek").attr("disabled", false);
+				$("#btnselect").attr("disabled", false);
 			}
 			/*判断浏览器*/
 			function goPAGE() {
-						if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-							$(".div1 .portlet-body").css("height", pFrameHeight-600);
-							$(".div1 input").css("width", "210px");
-						} else {
-							$(".div1 .portlet-body").css("height", pFrameHeight * 0.6);
-							$(".div1 input").css("width", "600px");
+				if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+					$(".div1 .portlet-body").css("height", pFrameHeight - 600);
+					$(".div1 input").css("width", "210px");
+					window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+						if(window.orientation === 180 || window.orientation === 0) {
+							var height = window.screen.height;
+
+							$(".div1 .portlet-body").css("height", height - 80); //.width(height);
 						}
-					}
+						if(window.orientation === 90 || window.orientation === -90) {
+
+							var height = window.screen.width;
+
+							$(".div1 .portlet-body").css("height", height - 80); //.width("550px");
+
+						}
+					}, false);
+
+				} else {
+					$(".div1 .portlet-body").css("height", pFrameHeight * 0.6);
+					$(".div1 input").css("width", "600px");
+				}
+			}
 			/*模态框的显示*/
 			$('#myModalTend_Add').on('shown.bs.modal', function(e) {
 
 					send("GetTagList");
-					
-                       goPAGE();
-					
-					
+
+					goPAGE();
 
 				})
 				//连接断开
