@@ -2,8 +2,17 @@
 var tagList = [];
 /*模拟笔组集合 在选择笔组后保存到tagGropList*/
 var tagGropList = [];
+var legendData = [];
+var tagsArray = [];
 var colorid = 0;
 var strokeGroupList = [];
+
+/*隐藏显示按钮点击时获取的标签列表的值*/
+var showdata = [];
+
+/*横坐标时间*/
+var axisData;
+
 var colorArray = [
 	'#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
 	'#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
@@ -31,6 +40,11 @@ var leftheight = $(".rhTrendleftTitle").height();
 $(".rhTrendleft .portlet-body").css("height", height - leftheight);
 
 //$("#divtable").css("height", pFrameHeight - pTitleHeight);
+/*记录是否是从笔組列表带过去的标签*/
+var groupName;
+
+/*定义socket是自己手动关闭还是服务器关闭：手动关闭：hide；服务器关闭：show*/
+var pClosetype;
 
 var tags = new Array();
 jQuery(document).ready(function() {
@@ -56,21 +70,15 @@ jQuery(document).ready(function() {
 				tooltip: {
 					trigger: 'axis'
 				},
-
+				legend: {
+					data: ['High', 'Low']
+				},
 				toolbox: {
 					show: true,
 					feature: {
-						/*dataView: {
-							show: true,
-							readOnly: false
-						},*/
 						restore: {
 							show: true
-						},
-						saveAsImage: {
-							show: true
 						}
-
 					}
 				},
 
@@ -98,15 +106,14 @@ jQuery(document).ready(function() {
 
 			// 为echarts对象加载数据
 			myChart.setOption(option);
+
 			/*随浏览器的变化而变化*/
 			window.onresize = function() {
 				myChart.resize(); //使第一个图表适应
-
 			}
 
 			/*笔组关联点的name值*/
 			function realTag(tagGropList) {
-
 				tags = [];
 				$.each(tagGropList, function(index, data) {
 					tags.push(data["Tagname"]);
@@ -135,9 +142,9 @@ jQuery(document).ready(function() {
 				})
 				return color;
 			}
+
 			/*实时趋势*/
 			//全局Socket对象
-
 			var socket1;
 			var readyStatus1 = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
 			var host1 = "ws://36.110.66.3:29001";
@@ -163,18 +170,24 @@ jQuery(document).ready(function() {
 				}
 				//发送
 				function send(msg) {
-
 					/*if(tags.length > 0) {
 						socket1.send(tags);
 					}*/
 				}
+
 				//连接断开
 				socket1.onclose = function(event) {
-
 						console.log("Socket实时状态:" + readyStatus1[socket1.readyState]);
 						//location.href = "http://www.baidu.com";
 
-						$("#divAlarm").show();
+						if(readyStatus1[socket1.readyState] == "已关闭连接") {
+							if(pClosetype == undefined || pClosetype == "") {
+								$("#divAlarm").show();
+							}
+						} else {
+							$("#divAlarm").hide();
+						}
+						pClosetype = "";
 					}
 					//断开连接
 				function disconnect() {
@@ -183,28 +196,24 @@ jQuery(document).ready(function() {
 				if(tagGropList != null) {
 					tags = realTag(tagGropList);
 
-					var tagsArray = new Array();
+					var tagsArray1 = new Array();
 					option = {
 
 						tooltip: {
 							trigger: 'axis'
 
 						},
+						legend: {
+							data: ['High', 'Low']
+						},
 						toolbox: {
 							show: true,
 							feature: {
-								/*dataView: {
-									show: true,
-									readOnly: false
-								},*/
 								magicType: {
 									show: false,
 									type: ['line', 'bar']
 								},
 								restore: {
-									show: true
-								},
-								saveAsImage: {
 									show: true
 								}
 							}
@@ -229,13 +238,21 @@ jQuery(document).ready(function() {
 							name: ''
 						}],
 						series: []
-
 					};
 
 					option.series = [];
 					var dataIndex = 0;
 					$.each(tagGropList, function(item, data) {
-						tagsArray.push(data.Tagname);
+						tagsArray1.push(data.Tagname);
+
+						legendData.push(data.Tagname);
+						/*图标显示添加标签名*/
+						/*if(data.Description == "") {
+							legendData.push(data.Tagname);
+						} else {
+							legendData.push(data.Description);
+						}*/
+
 						option.series.push({
 							name: data.Tagname,
 							type: 'line',
@@ -253,21 +270,16 @@ jQuery(document).ready(function() {
 								}
 								return res;
 							})()
-
 						});
 					});
+
+					/*图标显示添加数据*/
+					option.legend.data = legendData;
 
 					myChart.clear();
 					myChart.setOption(option);
 
-					myChart.on("restore", function() {
-						/*折线图显示*/
-						real();
-
-						$("#divAlarm").hide();
-					});
-
-					var axisData;
+					/*var axisData;*/
 
 					window.clearTimeout(timeTicket);
 
@@ -297,15 +309,21 @@ jQuery(document).ready(function() {
 					if(!msg.data) return;
 					if(msg.data == "确认连接成功") return;
 
-					var tagsArray = JSON.parse(msg.data);
+					//var tagsArray = JSON.parse(msg.data);
+					tagsArray = JSON.parse(msg.data);
 
 					if(tagsArray.length == 0) {
 						shalert("此点没有数据，请选择其他点！");
 						window.clearTimeout(timeTicket);
 						if(socket1 != null) {
 							socket1.close();
+
+							pClosetype = "hide";
+							//$("#divAlarm").hide();
 						}
 						return false;
+
+						//$("#divAlarm").hide();
 					}
 					dataIndex = 0;
 					lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
@@ -316,6 +334,10 @@ jQuery(document).ready(function() {
 					var dataArray = new Array();
 
 					$.each(tagsArray, function(item, data) {
+						/*标签列表:当前时间和数值栏位刷新取值*/
+						$("#tempId" + data.ID).text(data.TimeStamp);
+						$("#pValue" + data.ID).text(data.Value);
+
 						/*if(item == 0) {*/
 						dataArray.push(
 							[
@@ -332,8 +354,26 @@ jQuery(document).ready(function() {
 				}
 			}
 
+			myChart.on("restore", function() {
+				legendData = [];
+
+				if(showdata.length == "0") {
+					/*折线图显示*/
+					real();
+				} else {
+					/*折线图显示*/
+					real1();
+				}
+
+				$("#divAlarm").hide();
+
+				/*清空隐藏按钮获取的标签值*/
+				showdata = [];
+			});
+
 			/*添加标签区块的显示*/
 			$('#myModalTend_Add').on('shown.bs.modal', function(e) {
+				
 				/*判断浏览器显示大小*/
 				goPAGE();
 
@@ -371,9 +411,9 @@ jQuery(document).ready(function() {
 				}
 			}
 
-			$("#user_close").on("click", function() {
+			/*$("#user_close").on("click", function() {
 				socket1.close();
-			});
+			});*/
 
 			/*添加标签区块：查询按钮点击事件*/
 			$("#bg_checkColl").on("click", function() {
@@ -386,10 +426,27 @@ jQuery(document).ready(function() {
 
 			/*添加标签模块：确定按钮事件*/
 			$("#close_Check").click(function() {
-				$('#myModalTend_Add').modal('hide');
 
-				/*折线图显示*/
-				real();
+				console.log(showdata);
+				/*图标显示集合清空*/
+				legendData = [];
+
+				$('#myModalTend_Add').modal('hide');
+				
+				$("#input_name").val("");
+				
+				/*判断浏览器显示大小*/
+				goPAGE();
+
+				send("GetTagList");
+
+				if(showdata.length > 0) {
+					/*折线图显示*/
+					real1();
+				} else {
+					/*折线图显示*/
+					real();
+				}
 
 				if(tagGropList.length > 0) {
 
@@ -400,6 +457,9 @@ jQuery(document).ready(function() {
 					$("#li_savegroup1").hide();
 					$("#li_savegroup2").hide();
 				}
+
+				/*清空隐藏按钮获取的标签值*/
+				showdata = [];
 			});
 
 			/*保存笔组区块：确定按钮点击事件*/
@@ -413,7 +473,6 @@ jQuery(document).ready(function() {
 				var colors = ColorTag(tagGropList).join(',');
 				if(!isStrokeGroup(strokeGroup)) {
 					shconfirm("确定要覆盖原来的数据", function(result) {
-
 						if(result) {
 
 							var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
@@ -425,29 +484,40 @@ jQuery(document).ready(function() {
 					var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
 					send(jsStr);
 				}
+
+				groupName = $("#input_strokegroup").val();
 			});
+
+			/*获取该笔組下的所有的标签资料*/
+			function selectGroup() {
+
+				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
+				groupName = $("#input_strokegrouplist").find("option:selected").text();
+				send(jsStr);
+			}
 
 			/*选择笔組列表模块:确定按钮事件*/
 			$("#btn_input").on("click", function() {
 
-				//selectGroup();
+				legendData = [];
+				selectGroup();
 
-				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
-				send(jsStr);
+				/*关闭选择笔組列表区块,显示折线图*/
+				$('#myStrokegroup_List').modal('hide');
 
+				$("#input_strokegrouplist").val("");
+
+				/*清空隐藏按钮获取的标签值*/
+				showdata = [];
 			});
 
-			/*笔组切换*/
-			/*function selectGroup() {
-
-				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
-				send(jsStr);
-			}*/
+			/*记录当前页面是否为删除笔組列表时该笔組的标签*/
+			var GroupNa = "";
 
 			/*删除笔组列表区块:确定按钮点击事件*/
 			$("#btn_Delstrokegroup").click(function() {
 				var strokeGroup = $("#delete_strokegrouplist").val().trim();
-
+				GroupNa = $("#delete_strokegrouplist").find("option:selected").text();
 				if(strokeGroup == "") {
 					shalert("请选择笔组名称");
 					return false;
@@ -460,6 +530,8 @@ jQuery(document).ready(function() {
 						}
 					});
 				}
+
+				$("#delete_strokegrouplist").val("");
 			});
 
 			/*显示隐藏列表按钮点击事件*/
@@ -483,7 +555,6 @@ jQuery(document).ready(function() {
 
 					$("#Ccheck").text(" 显示列表");
 					$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
-
 
 				}
 				myChart.resize();
@@ -635,7 +706,7 @@ jQuery(document).ready(function() {
 				return hexColor;
 			}
 
-			/*颜色配置*/
+			/*颜色配置按钮点击事件*/
 			function Ccolor() {
 				$(".Ccolor").on("click", function() {
 
@@ -702,35 +773,22 @@ jQuery(document).ready(function() {
 							/*页面动态加载*/
 							[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 							$("#rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-							$(".delgrop").click(function() {
-								var trId = "tagGrop" + $(this).attr("data-value");
-								if(trId != "") {
-									shconfirm("确定要删除吗？", function(result) {
-										if(result) {
-											if(tagGropList != null) {
-												for(var i = 0; i < tagGropList.length; i++) {
-													if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
-														tagGropList.splice(i, 1);
-													}
-												}
 
-												$("#" + trId).remove();
-												shalert("删除成功！");
-											}
-										}
-									});
+							/*标签列表:删除按钮点击事件*/
+							deleteTag();
 
-								} else {
-									shalert("请选择要删除的笔")
-								}
+							/*隐藏显示按钮点击事件*/
+							hideTag();
 
-								//deletegroup("tagGrop" + $(this).attr("data-value"));
-							});
-
+							/*颜色配置*/
 							bottomtr();
 							Ccolor();
 
 							tagGropList.push(tagList[$(this).attr("data-index")]);
+
+							if(showdata.length > 0) {
+								showdata.push(tagList[$(this).attr("data-index")]);
+							}
 							colorItem++;
 						}
 
@@ -738,6 +796,55 @@ jQuery(document).ready(function() {
 
 						deletegroup("tagGrop" + $(this).attr("ID"))
 					}
+				});
+			}
+
+			/*标签列表:删除按钮点击事件*/
+			function deleteTag() {
+				$(".delgrop").click(function() {
+					var groupname = $(this).attr("groupname");
+
+					var trId = "tagGrop" + $(this).attr("data-value");
+					if(trId != "") {
+						shconfirm("确定要删除吗？", function(result) {
+							if(result) {
+								if(tagGropList != null) {
+									for(var i = 0; i < tagGropList.length; i++) {
+										if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+											tagGropList.splice(i, 1);
+										}
+									}
+
+									$("#" + trId).remove();
+
+									shalert("删除成功！");
+
+									/*趋势图图鉴清空*/
+									legendData = [];
+
+									/*重新加载趋势图*/
+									real();
+								}
+
+								/*如果是从选择笔組列表选择过来的,则真删除*/
+								if(groupname != "" && groupname != undefined) {
+									strokeGroup = groupname;
+
+									var tagids = IDTag(tagGropList).join(',');
+									var colors = ColorTag(tagGropList).join(',');
+
+									var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+									send(jsStr);
+
+								}
+							}
+						});
+
+					} else {
+						shalert("请选择要删除的笔")
+					}
+
+					//deletegroup("tagGrop" + $(this).attr("data-value"));
 				});
 			}
 
@@ -755,7 +862,6 @@ jQuery(document).ready(function() {
 				}
 
 				return str;
-				console.log(str);
 			}
 
 			/*笔组点表table数据加载*/
@@ -763,15 +869,24 @@ jQuery(document).ready(function() {
 				var str = "";
 				if(datatable != null) {
 					$.each(datatable, function(index, data1) {
-
 						str += "<tr id=tagGrop" + data1["ID"] + " style='color:" + data1["Color"] + "' class='tr1'>";
 						str += "<td>" + data1["Tagname"] + "</td>";
 						str += "<td>" + data1["Description"] + "</td>";
+						str += "<td id=tempId" + data1["ID"] + "></td>";
+						str += "<td id=pValue" + data1["ID"] + "></td>";
 						str += "<td>";
-						str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 3px 7px;'>";
-						str += "<span>删除</span></button>";
-						str += "<button type='button' class='btn green Ccolor'  style='padding: 3px 7px;'><span>颜色配置</span></button>"
+						if(groupName == "" || groupName == undefined) {
+							str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 0px 7px;'>";
 
+						} else {
+
+							str += "<button type='button' class='btn btn-success delgrop' groupname='" + groupName + "'+ data-value='" + data1["ID"] + "' style='padding: 0px 7px;'>";
+
+						}
+						//str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 3px 7px;'>";
+						str += "<span>删除</span></button>";
+						str += "<button type='button' class='btn btn-success Ccolor'  style='padding: 0px 7px;'><span>颜色配置</span></button>";
+						str += "<button type='button' class='btn btn-success btnhide' data-value='" + data1["ID"] + "' style='padding: 0px 7px;'><span>隐藏</span></button>";
 						str += "</td>";
 						str += "</tr>";
 					});
@@ -780,22 +895,236 @@ jQuery(document).ready(function() {
 				return str;
 			}
 
-			/*获取笔组点*/
-			/*function GroupList(strokeid) {
-				var dataList = [];
+			/*隐藏按钮点击事件*/
+			function hideTag() {
+				$(".btnhide").unbind('click');
+				$(".btnhide").click(function() {
 
-				$.each(tagList, function(index, data) {
+					//var showdata = [];
 
-					if(data["ID"] === strokeid) {
+					var trId = "tagGrop" + $(this).attr("data-value");
 
-						dataList.push(data);
+					if(trId != "") {
+						$.each(tagGropList, function(index, data) {
+							if(trId == ("tagGrop" + data["ID"])) {
+								if(data["show"] == "true" || data["show"] == undefined) {
+									data["show"] = "false";
+								} else {
+									data["show"] = "true";
+									showdata.push(data);
+								}
+							} else {
+								if(data["show"] == "true" || data["show"] == undefined) {
+									showdata.push(data);
+								}
+							}
+						});
 					}
 
+					if($(this).text() == "隐藏") {
+						$(this).text("显示");
+					} else {
+						$(this).text("隐藏");
+					}
+
+					/*趋势图图鉴清空*/
+					legendData = [];
+
+					/*重新加载趋势图*/
+					real1();
 				});
+			}
 
-				return dataList;
+			function real1() {
+				if(socket1 != null) {
+					socket1.close();
+				}
+				//尝试连接至服务器
+				try {
+					socket1 = new WebSocket(host1);
+				} catch(exception) {
+					shalert("对不起，您所使用的浏览器不支持WebSocket.");
+				}
+				//发送
+				function send(msg) {}
 
-			}*/
+				//连接断开
+				socket1.onclose = function(event) {
+
+						console.log("Socket实时状态:" + readyStatus1[socket1.readyState]);
+						//location.href = "http://www.baidu.com";
+
+						if(readyStatus1[socket1.readyState] == "已关闭连接") {
+							if(pClosetype == undefined || pClosetype == "") {
+								$("#divAlarm").show();
+							}
+						} else {
+							$("#divAlarm").hide();
+						}
+						pClosetype = "";
+					}
+					//断开连接
+				function disconnect() {
+					socket1.close();
+				}
+				if(showdata != null) {
+					tags = realTag(showdata);
+
+					var tagsArray1 = new Array();
+					option = {
+
+						tooltip: {
+							trigger: 'axis'
+
+						},
+						legend: {
+							data: ['High', 'Low']
+						},
+						toolbox: {
+							show: true,
+							feature: {
+								magicType: {
+									show: false,
+									type: ['line', 'bar']
+								},
+								restore: {
+									show: true
+								}
+							}
+						},
+						xAxis: [{
+							type: 'category',
+							boundaryGap: false,
+							data: (function() {
+								var now = new Date();
+								var res = [];
+								var len = 10;
+								while(len--) {
+									res.unshift(now.getFullYear() + "-" + now.getMonth() + "-" + now.getDay() + " " + now.toLocaleTimeString().replace(/^\D*/, ''));
+									now = new Date(now - 2000);
+								}
+								return res;
+							})()
+						}],
+						yAxis: [{
+							type: 'value',
+							scale: true,
+							name: ''
+						}],
+						series: []
+
+					};
+
+					option.series = [];
+					var dataIndex = 0;
+					$.each(showdata, function(item, data) {
+						tagsArray1.push(data.Tagname);
+
+						legendData.push(data.Tagname);
+
+						/*图标显示添加标签名*/
+						/*if(data.Description == "") {
+							legendData.push(data.Tagname);
+						} else {
+							legendData.push(data.Description);
+						}*/
+						option.series.push({
+							name: data.Tagname,
+							type: 'line',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									color: data.Color
+								}
+							},
+							data: (function() {
+								var res = [];
+								var len = 10;
+								while(len--) {
+									res.push("");
+								}
+								return res;
+							})()
+
+						});
+					});
+
+					/*图标显示添加数据*/
+					option.legend.data = legendData;
+
+					myChart.clear();
+					myChart.setOption(option);
+
+					/*var axisData;*/
+
+					window.clearTimeout(timeTicket);
+
+					var intervalValue = 1000;
+					var sValue = $("#cycleType").val() > 0 ? $("#cycleType").val() : 1;
+					switch($("#cycleType").val()) {
+						case "1":
+							intervalValue = intervalValue * sValue;
+							break;
+						case "2":
+							intervalValue = intervalValue * sValue * 60;
+							break;
+						case "3":
+							intervalValue = intervalValue * sValue * 60 * 60;
+							break;
+					}
+
+					var lastData = 11;
+
+					timeTicket = setTimeout(function() {
+
+						socket1.send(tags);
+					}, intervalValue);
+				}
+
+				socket1.onmessage = function(msg) {
+					if(!msg.data) return;
+					if(msg.data == "确认连接成功") return;
+
+					//var tagsArray = JSON.parse(msg.data);
+					tagsArray = JSON.parse(msg.data);
+
+					if(tagsArray.length == 0) {
+						shalert("此点没有数据，请选择其他点！");
+						window.clearTimeout(timeTicket);
+						if(socket1 != null) {
+							socket1.close();
+
+							pClosetype = "hide";
+						}
+						return false;
+					}
+					dataIndex = 0;
+					lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
+					lastData = lastData.toFixed(1) - 0;
+
+					axisData = tagsArray[0].TimeStamp; // formatDate(new Date(), 0) + " " + (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+
+					var dataArray = new Array();
+
+					$.each(tagsArray, function(item, data) {
+						/*标签列表:当前时间和数值栏位刷新取值*/
+						$("#tempId" + data.ID).text(data.TimeStamp);
+						$("#pValue" + data.ID).text(data.Value);
+
+						dataArray.push(
+							[
+								item, // 系列索引
+								data.Value, // 新增数据Math.round(Math.random() * 1000), // 新增数据
+								false, // 新增数据是否从队列头部插入
+								false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+								axisData // 坐标轴标签
+							]
+						);
+					});
+					// 动态数据接口 addData
+					myChart.addData(dataArray);
+				}
+			}
 
 			//尝试连接至服务器
 			try {
@@ -836,7 +1165,6 @@ jQuery(document).ready(function() {
 					switch(result["Function"]) {
 						case "GetTagList":
 							tagList = result["data"];
-							//console.log(tagList);
 							$("#myModalTend_Add tbody").html(tagListbind(result["data"]));
 
 							/*tr 的点击事件*/
@@ -864,13 +1192,20 @@ jQuery(document).ready(function() {
 							});
 							$("#rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
 
+							/*标签列表:删除按钮点击事件*/
+							deleteTag();
+
+							/*颜色配置*/
 							bottomtr();
 							Ccolor();
 
-							/*关闭选择笔組列表区块,显示折线图*/
-							$('#myStrokegroup_List').modal('hide');
+							/*隐藏按钮点击事件*/
+							hideTag();
 
-							$("#input_strokegrouplist").val("");
+							/*关闭选择笔組列表区块,显示折线图*/
+							/*$('#myStrokegroup_List').modal('hide');
+
+							$("#input_strokegrouplist").val("");*/
 
 							$("#rhTrendright_bottom").show();
 							/*获取折线图*/
@@ -887,7 +1222,37 @@ jQuery(document).ready(function() {
 							shalert(result["info"]);
 							$('#myStrokegroup_Drop').modal('hide');
 							send("GetGroupList");
-							$("#rhTrendright_bottom tbody").html("");
+
+							//$("#rhTrendright_bottom tbody").html("");
+							//tagGropList = [];
+
+							//myChart.clear();
+							if(groupName == GroupNa) {
+								$("#rhTrendright_bottom tbody").html("");
+								tagGropList = [];
+								myChart.clear();
+							}
+							//$("#rhTrendright_bottom tbody").html(tagGropListbind(""));
+
+							/*获取折线图*/
+							//real();
+
+							/*判定是否做了选择笔组操作，如果标签表中*/
+							/*if(tagGropList.length != 0) {
+								var groupName = $("#rhTrendright_bottom tbody tr").eq(0).find(".delgrop").attr("groupname");
+								if(groupName == GroupNa) {
+									var objtr = $("#rhTrendright_bottom tbody tr");
+									console.log(objtr.length);
+									for(var i = 0; i < objtr.length; i++) {
+										var Name = $("#rhTrendright_bottom tbody tr").eq(i).find(".delgrop").attr("groupname")
+										if(Name == GroupNa) {
+											$("#rhTrendright_bottom tbody tr").eq(i).remove();
+											i--;
+										}
+									}
+								}
+							}
+*/
 							break;
 					}
 				}
