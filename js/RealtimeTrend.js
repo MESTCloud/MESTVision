@@ -373,7 +373,7 @@ jQuery(document).ready(function() {
 
 			/*添加标签区块的显示*/
 			$('#myModalTend_Add').on('shown.bs.modal', function(e) {
-				
+
 				/*判断浏览器显示大小*/
 				goPAGE();
 
@@ -426,15 +426,13 @@ jQuery(document).ready(function() {
 
 			/*添加标签模块：确定按钮事件*/
 			$("#close_Check").click(function() {
-
-				console.log(showdata);
 				/*图标显示集合清空*/
 				legendData = [];
 
 				$('#myModalTend_Add').modal('hide');
-				
+
 				$("#input_name").val("");
-				
+
 				/*判断浏览器显示大小*/
 				goPAGE();
 
@@ -900,12 +898,13 @@ jQuery(document).ready(function() {
 				$(".btnhide").unbind('click');
 				$(".btnhide").click(function() {
 
-					//var showdata = [];
+					 showdata = [];
 
 					var trId = "tagGrop" + $(this).attr("data-value");
-
+					
 					if(trId != "") {
 						$.each(tagGropList, function(index, data) {
+							console.log(("tagGrop" + data["ID"]));
 							if(trId == ("tagGrop" + data["ID"])) {
 								if(data["show"] == "true" || data["show"] == undefined) {
 									data["show"] = "false";
@@ -929,12 +928,13 @@ jQuery(document).ready(function() {
 
 					/*趋势图图鉴清空*/
 					legendData = [];
-
+					
 					/*重新加载趋势图*/
 					real1();
 				});
 			}
 
+			/*重新加载趋势图*/
 			function real1() {
 				if(socket1 != null) {
 					socket1.close();
