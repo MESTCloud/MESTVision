@@ -27,12 +27,12 @@
 	white-space:nowrap;
 }*/
 
-.modal-dialog1 {
+#myTreedInfo .modal-dialog,.modal-dialog1 {
 	width: 1000px;
 }
 
 @media screen and (min-device-width: 320px) and (max-device-width: 568px) {
-	.modal-dialog1 {
+	#myTreedInfo .modal-dialog, .modal-dialog1 {
 		width: 94%;
 	}
 		.modal-body1 {
@@ -66,7 +66,7 @@
 
 
 @media screen and (min-device-width: 375px) and (max-device-width: 667px)  {
-		.modal-dialog1 {
+		#myTreedInfo .modal-dialog, .modal-dialog1 {
 		width: 94%;
 	}
 		.modal-body1 {
@@ -82,7 +82,7 @@
 
 
 @media screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) {
-		.modal-dialog1 {
+		#myTreedInfo .modal-dialog, .modal-dialog1 {
 		width: 94%;
 	}
 		.modal-body1 {
@@ -229,6 +229,20 @@ element {
 .topboder {
 	border-top: 1px solid #e7ecf1;
 }
+
 table.dataTable1 tbody td{
-	padding: 7px 18px;
+	padding: 6px 18px;
 }
+table.dataTable1 tbody tr{
+	height: 30px;
+}
+.rhTrendright_bottom thead tr{
+	background-color: #EDF1F5;
+}
+#myTreedInfo .modal-dialog{
+	width: 1000px;
+}
+.ExeOut{
+	text-align: right;
+}
+

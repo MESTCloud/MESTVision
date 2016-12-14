@@ -24,7 +24,7 @@ $(".rhTrendright_right").css("height", height);
 $(".rhTrendright_top").css("height", height * 0.12);
 $(".rhTrendright_middle").css("height", height * 0.7);
 $("#echarts_line").css("height", height * 0.66);
-$("#echarts_bar").css("height", height * 0.66);
+
 $(".rhTrendright_bottom").css("height", height * 0.2);
 $(".rhTrendright_right_top").css("height", height);
 var leftheight = $(".rhTrendleftTitle").height();
@@ -49,1035 +49,876 @@ jQuery(document).ready(function() {
 		return boolE;
 	}
 
-	// ECHARTS
-	require.config({
-		paths: {
+	//function(ec) {
+	//时间初始化
+	var sDate = new Date();
+	$("#startTime").val(formatDate(sDate, 0) + " 08：00：00");
+	$("#endTime").val(formatDate(sDate, 1));
+	// --- LINE ---
+    var myChart1;
+    var myChart2;
+    var myChart3;
+    var myChart;
+    var option;
+    chart();
+    function chart()
+    {
+    	myChart = echarts.init(document.getElementById('echarts_line'));
+	 option = {
 
-			echarts: '../resource/echarts/'
+		tooltip: {
+			trigger: 'axis'
+		},
+		
+		dataZoom: [{
+			show: true,
+			/*x: 'center',*/
+            
+
+		}, {
+			type: 'inside'
+		}],
+		legend: {
+			data: ['High', 'Low'],
+			/* x: 'center',
+             y: '360px',*/
+            
+		},
+		grid: [{
+			containLabel: true,
+			
+			left: 80,
+			right: 80
+			
+
+		}, {
+			
+			left: 80,
+			right: 80,
+			top: '55%',
+			
+			containLabel: true
+
+		}],
+		toolbox: {
+			show: true,
+			feature: {
+
+				mark: {
+					show: false
+				},
+				dataView: {
+					show: false,
+					readOnly: false
+				},
+
+				magicType: {
+					title: {
+						line: '折线图切换',
+						bar: '柱形图切换'
+					},
+					show: true,
+					type: ['line', 'bar'],
+					right: '20%'
+
+				},
+				restore: {
+					show: false
+				},
+				saveAsImage: {
+					show: false
+				}
+
+			}
+		},
+
+		xAxis: [{
+			type: 'category',
+			boundaryGap: false,
+			data: (function() {
+				var now = new Date();
+				var res = [];
+				var len = 10;
+				while(len--) {
+					res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+					now = new Date(now - 2000);
+				}
+				return res;
+			})()
+		}],
+		yAxis: [{
+			type: 'value',
+			scale: true,
+			name: ''
+		}],
+
+		series: []
+	};
+
+	// 为echarts对象加载数据
+
+	myChart.setOption(option);
+	/*随浏览器的变化而变化*/
+	window.onresize = function() {
+
+		myChart.resize(); //使第一个图表适应
+
+	}
+    }
+	
+
+	/*笔组关联点的name值*/
+	function realTag(tagGropList) {
+
+		tags = [];
+		$.each(tagGropList, function(index, data) {
+			tags.push(data["Tagname"]);
+
+		})
+		return tags;
+	}
+	/*笔组关联点的name值*/
+	function IDTag(tagGropList) {
+		var id = [];
+		$.each(tagGropList, function(index, data) {
+			id.push(data["ID"]);
+
+		})
+		return id;
+	}
+
+	/*笔组关联点的颜色*/
+	function ColorTag(tagGropList) {
+		var color = [];
+
+		$.each(tagGropList, function(index, data) {
+			color.push(data["Color"]);
+
+		})
+		return color;
+	}
+	/*颜色配置关闭*/
+	$("#btn_Color").on("click", function() {
+		$(".rhTrendright_right").css('display', 'none');
+		$(".rhTrendright").width("100%");
+		btnTrend.resize();
+	});
+	var btnTrend;
+	
+	/*历史趋势点击*/
+	function lineTreed() {
+		 chart();
+		/*myChart1.clear();
+		
+		myChart2.clear();
+		myChart3.clear();*/
+		myChart1="";
+		
+		myChart2="";
+		myChart3="";
+		legendData = [];
+
+		btnTrend = myChart;
+		/*判断开始结束时间段的差，如果相差*/
+		$("#echarts_line").css("display", "block");
+
+		historyLineFunction();
+		/*console.log("eee");
+		if(seriesData.length != 0) {
+			var tempseriesData = seriesData;
+			seriesData = [];
+			for(var i = 0; i < tempseriesData.length; i++) {
+				console.log(tempseriesData[i].show)
+				if(tempseriesData[i].show != "false") {
+					seriesData.push(tempseriesData[i]);
+				}
+
+			}
+			console.log(seriesData);
+		} else {*/
+			seriesData = [];
+		//}
+		//console.log(seriesData);
+		//console.log(seriesData1);
+
+	}
+	$("#btn_history").on('click', function() {
+
+		lineTreed();
+	});
+	/*获取两个日期的时间差*/
+
+	function GetDateDiff(startTime, endTime, diffType) {
+		//将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式
+		startTime = startTime.replace(/-/g, "/");
+		endTime = endTime.replace(/-/g, "/");
+		//将计算间隔类性字符转换为小写
+		diffType = diffType.toLowerCase();
+		var sTime = new Date(startTime); //开始时间
+		var eTime = new Date(endTime); //结束时间
+		//作为除数的数字
+		var divNum = 1;
+		switch(diffType) {
+			case "second":
+				divNum = 1000;
+				break;
+			case "minute":
+				divNum = 1000 * 60;
+				break;
+			case "hour":
+				divNum = 1000 * 3600;
+				break;
+			case "day":
+				divNum = 1000 * 3600 * 24;
+				break;
+			default:
+				break;
 		}
+		return parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)); //
+	}
+
+	/*查询*/
+	$("#bg_checkColl").on("click", function() {
+		$(".div1 tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
+		var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
+
+		send(jsStr);
+
+	});
+	var xAxisData = new Array();
+	var seriesData = new Array();
+	var legendData = new Array();
+	var value = 1;
+	var type = 1;
+
+	function historyLineFunction() {
+		/*判定*/
+		
+		if(tagGropList.length == 0) {
+			shalert("请选择标签！");
+
+			myChart.clear();
+
+			disabled_btn();
+			return false;
+		}
+
+		tempNum = 0;
+		btnTrend = myChart;
+
+		btnTrend.showLoading({
+			btnTrendtext: "图表数据正在努力加载..."
+		});
+		console.log("tagGropList");
+		console.log(tagGropList);
+		/*var tagGropList1=[];
+		for(var i=0;i<tagGropList.length;i++)
+		{
+			if(tagGropList[i]['show']!="false"||tagGropList[i]['show']==undefined)
+			{
+				tagGropList1.push(tagGropList[i]);
+			}
+		}*/
+		var tags = realTag(tagGropList);
+		var start = $("#startTime").val().replace(/\：/g, ':');
+		var end = $("#endTime").val().replace(/\：/g, ':');
+
+		colorid = 0;
+		//seriesData=[];
+		var hour = GetDateDiff(start, end, "hour");
+
+		if(hour <= 1) /*一小时之内的以1s查询*/ {
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("1");
+			$("#cycleType").val("1");
+			value = 1;
+			type = 1;
+		} else if(hour > 1 && hour <= 2)
+		/*两小时内的以半小时查询*/
+		{
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("30");
+			$("#cycleType").val("2");
+			value = 30;
+			type = 2;
+		} else if(hour > 2 && hour <= 24)
+		/*一天之内的以2小时*/
+		{
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("2");
+			$("#cycleType").val("3");
+			value = 2;
+			type = 3;
+		} else if(hour > 24 && hour <= 48)
+		/*两天之内的以4小时间隔*/
+		{
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("4");
+			$("#cycleType").val("3");
+			value = 4;
+			type = 3;
+		} else if(hour > 48 && hour <= 31 * 24) { /*一个月，以48小时间隔*/
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("48");
+			$("#cycleType").val("3");
+			value = 48;
+			type = 3;
+		} else if(hour >= 31 * 24 && hour < 31 * 24 * 3) { /*三个月内，以1个月为间隔*/
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("1");
+			$("#cycleType").val("4");
+			value = 30 * 24;
+			type = 3;
+		} else if(hour >= 31 * 24 * 3 && hour < 31 * 24 * 6) { /*6个月内，以2月为间隔*/
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("2");
+			$("#cycleType").val("4");
+			value = 30 * 24 * 2;
+			type = 3;
+		} else if(hour >= 31 * 24 * 6 && hour < 31 * 24 * 12) {
+			/*12个月内，以4月为间隔*/
+			$("#cycleValue").attr("disabled", true);
+			$("#cycleType").attr("disabled", true);
+			$("#cycleValue").val("4");
+			$("#cycleType").val("4");
+			value = 30 * 24 * 4;
+			type = 3;
+		} else {
+			$("#cycleValue").attr("disabled", false);
+			$("#cycleType").attr("disabled", false);
+			$("#cycleValue").val("1");
+			$("#cycleType").val("2");
+			value = 1;
+			type = 2;
+		}
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		var cvalue = value;
+		var ctyle = type;
+		console.log("tags");
+		console.log(tags);
+		for(var i = 0; i < tags.length; i++) {
+         console.log(tags[i]);
+			var jsStr = "GetHistoryData {\"tags\":\"" + tags[i] + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
+			send(jsStr);
+		}
+
+	}
+
+	/*前进*/
+	$("#btnGo").on("click", function() {
+			colorid = 0;
+			seriesData = [];
+			$("#btnToday").attr("disabled", true);
+			$("#btnMonth").attr("disabled", true);
+			$("#btnMonth_3").attr("disabled", true);
+			$("#btnMonth_6").attr("disabled", true);
+			$("#btnYear").attr("disabled", true);
+			//$("#btnGo").attr("disabled", true);
+			$("#btnBack").attr("disabled", true);
+			var st = new Date($("#startTime").val().replace(/\：/g, ':'));
+			var et = new Date($("#endTime").val().replace(/\：/g, ':'));
+			var cDate = et.getTime() - st.getTime();
+			var stDate = new Date(st.getTime() + cDate);
+			var etDate = new Date(et.getTime() + cDate);
+			$("#startTime").val(formatDate(stDate, 1));
+			$("#endTime").val(formatDate(etDate, 1));
+			historyLineFunction();
+
+		})
+		/*后退*/
+	$("#btnBack").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		//$("#btnBack").attr("disabled", true);
+		var st = new Date($("#startTime").val().replace(/\：/g, ':'));
+		var et = new Date($("#endTime").val().replace(/\：/g, ':'));
+		var cDate = et.getTime() - st.getTime();
+		var stDate = new Date(st.getTime() - cDate);
+		var etDate = new Date(et.getTime() - cDate);
+		$("#startTime").val(formatDate(stDate, 1));
+		$("#endTime").val(formatDate(etDate, 1));
+		historyLineFunction();
+	})
+
+	/*今天*/
+	$("#btnToday").on("click", function() {
+		$("#echarts_line").css("display", "block");
+
+		colorid = 0;
+		seriesData = [];
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+
+		var sDate = new Date();
+
+		$("#startTime").val(formatDate(sDate, 0).toString().split(' ')[0] + " 00：00：00");
+		$("#endTime").val(formatDate(sDate, 0).toString().split(' ')[0] + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("2");
+		$("#cycleType").val("3");
+		value = 2;
+		type = 3;
+		historyLineFunction();
+	});
+	//本月趋势
+	$("#btnMonth").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#echarts_line").css("display", "block");
+
+		$("#btnWeek").attr("disabled", true);
+		$("#btnToday").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		var year = sDate.getFullYear();
+		var month = sDate.getMonth() + 1;
+		var day = new Date(year, month, 0);
+		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
+		$("#endTime").val(year + '-' + month + '-' + day.getDate() + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("48");
+		$("#cycleType").val("3");
+		value = 48;
+		type = 3;
+		historyLineFunction();
 	});
 
-	/*.rhTrendright_middle,.rhTrendright_bottom*/
-
-	// DEMOS
-	require(
-		[
-			'echarts',
-			'echarts/chart/bar',
-			'echarts/chart/chord',
-			'echarts/chart/eventRiver',
-			'echarts/chart/force',
-			'echarts/chart/funnel',
-			'echarts/chart/gauge',
-			'echarts/chart/heatmap',
-			'echarts/chart/k',
-			'echarts/chart/line',
-			'echarts/chart/map',
-			'echarts/chart/pie',
-			'echarts/chart/radar',
-			'echarts/chart/scatter',
-			'echarts/chart/tree',
-			'echarts/chart/treemap',
-			'echarts/chart/venn',
-			'echarts/chart/wordCloud'
-
-		],
-		function(ec) {
-			//时间初始化
-			var sDate = new Date();
-			$("#startTime").val(formatDate(sDate, 0) + " 08：00：00");
-			$("#endTime").val(formatDate(sDate, 0) + " 08：00：10");
-			// --- LINE ---
-
-			var myChart = ec.init(document.getElementById('echarts_line'));
-			var option = {
-
-				tooltip: {
-					trigger: 'axis'
-				},
-
-				toolbox: {
-					show: true,
-					feature: {
-						dataView: {
-							show: true,
-							readOnly: false
-						},
-						restore: {
-							show: true
-						},
-						saveAsImage: {
-							show: true
-						}
-
-					}
-				},
-
-				xAxis: [{
-					type: 'category',
-					boundaryGap: false,
-					data: (function() {
-						var now = new Date();
-						var res = [];
-						var len = 10;
-						while(len--) {
-							res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
-							now = new Date(now - 2000);
-						}
-						return res;
-					})()
-				}],
-				yAxis: [{
-					type: 'value',
-					scale: true,
-					name: ''
-				}],
-				series: []
-			};
-
-			// 为echarts对象加载数据
-			myChart.setOption(option);
-			/*随浏览器的变化而变化*/
-			window.onresize = function() {
-
-				myChart.resize(); //使第一个图表适应
-
-			}
-
-			//柱状图
-
-			//--- BAR ---
-
-			var myChart1 = ec.init(document.getElementById('echarts_bar'));
-
-			myChart1.setOption({
-				tooltip: {
-					trigger: 'axis'
-				},
-				legend: {
-					data: ['Cost', 'Expenses']
-				},
-				toolbox: {
-					show: true,
-					feature: {
-						mark: {
-							show: true
-						},
-						dataView: {
-							show: true,
-							readOnly: false
-						},
-						magicType: {
-							show: true,
-							type: ['line', 'bar']
-						},
-						restore: {
-							show: true
-						},
-						saveAsImage: {
-							show: true
-						}
-					}
-				},
-				calculable: true,
-				xAxis: [{
-					type: 'category',
-					boundaryGap: true,
-					data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-				}],
-				yAxis: [{
-					type: 'value',
-					splitArea: {
-						show: true
-					}
-				}],
-				series: [
-					/*{
-										name: 'Cost',
-										type: 'bar',
-										data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-									}, {
-										name: 'Expenses',
-										type: 'bar',
-										data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-									}, {
-										name: 'Expenses',
-										type: 'bar',
-										data: [3.0, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-									}*/
-				]
-			});
-
-			/*随浏览器的变化而变化*/
-			window.onresize = function() {
-
-				myChart1.resize(); //使第一个图表适应
-
-			}
-
-			/*笔组关联点的name值*/
-			function realTag(tagGropList) {
-
-				tags = [];
-				$.each(tagGropList, function(index, data) {
-					tags.push(data["Tagname"]);
-
-				})
-				return tags;
-			}
-			/*笔组关联点的name值*/
-			function IDTag(tagGropList) {
-				var id = [];
-				$.each(tagGropList, function(index, data) {
-					id.push(data["ID"]);
-
-				})
-				return id;
-			}
-
-			/*笔组关联点的颜色*/
-			function ColorTag(tagGropList) {
-				var color = [];
-
-				$.each(tagGropList, function(index, data) {
-					color.push(data["Color"]);
-
-				})
-				return color;
-			}
-			/*颜色配置关闭*/
-			$("#btn_Color").on("click", function() {
-				$(".rhTrendright_right").css('display', 'none');
-				$(".rhTrendright").width("100%");
-				btnTrend.resize();
-			});
-			var btnTrend;
-
-			/*历史趋势点击*/
-			$("#btn_history").on('click', function() {
-				//alert(11);
-				btnTrend = myChart;
-				/*判断开始结束时间段的差，如果相差*/
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				historyLineFunction();
-				seriesData = [];
-
-			});
-			/*柱状图点击*/
-			$("#btn_bar").on("click", function() {
-				//alert(11);
-				btnTrend = myChart1;
-				seriesData = [];
-				$("#echarts_line").css("display", "none");
-				$("#echarts_bar").css("display", "block");
-
-				bar();
-			});
-			//柱状图的数据加载
-			function bar() {
-				/*判定*/
-				if(tagGropList.length == 0) {
-					shalert("请选择标签！");
-					disabled_btn();
-					return false;
-				}
-				btnTrend = myChart1;
-				tempNum = 0;
-				btnTrend.showLoading({
-					text: "图表数据正在努力加载..."
-				});
-				var tags = realTag(tagGropList);
-				var start = $("#startTime").val().replace(/\：/g, ':');
-				var end = $("#endTime").val().replace(/\：/g, ':');
-
-				colorid = 0;
-				//seriesData=[];
-				var hour = GetDateDiff(start, end, "hour");
-				var value = 1;
-				var type = 1;
-				if(hour <= 1) /*一小时之内的以1s查询*/ {
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("1");
-					value = 1;
-					type = 1;
-				} else if(hour > 1 && hour <= 2)
-				/*两小时内的以半小时查询*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("30");
-					$("#cycleType").val("2");
-					value = 30;
-					type = 2;
-				} else if(hour > 2 && hour <= 24)
-				/*一天之内的以2小时*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("2");
-					$("#cycleType").val("3");
-					value = 2;
-					type = 3;
-				} else if(hour > 24 && hour <= 48)
-				/*两天之内的以4小时间隔*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("4");
-					$("#cycleType").val("3");
-					value = 4;
-					type = 3;
-				} else if(hour > 48 && hour <= 31 * 24) { /*一个月，以48小时间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("48");
-					$("#cycleType").val("3");
-					value = 48;
-					type = 3;
-				} else if(hour >= 31 * 24 && hour < 31 * 24 * 3) { /*三个月内，以1个月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("4");
-					value = 30 * 24;
-					type = 3;
-				} else if(hour >= 31 * 24 * 3 && hour < 31 * 24 * 6) { /*6个月内，以2月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("2");
-					$("#cycleType").val("4");
-					value = 30 * 24 * 2;
-					type = 3;
-				} else if(hour >= 31 * 24 * 6 && hour < 31 * 24 * 12) {
-					/*12个月内，以4月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("4");
-					$("#cycleType").val("4");
-					value = 30 * 24 * 4;
-					type = 3;
-				} else {
-					$("#cycleValue").attr("disabled", false);
-					$("#cycleType").attr("disabled", false);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("2");
-					value = 1;
-					type = 2;
-				}
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				var cvalue = value;
-				var ctyle = type;
-				for(var i = 0; i < tags.length; i++) {
-
-					var jsStr = "GetHistoryData {\"tags\":\"" + tags[i] + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
-					send(jsStr);
-				}
-
-			}
-			/*获取两个日期的时间差*/
-
-			function GetDateDiff(startTime, endTime, diffType) {
-				//将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式
-				startTime = startTime.replace(/-/g, "/");
-				endTime = endTime.replace(/-/g, "/");
-				//将计算间隔类性字符转换为小写
-				diffType = diffType.toLowerCase();
-				var sTime = new Date(startTime); //开始时间
-				var eTime = new Date(endTime); //结束时间
-				//作为除数的数字
-				var divNum = 1;
-				switch(diffType) {
-					case "second":
-						divNum = 1000;
-						break;
-					case "minute":
-						divNum = 1000 * 60;
-						break;
-					case "hour":
-						divNum = 1000 * 3600;
-						break;
-					case "day":
-						divNum = 1000 * 3600 * 24;
-						break;
-					default:
-						break;
-				}
-				return parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)); //
-			}
-
-			/*查询*/
-			$("#bg_checkColl").on("click", function() {
-				$(".div1 tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
-				var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
-
-				send(jsStr);
-
-			});
-			var xAxisData = new Array();
-			var seriesData = new Array();
-			var value = 1;
-			var type = 1;
-
-			function historyLineFunction() {
-				/*判定*/
-				if(tagGropList.length == 0) {
-					shalert("请选择标签！");
-					disabled_btn();
-					return false;
-				}
-
-				tempNum = 0;
-				btnTrend = myChart;
-				console.log(btnTrend);
-				btnTrend.showLoading({
-					btnTrendtext: "图表数据正在努力加载..."
-				});
-				var tags = realTag(tagGropList);
-				var start = $("#startTime").val().replace(/\：/g, ':');
-				var end = $("#endTime").val().replace(/\：/g, ':');
-
-				colorid = 0;
-				//seriesData=[];
-				var hour = GetDateDiff(start, end, "hour");
-
-				if(hour <= 1) /*一小时之内的以1s查询*/ {
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("1");
-					value = 1;
-					type = 1;
-				} else if(hour > 1 && hour <= 2)
-				/*两小时内的以半小时查询*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("30");
-					$("#cycleType").val("2");
-					value = 30;
-					type = 2;
-				} else if(hour > 2 && hour <= 24)
-				/*一天之内的以2小时*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("2");
-					$("#cycleType").val("3");
-					value = 2;
-					type = 3;
-				} else if(hour > 24 && hour <= 48)
-				/*两天之内的以4小时间隔*/
-				{
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("4");
-					$("#cycleType").val("3");
-					value = 4;
-					type = 3;
-				} else if(hour > 48 && hour <= 31 * 24) { /*一个月，以48小时间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("48");
-					$("#cycleType").val("3");
-					value = 48;
-					type = 3;
-				} else if(hour >= 31 * 24 && hour < 31 * 24 * 3) { /*三个月内，以1个月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("4");
-					value = 30 * 24;
-					type = 3;
-				} else if(hour >= 31 * 24 * 3 && hour < 31 * 24 * 6) { /*6个月内，以2月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("2");
-					$("#cycleType").val("4");
-					value = 30 * 24 * 2;
-					type = 3;
-				} else if(hour >= 31 * 24 * 6 && hour < 31 * 24 * 12) {
-					/*12个月内，以4月为间隔*/
-					$("#cycleValue").attr("disabled", true);
-					$("#cycleType").attr("disabled", true);
-					$("#cycleValue").val("4");
-					$("#cycleType").val("4");
-					value = 30 * 24 * 4;
-					type = 3;
-				} else {
-					$("#cycleValue").attr("disabled", false);
-					$("#cycleType").attr("disabled", false);
-					$("#cycleValue").val("1");
-					$("#cycleType").val("2");
-					value = 1;
-					type = 2;
-				}
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				var cvalue = value;
-				var ctyle = type;
-				for(var i = 0; i < tags.length; i++) {
-
-					var jsStr = "GetHistoryData {\"tags\":\"" + tags[i] + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
-					send(jsStr);
-				}
-
-			}
-
-			/*前进*/
-			$("#btnGo").on("click", function() {
-					colorid = 0;
-					seriesData = [];
-					$("#btnToday").attr("disabled", true);
-					$("#btnMonth").attr("disabled", true);
-					$("#btnMonth_3").attr("disabled", true);
-					$("#btnMonth_6").attr("disabled", true);
-					$("#btnYear").attr("disabled", true);
-					//$("#btnGo").attr("disabled", true);
-					$("#btnBack").attr("disabled", true);
-					var st = new Date($("#startTime").val().replace(/\：/g, ':'));
-					var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-					var cDate = et.getTime() - st.getTime();
-					var stDate = new Date(st.getTime() + cDate);
-					var etDate = new Date(et.getTime() + cDate);
-					$("#startTime").val(formatDate(stDate, 1));
-					$("#endTime").val(formatDate(etDate, 1));
-					historyLineFunction();
-
-				})
-				/*后退*/
-			$("#btnBack").on("click", function() {
-					colorid = 0;
-					seriesData = [];
-					$("#btnToday").attr("disabled", true);
-					$("#btnMonth").attr("disabled", true);
-					$("#btnMonth_3").attr("disabled", true);
-					$("#btnMonth_6").attr("disabled", true);
-					$("#btnYear").attr("disabled", true);
-					$("#btnGo").attr("disabled", true);
-					//$("#btnBack").attr("disabled", true);
-					var st = new Date($("#startTime").val().replace(/\：/g, ':'));
-					var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-					var cDate = et.getTime() - st.getTime();
-					var stDate = new Date(st.getTime() - cDate);
-					var etDate = new Date(et.getTime() - cDate);
-					$("#startTime").val(formatDate(stDate, 1));
-					$("#endTime").val(formatDate(etDate, 1));
-					historyLineFunction();
-				})
-				/*早班*/
-			$("#btnZShift").on("click", function() {
-
-					$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
-
-					$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 08：00：00");
-					//historyLineFunction();
-
-				})
-				/*中班*/
-			$("#btnMShift").on("click", function() {
-					$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 08：00：00");
-					$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 16：00：00");
-					$("#cycleValue").val("10");
-					$("#cycleType").val("1");
-
-					historyLineFunction();
-				})
-				/*晚班*/
-			$("#btnHShift").on("click", function() {
-					$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 16：00：00");
-
-					$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");
-
-					$("#cycleValue").val("1");
-					$("#cycleType").val("2");
-					historyLineFunction();
-				})
-				/*今天*/
-			$("#btnToday").on("click", function() {
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-				colorid = 0;
-				seriesData = [];
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				var sDate = new Date();
-
-				$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
-				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("2");
-				$("#cycleType").val("3");
-				value = 2;
-				type = 3;
-				historyLineFunction();
-			});
-			//本月趋势
-			$("#btnMonth").on("click", function() {
-				colorid = 0;
-				seriesData = [];
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				$("#btnToday").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				var year = sDate.getFullYear();
-				var month = sDate.getMonth() + 1;
-				var day = new Date(year, month, 0);
-				$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
-				$("#endTime").val(year + '-' + month + '-' + day.getDate() + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("48");
-				$("#cycleType").val("3");
-				value = 48;
-				type = 3;
-				historyLineFunction();
-			});
-
-			/*本周*/
-			$("#btnWeek").on("click", function() {
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-				colorid = 0;
-				seriesData = [];
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-
-				var now = new Date(); //当前日期 
-				var nowDayOfWeek = now.getDay(); //今天本周的第几天 
-				var nowDay = now.getDate(); //当前日 
-				var nowMonth = now.getMonth(); //当前月 
-				var nowYear = now.getYear(); //当前年 
-				nowYear += (nowYear < 2000) ? 1900 : 0; // 
-				var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
-				var weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
-				$("#startTime").val(formatDate(weekStartDate, 0) + " 00：00：00");
-				$("#endTime").val(formatDate(weekEndDate, 0) + " 23：59：59");
-				/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
-				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				$("#cycleValue").val("24");
-				$("#cycleType").val("3");
-				value = 24;
-				type = 3;
-				historyLineFunction();
-			});
-			/*上周*/
-			$("#btnYesterWeek").on("click", function() {
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-				colorid = 0;
-				seriesData = [];
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-
-				$("#btnWeek").attr("disabled", true);
-				//$("#btnYesterWeek").attr("disabled", true);
-				var now = new Date(); //当前日期 
-				var nowDayOfWeek = now.getDay(); //今天本周的第几天 
-				var nowDay = now.getDate(); //当前日 
-				var nowMonth = now.getMonth(); //当前月 
-				var nowYear = now.getYear(); //当前年 
-				nowYear += (nowYear < 2000) ? 1900 : 0; // 
-				var getUpWeekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
-				var getUpWeekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek - 7));
-				$("#startTime").val(formatDate(getUpWeekStartDate, 0) + " 00：00：00");
-				$("#endTime").val(formatDate(getUpWeekEndDate, 0) + " 23：59：59");
-				/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
-				$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("24");
-				$("#cycleType").val("3");
-				value = 24;
-				type = 3;
-				historyLineFunction();
-			});
-			/*三个月*/
-			$("#btnMonth_3").on("click", function() {
-				colorid = 0;
-				seriesData = [];
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				//$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				var year = sDate.getFullYear();
-				var yeartay = sDate.getFullYear();
-				var monthTay = sDate.getMonth() + 1;
-				var month = sDate.getMonth() + 1 - 2;
-				if(month == 0) {
-					month = 12;
-					year = year - 1;
-				} else if(month == -1) {
-					month = 11;
-					year = year - 1;
-				} else if(month == -2) {
-					month = 10;
-					year = year - 1;
-				}
-				if(month < 10) {
-					month = "0" + month;
-				}
-				var day = new Date(year, month, 0);
-				$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
-				$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("1");
-				$("#cycleType").val("4");
-				value = 30 * 24;
-				type = 3;
-				historyLineFunction();
-			});
-			/*半年*/
-			$("#btnMonth_6").on("click", function() {
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				colorid = 0;
-				seriesData = [];
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				//$("#btnMonth_6").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				var year = sDate.getFullYear();
-				var yeartay = sDate.getFullYear();
-				var monthTay = sDate.getMonth() + 1;
-				var month = sDate.getMonth() + 1 - 5;
-				if(month == 0) {
-					month = 12;
-					year = year - 1;
-				} else if(month == -1) {
-					month = 11;
-					year = year - 1;
-				} else if(month == -2) {
-					month = 10;
-					year = year - 1;
-				} else if(month == -3) {
-					month = 09;
-					year = year - 1;
-				} else if(month == -4) {
-					month = 08;
-					year = year - 1;
-				}
-				if(month < 10) {
-					month = "0" + month;
-				}
-				var day = new Date(year, month, 0);
-				$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
-				$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("2");
-				$("#cycleType").val("4");
-				value = 30 * 24 * 2;
-				type = 3;
-				historyLineFunction();
-			});
-			/*一年*/
-			$("#btnYear").on("click", function() {
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				colorid = 0;
-				seriesData = [];
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				//$("#btnYear").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				var year = sDate.getFullYear();
-
-				$("#startTime").val(year + '-' + "01" + '-01' + " 00：00：00");
-				$("#endTime").val(year + '-' + "12" + '-' + "31" + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("4");
-				$("#cycleType").val("4");
-				value = 30 * 24 * 4;
-				type = 3;
-				historyLineFunction();
-			});
-			/*前一天*/
-			$("#btnYesterday").on("click", function() {
-				colorid = 0;
-				seriesData = [];
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				//$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				//var start = $("#startTime").val().toString();
-				var start = new Date($("#startTime").val().replace(/\：/g, ':'));
-				//var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-				console.log(start);
-				start.setDate(start.getDate() - 1); //获取AddDayCount天后的日期
-				var y = start.getFullYear();
-				var m = start.getMonth() + 1; //获取当前月份的日期 
-				var d = start.getDate();
-				//var end = $("#startTime").val().toString();
-				$("#startTime").val(y + "-" + m + "-" + d + " 00：00：00");
-				$("#endTime").val(y + "-" + m + "-" + d + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("2");
-				$("#cycleType").val("3");
-				value = 2;
-				type = 3;
-				historyLineFunction();
-			});
-			/*上一年*/
-			$("#btnYesteryear").on("click", function() {
-				colorid = 0;
-				seriesData = [];
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnYesterMonth").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnYesterday").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				//$("#btnYesteryear").attr("disabled", true);
-				var start = new Date($("#startTime").val().replace(/\：/g, ':'));
-				//  console.log(start.getFullYear()-1)
-				// start.setDate(start.getFullYear() - 1); //获取AddDayCount天后的日期
-				var y = start.getFullYear() - 1;
-
-				$("#startTime").val(y + "-" + "01" + "-" + "01" + " 00：00：00");
-				$("#endTime").val(y + "-" + "12" + "-" + "31" + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("4");
-				$("#cycleType").val("4");
-				value = 30 * 24 * 4;
-				type = 3;
-				historyLineFunction();
-			});
-			/*上个月*/
-			$("#btnYesterMonth").on("click", function() {
-				colorid = 0;
-				seriesData = [];
-				$("#echarts_line").css("display", "block");
-				$("#echarts_bar").css("display", "none");
-
-				$("#btnToday").attr("disabled", true);
-				$("#btnMonth").attr("disabled", true);
-				$("#btnMonth_3").attr("disabled", true);
-				$("#btnMonth_6").attr("disabled", true);
-				$("#btnYear").attr("disabled", true);
-				$("#btnGo").attr("disabled", true);
-				$("#btnBack").attr("disabled", true);
-				$("#btnWeek").attr("disabled", true);
-				$("#btnselect").attr("disabled", true);
-				$("#btnYesterWeek").attr("disabled", true);
-				//$("#btnYesterday").attr("disabled", true);
-				$("#btnYesteryear").attr("disabled", true);
-				//var start = $("#startTime").val().toString();
-				var start = new Date($("#startTime").val().replace(/\：/g, ':'));
-				var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-
-				var y = start.getFullYear();
-				var m = start.getMonth(); //获取当前月份的日期 
-				var d = new Date(y, m, 0);
-
-				//var end = $("#startTime").val().toString();
-				$("#startTime").val(y + "-" + m + "-" + "01" + " 00：00：00");
-				$("#endTime").val(y + "-" + m + "-" + d.getDate() + " 23：59：59");
-				$("#cycleValue").attr("disabled", true);
-				$("#cycleType").attr("disabled", true);
-				$("#cycleValue").val("48");
-				$("#cycleType").val("3");
-				value = 48;
-				type = 3;
-				historyLineFunction();
-			});
-			/*全屏*/
-			$("#btn_fullscreen").on("click", function() {
-
-				$("#close_treed").css('display', 'block');
-
-				$(".rhTrendright_bottom").css('display', 'none');
-				$(".rhTrendright_middle").addClass("topboder");
-				$(".rhTrendright_right").css('display', 'none');
-				$(".bottom_title").css('display', 'none');
-				$(".rhTrendright_top").css('display', 'none');
-				$(".rhTrendright_top_top").css('display', 'none');
-				$(".rhTrendright_middle").css("height", height);
-				$("#echarts_line").css("height", height * 0.95);
-				$("#echarts_bar").css("height", height * 0.95);
-				if(btnTrend == myChart) {
-					myChart.resize();
-				} else {
-					myChart1.resize();
-				}
-
-			});
-			/*关闭全屏*/
+	/*本周*/
+	$("#btnWeek").on("click", function() {
+		$("#echarts_line").css("display", "block");
+
+		colorid = 0;
+		seriesData = [];
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+
+		var now = new Date(); //当前日期 
+		var date = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
+		$("#startTime").val(formatDate(date, 1));
+
+		$("#endTime").val(formatDate(sDate, 1));
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		$("#cycleValue").val("24");
+		$("#cycleType").val("3");
+		value = 24;
+		type = 3;
+		historyLineFunction();
+	});
+	/*上周*/
+	$("#btnYesterWeek").on("click", function() {
+		$("#echarts_line").css("display", "block");
+
+		colorid = 0;
+		seriesData = [];
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+
+		$("#btnWeek").attr("disabled", true);
+		//$("#btnYesterWeek").attr("disabled", true);
+		var now = new Date(); //当前日期 
+		var nowDayOfWeek = now.getDay(); //今天本周的第几天 
+		var nowDay = now.getDate(); //当前日 
+		var nowMonth = now.getMonth(); //当前月 
+		var nowYear = now.getYear(); //当前年 
+		nowYear += (nowYear < 2000) ? 1900 : 0; // 
+		var getUpWeekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
+		var getUpWeekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek - 7));
+		$("#startTime").val(formatDate(getUpWeekStartDate, 0) + " 00：00：00");
+		$("#endTime").val(formatDate(getUpWeekEndDate, 0) + " 23：59：59");
+		/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
+		$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("24");
+		$("#cycleType").val("3");
+		value = 24;
+		type = 3;
+		historyLineFunction();
+	});
+	/*三个月*/
+	$("#btnMonth_3").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#echarts_line").css("display", "block");
+
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		//$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		var year = sDate.getFullYear();
+		var yeartay = sDate.getFullYear();
+		var monthTay = sDate.getMonth() + 1;
+		var month = sDate.getMonth() + 1 - 2;
+		if(month == 0) {
+			month = 12;
+			year = year - 1;
+		} else if(month == -1) {
+			month = 11;
+			year = year - 1;
+		} else if(month == -2) {
+			month = 10;
+			year = year - 1;
+		}
+		if(month < 10) {
+			month = "0" + month;
+		}
+		var day = new Date(year, month, 0);
+		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
+		$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("1");
+		$("#cycleType").val("4");
+		value = 30 * 24;
+		type = 3;
+		historyLineFunction();
+	});
+	/*半年*/
+	$("#btnMonth_6").on("click", function() {
+		$("#echarts_line").css("display", "block");
+
+		colorid = 0;
+		seriesData = [];
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		//$("#btnMonth_6").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		var year = sDate.getFullYear();
+		var yeartay = sDate.getFullYear();
+		var monthTay = sDate.getMonth() + 1;
+		var month = sDate.getMonth() + 1 - 5;
+		if(month == 0) {
+			month = 12;
+			year = year - 1;
+		} else if(month == -1) {
+			month = 11;
+			year = year - 1;
+		} else if(month == -2) {
+			month = 10;
+			year = year - 1;
+		} else if(month == -3) {
+			month = 09;
+			year = year - 1;
+		} else if(month == -4) {
+			month = 08;
+			year = year - 1;
+		}
+		if(month < 10) {
+			month = "0" + month;
+		}
+		var day = new Date(year, month, 0);
+		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
+		$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("2");
+		$("#cycleType").val("4");
+		value = 30 * 24 * 2;
+		type = 3;
+		historyLineFunction();
+	});
+	/*一年*/
+	$("#btnYear").on("click", function() {
+		$("#echarts_line").css("display", "block");
+
+		colorid = 0;
+		seriesData = [];
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		//$("#btnYear").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		var year = sDate.getFullYear();
+
+		$("#startTime").val(year + '-' + "01" + '-01' + " 00：00：00");
+		$("#endTime").val(year + '-' + "12" + '-' + "31" + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("4");
+		$("#cycleType").val("4");
+		value = 30 * 24 * 4;
+		type = 3;
+		historyLineFunction();
+	});
+	/*前一天*/
+	$("#btnYesterday").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#echarts_line").css("display", "block");
+
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		//$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		//var start = $("#startTime").val().toString();
+		var start = new Date($("#startTime").val().replace(/\：/g, ':'));
+		//var et = new Date($("#endTime").val().replace(/\：/g, ':'));
+
+		start.setDate(start.getDate() - 1); //获取AddDayCount天后的日期
+		var y = start.getFullYear();
+		var m = start.getMonth() + 1; //获取当前月份的日期 
+		var d = start.getDate();
+		//var end = $("#startTime").val().toString();
+		$("#startTime").val(y + "-" + m + "-" + d + " 00：00：00");
+		$("#endTime").val(y + "-" + m + "-" + d + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("2");
+		$("#cycleType").val("3");
+		value = 2;
+		type = 3;
+		historyLineFunction();
+	});
+	/*上一年*/
+	$("#btnYesteryear").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#echarts_line").css("display", "block");
+
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		//$("#btnYesteryear").attr("disabled", true);
+		var start = new Date($("#startTime").val().replace(/\：/g, ':'));
+		var y = start.getFullYear() - 1;
+
+		$("#startTime").val(y + "-" + "01" + "-" + "01" + " 00：00：00");
+		$("#endTime").val(y + "-" + "12" + "-" + "31" + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("4");
+		$("#cycleType").val("4");
+		value = 30 * 24 * 4;
+		type = 3;
+		historyLineFunction();
+	});
+	/*上个月*/
+	$("#btnYesterMonth").on("click", function() {
+		colorid = 0;
+		seriesData = [];
+		$("#echarts_line").css("display", "block");
+
+		$("#btnToday").attr("disabled", true);
+		$("#btnMonth").attr("disabled", true);
+		$("#btnMonth_3").attr("disabled", true);
+		$("#btnMonth_6").attr("disabled", true);
+		$("#btnYear").attr("disabled", true);
+		$("#btnGo").attr("disabled", true);
+		$("#btnBack").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+		$("#btn_select").attr("disabled", true);
+		$("#btnYesterWeek").attr("disabled", true);
+		//$("#btnYesterday").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		//var start = $("#startTime").val().toString();
+		var start = new Date($("#startTime").val().replace(/\：/g, ':'));
+		var et = new Date($("#endTime").val().replace(/\：/g, ':'));
+
+		var y = start.getFullYear();
+		var m = start.getMonth(); //获取当前月份的日期 
+		var d = new Date(y, m, 0);
+
+		//var end = $("#startTime").val().toString();
+		$("#startTime").val(y + "-" + m + "-" + "01" + " 00：00：00");
+		$("#endTime").val(y + "-" + m + "-" + d.getDate() + " 23：59：59");
+		$("#cycleValue").attr("disabled", true);
+		$("#cycleType").attr("disabled", true);
+		$("#cycleValue").val("48");
+		$("#cycleType").val("3");
+		value = 48;
+		type = 3;
+		historyLineFunction();
+	});
+	/*全屏*/
+	fullscreen();
+	function fullscreen()
+	{
+		$("#btn_fullscreen").on("click", function() {
+
+		$("#close_treed").css('display', 'block');
+
+		$(".rhTrendright_bottom").css('display', 'none');
+		$(".rhTrendright_middle").addClass("topboder");
+		$(".rhTrendright_right").css('display', 'none');
+		$(".bottom_title").css('display', 'none');
+		$(".rhTrendright_top").css('display', 'none');
+		$(".rhTrendright_top_top").css('display', 'none');
+		$(".rhTrendright_middle").css("height", height);
+		$("#echarts_line").css("height", height * 0.95);
+
+		myChart.resize();
+
+	});
+	
+	}
+	/*关闭全屏*/
+	
+	close_treed();
+	function close_treed()
+	{
 			$("#close_treed").on("click", function() {
-				$("#close_treed").css('display', 'none');
-				$(".rhTrendright_middle").css("height", height * 0.7);
-				$("#echarts_line").css("height", height * 0.66);
-				$("#echarts_bar").css("height", height * 0.66);
-				$(".rhTrendright_middle").removeClass("topboder");
-				$(".rhTrendright_bottom").css('display', 'block');
-				$(".bottom_title").css('display', 'block');
-				$(".rhTrendright_right").css('display', 'none');
-				$(".rhTrendright_top").css('display', 'block');
-				$(".rhTrendright_top_top").css('display', 'block');
-				if(btnTrend == myChart) {
-					myChart.resize();
-				} else {
-					myChart1.resize();
-				}
+		$("#close_treed").css('display', 'none');
+		$(".rhTrendright_middle").css("height", height * 0.7);
+		$("#echarts_line").css("height", height * 0.66);
 
-			});
-			/*保存笔组*/
-			$("#btn_Savestrokegroup").click(function() {
+		$(".rhTrendright_middle").removeClass("topboder");
+		$(".rhTrendright_bottom").css('display', 'block');
+		$(".bottom_title").css('display', 'block');
+		$(".rhTrendright_right").css('display', 'none');
+		$(".rhTrendright_top").css('display', 'block');
+		$(".rhTrendright_top_top").css('display', 'block');
 
-				var strokeGroup = $("#input_strokegroup").val().trim();
-				if(strokeGroup.trim() == "") {
-					shalert("请填写笔组名称");
-					return false;
-				}
-				var tagids = IDTag(tagGropList).join(',');
-				var colors = ColorTag(tagGropList).join(',');
-				if(!isStrokeGroup(strokeGroup)) {
+		myChart.resize();
 
-					shconfirm("确定要覆盖原来的数据", function(result) {
+	});
+	}
 
-						if(result) {
+	/*保存笔组*/
+	$("#btn_Savestrokegroup").click(function() {
 
-							var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+		var strokeGroup = $("#input_strokegroup").val().trim();
+		if(strokeGroup.trim() == "") {
+			shalert("请填写笔组名称");
+			return false;
+		}
+		var tagids = IDTag(tagGropList).join(',');
+		var colors = ColorTag(tagGropList).join(',');
+		if(!isStrokeGroup(strokeGroup)) {
 
-							send(jsStr);
-						}
+			shconfirm("确定要覆盖原来的数据", function(result) {
 
-					});
-				} else {
+				if(result) {
 
 					var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+
 					send(jsStr);
 				}
 
 			});
-			/*判定此笔组是否已经存在*/
-			function isStrokeGroup(strokeGroup) {
-				var isStroke = true;
-				$.each(strokeGroupList, function(index, data) {
-					if(data["GroupName"] == strokeGroup) {
-						isStroke = false;
+		} else {
 
-					}
-				});
-				return isStroke;
+			var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+			send(jsStr);
+		}
+
+	});
+	/*判定此笔组是否已经存在*/
+	function isStrokeGroup(strokeGroup) {
+		var isStroke = true;
+		$.each(strokeGroupList, function(index, data) {
+			if(data["GroupName"] == strokeGroup) {
+				isStroke = false;
+
 			}
-			//删除笔组\n
-			$("#btn_Delstrokegroup").click(function() {
+		});
+		return isStroke;
+	}
+	//删除笔组\n
+	/*		$("#btn_Delstrokegroup").click(function() {
 				var strokeGroup = $("#input_strokegrouplist").val().trim();
 
 				shconfirm("确定要删除此笔组？", function(result) {
@@ -1089,661 +930,1363 @@ jQuery(document).ready(function() {
 					}
 
 				});
-			});
-			//删除笔
-			function deletegroup(trId) {
+			});*/
+	//删除笔
+	function deletegroup(trId) {
 
-				if(trId != "") {
-					if(tagGropList != null) {
-						//shconfirm("确定要删除此笔？", function(result) {
+		if(trId != "") {
+			if(tagGropList != null) {
 
-						//if(result) {
-						for(var i = 0; i < tagGropList.length; i++) {
+				for(var i = 0; i < tagGropList.length; i++) {
 
-							if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+					if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
 
-								tagGropList.splice(i, 1);
-							}
-						}
-
-						$("#" + trId).remove();
-						//}
-
-						//});
-
+						tagGropList.splice(i, 1);
 					}
-				} else {
-					shalert("请选择要删除的笔")
 				}
-			}
 
-			/*end*/
-
-			/*颜色配置*/
-			function Ccolor() {
-				$(".Ccolor").on("click", function() {
-
-					if($(".rhTrendright_right").is(":hidden")) {
-						$(".rhTrendright").width("84%"); //如果元素为隐藏,则将它显现
-
-						$(".rhTrendright_right").css('display', 'block');
-					}
-					if(btnTrend != undefined) {
-						btnTrend.resize();
-					}
-
-				});
+				$("#" + trId).remove();
 
 			}
+		} else {
+			shalert("请选择要删除的笔")
+		}
+	}
 
-			/*颜色版加载*/
+	/*end*/
 
-			$('.demo').each(function() {
+	/*颜色配置*/
+	function Ccolor() {
+		$(".Ccolor").on("click", function() {
 
-				$(this).minicolors({
+			if($(".rhTrendright_right").is(":hidden")) {
+				$(".rhTrendright").width("84%"); //如果元素为隐藏,则将它显现
 
-					control: $(this).attr('data-control') || 'hue',
-					defaultValue: $(this).attr('data-defaultValue') || '',
-					inline: $(this).attr('data-inline') === 'true',
-					letterCase: $(this).attr('data-letterCase') || 'lowercase',
-					opacity: $(this).attr('data-opacity'),
-					position: $(this).attr('data-position') || 'bottom left',
-					change: function(hex, opacity) {
+				$(".rhTrendright_right").css('display', 'block');
+			}
+			if(btnTrend != undefined) {
+				btnTrend.resize();
+			}
 
-						if(!hex) return;
-						if(opacity) hex += ', ' + opacity;
-						if(typeof console === 'object') {
+		});
 
-							if(trId != "") {
-								$.each(tagGropList, function(index, data) {
+	}
 
-									if(("tagGrop" + data["ID"]) == trId) {
-										$(this)[0]["Color"] = hex;
+	/*颜色版加载*/
+
+	$('.demo').each(function() {
+
+		$(this).minicolors({
+
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			change: function(hex, opacity) {
+
+				if(!hex) return;
+				if(opacity) hex += ', ' + opacity;
+				if(typeof console === 'object') {
+
+					if(trId != "") {
+						$.each(tagGropList, function(index, data) {
+
+							if(("tagGrop" + data["ID"]) == trId) {
+								$(this)[0]["Color"] = hex;
+
+							}
+						});
+						$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
+						bottomtr();
+						//alert(2);
+						Ccolor();
+						showHide();
+					}
+
+				}
+			},
+
+			theme: 'bootstrap'
+		});
+
+	});
+	if(!jQuery().colorpicker) {
+		return;
+	}
+	$('.colorpicker-default').colorpicker({
+		format: 'hex'
+	});
+	$('.colorpicker-rgba').colorpicker();
+	/*导出趋势图中的信息*/
+	/*$("#btn_out").on("click", function() {
+		method1("ta");
+	});*/
+	var idTmr;
+
+	function getExplorer() {
+
+		var explorer = window.navigator.userAgent;
+
+		//ie 
+
+		if(explorer.indexOf("MSIE") >= 0) {
+
+			return 'ie';
+
+		}
+
+		//firefox 
+		else if(explorer.indexOf("Firefox") >= 0) {
+
+			return 'Firefox';
+
+		}
+
+		//Chrome
+		else if(explorer.indexOf("Chrome") >= 0) {
+
+			return 'Chrome';
+
+		}
+
+		//Opera
+		else if(explorer.indexOf("Opera") >= 0) {
+
+			return 'Opera';
+
+		}
+
+		//Safari
+		else if(explorer.indexOf("Safari") >= 0) {
+
+			return 'Safari';
+
+		}
+
+	}
+
+	function method1(tableid) { //整个表格拷贝到EXCEL中
+
+		if(getExplorer() == 'ie')
+
+		{
+
+			var curTbl = document.getElementById(tableid);
+
+			var oXL = new ActiveXObject("Excel.Application");
+
+			//创建AX对象excel 
+
+			var oWB = oXL.Workbooks.Add();
+
+			//获取workbook对象 
+
+			var xlsheet = oWB.Worksheets(1);
+
+			//激活当前sheet 
+
+			var sel = document.body.createTextRange();
+
+			sel.moveToElementText(curTbl);
+
+			//把表格中的内容移到TextRange中 
+
+			sel.select();
+
+			//全选TextRange中内容 
+
+			sel.execCommand("Copy");
+
+			//复制TextRange中内容  
+
+			xlsheet.Paste();
+
+			//粘贴到活动的EXCEL中       
+
+			oXL.Visible = true;
+
+			//设置excel可见属性
+
+			try {
+
+				var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
+
+			} catch(e) {
+
+				print("Nested catch caught " + e);
+
+			} finally {
+
+				oWB.SaveAs(fname);
+
+				oWB.Close(savechanges = false);
+
+				//xls.visible = false;
+
+				oXL.Quit();
+
+				oXL = null;
+
+				//结束excel进程，退出完成
+
+				//window.setInterval("Cleanup();",1);
+
+				idTmr = window.setInterval("Cleanup();", 1);
+
+			}
+
+		} else
+
+		{
+
+			tableToExcel('ta')
+
+		}
+
+	}
+
+	function Cleanup() {
+
+		window.clearInterval(idTmr);
+
+		CollectGarbage();
+
+	}
+
+	var tableToExcel = (function() {
+
+			var uri = 'data:application/vnd.ms-excel;base64,',
+
+				template = '{table}',
+				base64 = function(s) {
+					return window.btoa((encodeURIComponent(s)))
+				},
+
+				format = function(s, c) {
+
+					return s.replace(/{(\w+)}/g,
+
+						function(m, p) {
+							return c[p];
+						})
+				}
+
+			return function(table, name) {
+
+				if(!table.nodeType) table = document.getElementById(table)
+
+				var ctx = {
+					worksheet: name || 'Worksheet',
+					table: table.innerHTML
+				}
+
+				window.location.href = uri + base64(format(template, ctx))
+
+			}
+
+		})()
+		/*end----*/
+		/*选择列表*/
+	$("#Ccheck").on("click", function() {
+
+		if($(".rhTrendright_bottom").is(":hidden")) {
+			$(".rhTrendright_middle").css("height", height * 0.7);
+			$("#echarts_line").css("height", height * 0.66);
+
+			$(".rhTrendright_bottom").css('display', 'block');
+			$("#Ccheck").text(" 隐藏列表");
+			$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
+		} else {
+			$("#echarts_line").css("height", height * 0.76);
+
+			$(".rhTrendright_middle").css("height", height * 0.8);
+			$(".rhTrendright_bottom").css('display', 'none');
+			$("#Ccheck").text(" 显示列表");
+			$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
+		}
+
+		myChart.resize();
+
+	});
+
+	function tagListbind(datatable) {
+		var str = "";
+
+		if(datatable.length > 0) {
+
+			$.each(datatable, function(index, data) {
+
+				str += "<tr id=" + data["ID"] + "  data-index='" + index + "'>";
+				str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
+				str += "<input type='checkbox' class='checkboxes' id='" + data["ID"] + "' name='check_table' data-index='" + index + "'>";
+				str += "<span></span>";
+				str += "</label> </td>";
+				str += "<td>" + data["Tagname"] + "</td>";
+				str += "<td>" + data["Description"] + "</td>";
+				str += "</tr>";
+			});
+		}
+
+		return str;
+	}
+
+	/*tr 的点击事件*/
+	function tagleftClick() {
+
+		$(".div1 tbody tr input").on("click", function() {
+			var truey = $(this).find('input[name=check_table]').context.checked;
+			$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
+			if(truey) {
+
+				if(isExist("tagGrop" + $(this).attr("ID"))) {
+					/*页面动态加载*/
+
+					[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
+					$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
+					
+					$(".delgrop").click(function() {
+						var trId = "tagGrop" + $(this).attr("data-value");
+						var groupname = $(this).attr("groupname");
+
+						var tagName = $(this).parent().parent().find("td").eq(0).html();
+						/*if(tagName=="")
+						{
+							tagName = $(this).parent().parent().find("td").eq(0).html();
+						}*/
+						if(trId != "") {
+							shconfirm("确定要删除吗？", function(result) {
+								if(result) {
+									/*alert(1)*/
+									if(tagGropList != null) {
+										for(var i = 0; i < tagGropList.length; i++) {
+											if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+												tagGropList.splice(i, 1);
+											}
+										}
+
+										$("#" + trId).remove();
+										console.log(seriesData)
+										if(tagGropList.length > 0) {
+
+											for(var i = 0; i < seriesData.length; i++) {
+												if(tagName == seriesData[i]["name"]) {
+													seriesData.splice(i, 1);
+													i--;
+												}
+											}
+											console.log(seriesData)
+											if(xAxisData.length > 0) {
+												 myChart1 = echarts.init(document.getElementById('echarts_line'));
+												var option = {
+
+													tooltip: {
+														trigger: 'axis'
+													},
+													legend: {
+														data: ['High', 'Low']
+													},
+													dataZoom: [{
+														show: true,
+
+													}, {
+														type: 'inside'
+													}],
+													grid: [{
+														left: 80,
+														right: 80,
+														containLabel: true
+
+													}, {
+														left: 80,
+														right: 80,
+														top: '55%',
+														containLabel: true
+
+													}],
+													toolbox: {
+														show: true,
+														feature: {
+
+															mark: {
+																show: false
+															},
+															dataView: {
+																show: false,
+																readOnly: false
+															},
+															dataZoom: [{
+																show: true,
+
+															}, {
+																type: 'inside',
+
+															}],
+															magicType: {
+																title: {
+																	line: '折线图切换',
+																	bar: '柱形图切换'
+																},
+																show: true,
+																type: ['line', 'bar'],
+																right: '20%'
+
+															},
+															restore: {
+																show: false
+															},
+															saveAsImage: {
+																show: false
+															}
+
+														}
+													},
+
+													xAxis: [{
+														type: 'category',
+														boundaryGap: false,
+														data: xAxisData
+
+													}],
+													yAxis: [{
+														type: 'value',
+														scale: true,
+														name: ''
+													}],
+													series: seriesData
+												};
+
+												// 为echarts对象加载数据
+												myChart1.setOption(option);
+												/*随浏览器的变化而变化*/
+												window.onresize = function() {
+
+														myChart1.resize(); //使第一个图表适应
+
+													}
+													/*获取图例*/
+												legendData = [];
+												for(var i = 0; i < seriesData.length; i++) {
+													legendData.push(seriesData[i]["name"]);
+												}
+
+												option.series = seriesData;
+
+												option.legend.data = legendData;
+												myChart1.setOption(option);
+
+											}
+
+										} else if(tagGropList.length == 0) {
+
+											$("#echarts_line").css("display", "none");
+
+										}
+
+										//shalert("删除成功！");
+									}
+
+									if(groupname != "" && groupname != undefined) {
+										strokeGroup = groupname;
+
+										var tagids = IDTag(tagGropList).join(',');
+										var colors = ColorTag(tagGropList).join(',');
+
+										var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+										send(jsStr);
 
 									}
-								});
-								$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-								bottomtr();
-								Ccolor();
+								}
+							});
+
+						} else {
+							shalert("请选择要删除的笔")
+						}
+
+					});
+
+					bottomtr();
+					Ccolor();
+					showHide();
+					/*if(tagGropList.length!=0)
+					{
+						alert();
+						tagGropList=tagGropList;
+					}*/
+					tagGropList.push(tagList[$(this).attr("data-index")]);
+					colorItem++;
+				}
+
+			} else {
+				deletegroup("tagGrop" + $(this).attr("ID"))
+			}
+
+		});
+
+	}
+
+	/*笔组切换*/
+
+	var groupName;
+
+	function selectGroup() {
+
+		var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
+		groupName = $("#input_strokegrouplist").find("option:selected").text(); //$("#input_strokegrouplist").val().trim();
+		send(jsStr);
+	}
+	/*删除笔组笔切换*/
+
+	function deleteselectGroup() {
+
+		var jsStr = "SelectGroup {\"id\":\"" + $("#delete_strokegrouplist").val().trim() + "\"}";
+		groupName = $("#delete_strokegrouplist").find("option:selected").text(); //$("#input_strokegrouplist").val().trim();
+		send(jsStr);
+	}
+	/*选择笔组*/
+	$("#input_strokegrouplist").on("change", function() {
+
+			selectGroup();
+
+		}
+
+	);
+	/*删除笔组*/
+	$("#delete_strokegrouplist").on("change", function() {
+
+			deleteselectGroup();
+
+		}
+
+	);
+
+	/*选择笔组列表*/
+	$("#btn_input").on("click", function() {
+
+		$("#myStrokegroup_List").modal('hide');
+		lineTreed();
+		if(tagGropList.length > 0) {
+
+			$("#rhTrendright_bottom").show();
+			$("#li_savegroup1").show();
+			$("#li_savegroup2").show();
+		} else {
+			$("#li_savegroup1").hide();
+			$("#li_savegroup2").hide();
+		}
+		groupName = "";
+		fullscreen();
+	    close_treed();
+	});
+
+	/*笔组加载*/
+	function strokeGroupbind(datatable) {
+		var str = "<option></option>";
+		if(datatable != null) {
+			$.each(datatable, function(index, data) {
+
+				str += "<option value='" + data["GId"] + "'>";
+				str += data["GroupName"];
+
+				str += "</option>";
+			});
+		}
+
+		return str;
+	}
+	/*删除笔组*/
+	var GroupNa = "";
+	$("#btn_Delstrokegroup").click(function() {
+		var strokeGroup = $("#delete_strokegrouplist").val().trim();
+		GroupNa = $("#delete_strokegrouplist").find("option:selected").text();
+		if(strokeGroup == "") {
+			shalert("请选择笔组名称");
+			return false;
+		} else {
+			shconfirm("确定要删除吗？", function(result) {
+				if(result) {
+					var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
+
+					send(jsStr);
+				}
+			});
+		}
+		$("#myStrokegroup_Drop").modal('hide');
+
+	});
+	/*笔组列表笔的显示隐藏*/
+	function showHide() {
+		$(".showOrhide").unbind('click');
+		$(".showOrhide").on("click", function() {
+             console.log(tagGropList)
+			var seriesData1 = [];
+			//var tagGropList1=tagGropList;
+			//var tagTemp=tagGropList;
+			//tagGropList=[];
+			var tagName = $(this).parent().parent().find("td").eq(0).html();
+			$.each(tagGropList,function(index,datalist){
+				if(tagName==datalist.Tagname)
+				{
+					if(datalist["show"] == "true" || datalist["show"] == undefined)
+					{
+						datalist["show"] = "false";
+					}else {
+						datalist["show"] = "true";
+						
+						//tagGropList.push(tagGropList1[index]);
+					}
+				}else {
+					if(datalist["show"] == "true" || datalist["show"] == undefined) {
+						//seriesData1.push(data);
+						//tagGropList.push(tagGropList1[index]);
+					}
+
+				}
+			})
+			$.each(seriesData, function(index, data) {
+
+				if(tagName == data["name"]) {
+					if(data["show"] == "true" || data["show"] == undefined) {
+						data["show"] = "false";
+
+
+					} else {
+						data["show"] = "true";
+						seriesData1.push(data);
+						//tagGropList.push(tagGropList1[index]);
+					}
+				} else {
+					if(data["show"] == "true" || data["show"] == undefined) {
+						seriesData1.push(data);
+						//tagGropList.push(tagGropList1[index]);
+					}
+
+				}
+
+			});
+			if($(this).text() == "隐藏") {
+				$(this).text("显示");
+			} else {
+				$(this).text("隐藏");
+			}
+ console.log(tagGropList)
+			//myChart.clear();
+			if(xAxisData.length > 0) {
+			  myChart2 = echarts.init(document.getElementById('echarts_line'));
+				var option = {
+
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+						data: []
+					},
+					grid: [{
+						containLabel: true,
+						left: 80,
+						right: 80,
+
+					}, {
+						containLabel: true,
+						left: 80,
+						right: 80,
+						top: '55%',
+
+					}],
+					toolbox: {
+						show: true,
+						feature: {
+							/*	dataView: {
+									show: true,
+									readOnly: false
+								},
+								restore: {
+									show: true
+								},
+								saveAsImage: {
+									show: true
+								}*/
+							mark: {
+								show: false
+							},
+							dataView: {
+								show: false,
+								readOnly: false
+							},
+							magicType: {
+								title: {
+									line: '折线图切换',
+									bar: '柱形图切换'
+								},
+								show: true,
+								type: ['line', 'bar'],
+								right: '20%'
+
+							},
+							restore: {
+								show: false
+							},
+							saveAsImage: {
+								show: false
 							}
 
 						}
 					},
+					dataZoom: [{
+						show: true,
 
-					theme: 'bootstrap'
-				});
+					}, {
+						type: 'inside'
+					}],
+					xAxis: [{
+						type: 'category',
+						boundaryGap: false,
+						data: xAxisData
 
-			});
-			if(!jQuery().colorpicker) {
-				return;
-			}
-			$('.colorpicker-default').colorpicker({
-				format: 'hex'
-			});
-			$('.colorpicker-rgba').colorpicker();
-
-			/*选择列表*/
-			$("#Ccheck").on("click", function() {
-
-				if($(".rhTrendright_bottom").is(":hidden")) {
-					$(".rhTrendright_middle").css("height", height * 0.7);
-					$("#echarts_line").css("height", height * 0.66);
-					$("#echarts_bar").css("height", height * 0.66);
-					$(".rhTrendright_bottom").css('display', 'block');
-					$("#Ccheck").text(" 隐藏列表");
-					$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
-				} else {
-					$("#echarts_line").css("height", height * 0.76);
-					$("#echarts_bar").css("height", height * 0.76);
-					$(".rhTrendright_middle").css("height", height * 0.8);
-					$(".rhTrendright_bottom").css('display', 'none');
-					$("#Ccheck").text(" 显示列表");
-					$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
-				}
-				if(btnTrend == myChart) {
-					myChart.resize();
-				} else {
-					myChart1.resize();
+					}],
+					yAxis: [{
+						type: 'value',
+						scale: true,
+						name: ''
+					}],
+					series: seriesData1
+				};
+				/*获取图例*/
+				legendData = [];
+				for(var i = 0; i < seriesData1.length; i++) {
+					legendData.push(seriesData1[i]["name"]);
 				}
 
-			});
+				myChart2.setOption(option);
+				/*随浏览器的变化而变化*/
+				window.onresize = function() {
 
-			function tagListbind(datatable) {
-				var str = "";
+					myChart2.resize(); //使第一个图表适应
 
-				if(datatable.length > 0) {
-
-					$.each(datatable, function(index, data) {
-
-						str += "<tr id=" + data["ID"] + "  data-index='" + index + "'>";
-						str += " <td><label class='mt-checkbox mt-checkbox-single mt-checkbox-outline'>";
-						str += "<input type='checkbox' class='checkboxes' id='" + data["ID"] + "' name='check_table' data-index='" + index + "'>";
-						str += "<span></span>";
-						str += "</label> </td>";
-						str += "<td>" + data["Tagname"] + "</td>";
-						str += "<td>" + data["Description"] + "</td>";
-						str += "</tr>";
-					});
 				}
 
-				return str;
-			}
+				option.series = seriesData1;
 
-			/*tr 的点击事件*/
-			function tagleftClick() {
-
-				$(".div1 tbody tr input").on("click", function() {
-					var truey = $(this).find('input[name=check_table]').context.checked;
-					$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
-					if(truey) {
-
-						if(isExist("tagGrop" + $(this).attr("ID"))) {
-							/*页面动态加载*/
-
-							[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
-							$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-							$(".delgrop").click(function() {
-								var trId = "tagGrop" + $(this).attr("data-value");
-								if(trId != "") {
-									shconfirm("确定要删除吗？", function(result) {
-										if(result) {
-											if(tagGropList != null) {
-												for(var i = 0; i < tagGropList.length; i++) {
-													if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
-														tagGropList.splice(i, 1);
-													}
-												}
-
-												$("#" + trId).remove();
-												console.log(tagGropList.length)
-												if(tagGropList.length > 0) {
-													$("#btn_history").click();
-												} else if(tagGropList.length == 0) {
-													/*  	alert()
-                                                	option.xAxis[0].data = xAxisData;
-								if(btnTrend == myChart1) {
-									option.xAxis[0].boundaryGap = true;
-									
-								} else {
-									option.xAxis[0].boundaryGap = false;
-								}*/
-													if(btnTrend == "myChar1") {
-														$("#echarts_bar").css("display", "none");
-													} else {
-														$("#echarts_line").css("display", "none");
-													}
-
-												}
-
-												//shalert("删除成功！");
-											}
-										}
-									});
-
-								} else {
-									shalert("请选择要删除的笔")
-								}
-
-								/*$("#echarts_line").css("display", "block");
-				              $("#echarts_bar").css("display", "none");*/
-
-								/*if(!$("#echarts_line").is(":hidden") || !$("#echarts_bar").is(":hidden")) {
-									
-									if(tagGropList.length!=0)
-									{
-										alert();
-										
-											
-										
-										
-									}
-									
-								}*/
-							});
-							bottomtr();
-							Ccolor();
-							tagGropList.push(tagList[$(this).attr("data-index")]);
-							colorItem++;
-						}
-
-					} else {
-
-						deletegroup("tagGrop" + $(this).attr("ID"))
-					}
-
-				});
+				option.legend.data = legendData;
+				myChart2.setOption(option);
+				/*for(var i = 0; i < xAxisData.length; i++) {
+					dataTreedInfo.push({
+						Tagname: tagGropList[colorid].Tagname,
+						time: xAxisData[i],
+						data: lineData[i],
+						des: tagGropList[colorid].Description
+					})
+				}*/
 
 			}
 
-			/*笔组切换*/
-			function selectGroup() {
-
-				var jsStr = "SelectGroup {\"id\":\"" + $("#input_strokegrouplist").val().trim() + "\"}";
-
-				send(jsStr);
-			}
-
-			$("#input_strokegrouplist").on("change", function() {
-
-					selectGroup();
-				}
-
-			);
-			/*选择笔组列表*/
-			$("#btn_input").on("click", function() {
-
-				$("#myStrokegroup_List").modal('hide');
-				$("#btn_history").click();
-				if(tagGropList.length > 0) {
-
-					$("#rhTrendright_bottom").show();
-					$("#li_savegroup1").show();
-					$("#li_savegroup2").show();
-				} else {
-					$("#li_savegroup1").hide();
-					$("#li_savegroup2").hide();
-				}
-
-			});
-			/*删除笔组*/
-			$("#btn_Delstrokegroup").on("click", function() {
-				$("#myStrokegroup_Drop").modal('hide');
-
-			});
-			/*笔组加载*/
-			function strokeGroupbind(datatable) {
-				var str = "<option></option>";
-				if(datatable != null) {
-					$.each(datatable, function(index, data) {
-
-						str += "<option value='" + data["GId"] + "'>";
-						str += data["GroupName"];
-
-						str += "</option>";
-					});
-				}
-
-				return str;
-			}
-			$("#btn_Delstrokegroup").click(function() {
-				var strokeGroup = $("#delete_strokegrouplist").val().trim();
-
-				if(strokeGroup == "") {
-					shalert("请选择笔组名称");
-					return false;
-				} else {
-					shconfirm("确定要删除吗？", function(result) {
-						if(result) {
-							var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
-
-							send(jsStr);
-						}
-					});
-				}
-			});
-
-			/*笔组点表关联数据加载*/
-			function tagGropListbind(datatable) {
-				var str = "";
-				if(datatable != null) {
-					$.each(datatable, function(index, data1) {
-
-						str += "<tr id=tagGrop" + data1["ID"] + " style='color:" + data1["Color"] + "'>";
-						str += "<td>" + data1["Tagname"] + "</td>";
-						str += "<td>" + data1["Description"] + "</td>";
-						str += "<td>";
-						str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 3px 7px;'>";
-						str += "<span>删除</span></button>";
-						str += "<button type='button' class='btn green Ccolor'  style='padding: 3px 7px;'><span>颜色配置</span></button>"
-						str += "</td>";
-						str += "</tr>";
-					});
-				}
-
-				return str;
-			}
-			/*点击笔组关联tr*/
-			function bottomtr() {
-
-				$(".rhTrendright_bottom tbody tr .Ccolor").on("click", function() {
-
-					$(this).parent().parent().css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
-					colorStyle($(this).parent().parent());
-
-				});
-			}
-			/*添加标签的确定按钮*/
-			$("#close_Check").on("click", function() {
-				/*关闭模态框*/
-				$("#myModalTend_Add").modal('hide');
-				$("#btn_history").click();
-				if(tagGropList.length > 0) {
-
-					$("#rhTrendright_bottom").show();
-					$("#li_savegroup1").show();
-					$("#li_savegroup2").show();
-				} else {
-					$("#li_savegroup1").hide();
-					$("#li_savegroup2").hide();
-				}
-
-			});
-			/*自定义查询*/
-			$("#btn_select").on("click", function() {
-				$("#btn_history").click();
-			});
-			/*获取点击的id号，修改颜色*/
-			function colorStyle(_this) {
-				trId = _this.attr("ID");
-
-				$('.demo').val(RGBToHex(_this.css("color")));
-				$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
-
-				bottomtr();
-			}
-			/*Rgb 格式转为16进制*/
-
-			function RGBToHex(rgb) {
-				var regexp = /[0-9]{0,3}/g;
-				var re = rgb.match(regexp); //利用正则表达式去掉多余的部分，将rgb中的数字提取
-				var hexColor = "#";
-				var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-				for(var i = 0; i < re.length; i++) {
-					var r = null,
-						c = re[i],
-						l = c;
-					var hexAr = [];
-					while(c > 16) {
-						r = c % 16;
-						c = (c / 16) >> 0;
-						hexAr.push(hex[r]);
-					}
-					hexAr.push(hex[c]);
-					if(l < 16 && l != "") {
-						hexAr.push(0)
-					}
-					hexColor += hexAr.reverse().join('');
-				}
-
-				return hexColor;
-			}
-			/*获取笔组点*/
-			function GroupList(strokeid) {
-				var dataList = [];
-
-				$.each(tagList, function(index, data) {
-
-					if(data["ID"] === strokeid) {
-
-						dataList.push(data);
-					}
-
-				});
-
-				return dataList;
-
-			}
-
-			//尝试连接至服务器
-			try {
-				socket = new WebSocket(host);
-			} catch(exception) {
-				shalert("对不起，您所使用的浏览器不支持WebSocket.");
-				return false;
-			}
-			//连接成功
-			socket.onopen = function() {
-				if($.cookie("user") && $.cookie("password")) {
-					socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
-				}
-				//send("GetTagList");
-				send("GetGroupList");
-				$(".div1 tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
-
-			}
-			var tempNum = 0; /*判断笔组列表是否返回值*/
-			//收到消息
-			socket.onmessage = function(msg) {
-				var result = msg.data;
-				result = JSON.parse(result);
-
-				if(result["error"]) {
-					if($.cookie("user") == "" || $.cookie("user") == null) {
-						shconfirm1(result["error"], function(result) {
-							if(result) {
-
-								window.parent.location.href = "../Login.html";
-							}
-						});
-					} else {
-						shalert(result["error"]);
-					}
-				} else if(result["exception"]) {
-					shalert(result["exception"]);
-					return false;
-				} else {
-					switch(result["Function"]) {
-						case "GetTagList":
-							tagList = result["data"];
-							$(".div1 tbody").html(tagListbind(result["data"]));
-							tagleftClick();
-							break;
-						case "SelectTagList":
-							tagList = result["data"];
-							$(".div1 tbody").html(tagListbind(result["data"]));
-							tagleftClick();
-							break;
-						case "GetGroupList":
-							strokeGroupList = result["data"];
-							$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
-							$("#delete_strokegrouplist").html(strokeGroupbind(strokeGroupList));
-
-							break;
-						case "SelectGroup":
-							var strokeGroup = result["data"];
-							tagGropList = [];
-							$.each(strokeGroup, function(index, data) {
-								if(isExist(data["ID"])) {
-									tagGropList.push(data);
-								}
-							});
-							$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
-
-							bottomtr();
-							Ccolor();
-							break;
-						case "AddGroup":
-							shalert("添加成功！")
-							send("GetGroupList");
-							$("#myStrokegroup_Add").model("hide");
-							break;
-						case "DeleteGroup":
-							shalert(result["info"])
-							send("GetGroupList");
-							$(".rhTrendright_bottom tbody").html("");
-							break;
-
-						case "GetHistoryData":
-
-							var dataList = result["data"];
-							console.log(dataList);
-
-							btnTrend.showLoading({
-								text: "图表数据正在努力加载..."
-							});
-							window.clearTimeout(timeTicket);
-
-							btnTrend.clear();
-
-							//console.log(tagGropList.length);
-
-							//$.each(tagGropList, function(item, data) {
-							lineData = [];
-							if(dataList == null) {
-								dataList = [];
-							}
-							if(dataList.length != 0) {
-								tempNum++;
-							}
-
-							var type = "";
-							if(btnTrend == myChart) {
-								type = "line";
-							} else {
-								type = "bar";
-							}
-							if(dataList.length == 0) {
-								seriesData.push({
-									name: tagGropList[colorid].Tagname,
-									type: type,
-									smooth: true,
-									data: []
-								});
-
-							} else {
-								xAxisData = [];
-								for(var i = 0; i < dataList.length; i++) {
-									xAxisData.push(dataList[i]["TimeStamp"]);
-									//lineData.push(dataList[i]["Value"] * (item + 1));
-									lineData.push(dataList[i]["Value"]);
-								}
-								if(btnTrend == myChart) {
-									seriesData.push({
-										name: tagGropList[colorid].Tagname,
-										type: "line",
-										smooth: true,
-
-										data: lineData,
-										itemStyle: {
-											normal: {
-												color: tagGropList[colorid].Color
-											}
-										}
-									});
-								} else {
-									/*name: 'Cost',
-										type: 'bar',
-										data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-								*/
-									seriesData.push({
-										name: tagGropList[colorid].Tagname,
-										type: "bar",
-
-										barMaxWidth: 10,
-										barGap: '1%',
-										data: lineData,
-										itemStyle: {
-											normal: {
-												color: tagGropList[colorid].Color
-											}
-										}
-									});
-								}
-								//console.log(lineData);
-
-							}
-
-							//});
-							colorid++;
-							btnTrend.clear();
-							if(xAxisData.length > 0) {
-								//console.log(xAxisData);
-
-								option.xAxis[0].data = xAxisData;
-								if(btnTrend == myChart1) {
-									option.xAxis[0].boundaryGap = true;
-
-								} else {
-									option.xAxis[0].boundaryGap = false;
-								}
-								option.series = seriesData;
-								btnTrend.setOption(option);
-							}
-							if(colorid == tagGropList.length) {
-
-								if(tempNum == 0) {
-									shalert("您选择的点没有数据，请重新选择！")
-									btnTrend.hideLoading();
-									disabled_btn();
-
-									$("#btn_fullscreen").attr("disabled", false);
-									return false;
-								} else {
-									btnTrend.hideLoading();
-									disabled_btn();
-
-									$("#btn_fullscreen").attr("disabled", false);
-								}
-
-							}
-
-							break;
-
-					}
-				}
-			}
-
-			function disabled_btn() {
-				$("#btnToday").attr("disabled", false);
-				$("#btnMonth").attr("disabled", false);
-				$("#btnMonth_3").attr("disabled", false);
-				$("#btnMonth_6").attr("disabled", false);
-				$("#btnYear").attr("disabled", false);
-				$("#btnGo").attr("disabled", false);
-				$("#btnBack").attr("disabled", false);
-				$("#btnYesterday").attr("disabled", false);
-				$("#btnYesteryear").attr("disabled", false);
-				$("#btnYesterMonth").attr("disabled", false);
-				$("#btnWeek").attr("disabled", false);
-				$("#btnYesterWeek").attr("disabled", false);
-				$("#btnselect").attr("disabled", false);
-			}
-			/*判断浏览器*/
-			function goPAGE() {
-				if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-					$(".div1 .portlet-body").css("height", pFrameHeight - 600);
-					$(".div1 input").css("width", "210px");
-					window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
-						if(window.orientation === 180 || window.orientation === 0) {
-							var height = window.screen.height;
-
-							$(".div1 .portlet-body").css("height", height - 80); //.width(height);
-						}
-						if(window.orientation === 90 || window.orientation === -90) {
-
-							var height = window.screen.width;
-
-							$(".div1 .portlet-body").css("height", height - 80); //.width("550px");
-
-						}
-					}, false);
-
-				} else {
-					$(".div1 .portlet-body").css("height", pFrameHeight * 0.6);
-					$(".div1 input").css("width", "600px");
-				}
-			}
-			/*模态框的显示*/
-			$('#myModalTend_Add').on('shown.bs.modal', function(e) {
-
-					send("GetTagList");
-
-					goPAGE();
-
-				})
-				//连接断开
-			socket.onclose = function(event) {
-				window.parent.location.href = "../Login.html";
-			}
-
-			//发送
-			function send(msg) {
-				socket.send(msg);
-			}
-
-			//断开连接
-			function disconnect() {
-				socket.close();
-			}
 		});
+	}
+	/*笔组点表关联数据加载*/
+	function tagGropListbind(datatable) {
+		var str = "";
+		if(datatable != null) {
+			$.each(datatable, function(index, data1) {
+
+				str += "<tr id=tagGrop" + data1["ID"] + " style='color:" + data1["Color"] + "'>";
+				str += "<td>" + data1["Tagname"] + "</td>";
+				str += "<td>" + data1["Description"] + "</td>";
+				str += "<td>";
+
+				if(groupName == "" || groupName == undefined) {
+					str += "<button type='button' class='btn btn-success delgrop' data-value='" + data1["ID"] + "' style='padding: 0px 7px;'>";
+
+				} else {
+
+					str += "<button type='button' class='btn btn-success delgrop' groupname='" + groupName + "'+ data-value='" + data1["ID"] + "' style='padding: 0px 7px;'>";
+
+				}
+				str += "<span>删除</span></button>";
+				str += "<button type='button' class='btn green Ccolor'  style='padding: 0px 7px;'><span>颜色配置</span></button>"
+				str += "<button type='button' class='btn green showOrhide'  style='padding: 0px 7px;'><span>隐藏</span></button>"
+				str += "</td>";
+				str += "</tr>";
+			});
+		}
+
+		return str;
+	}
+	/*点击笔组关联tr*/
+	function bottomtr() {
+
+		$(".rhTrendright_bottom tbody tr .Ccolor").on("click", function() {
+
+			$(this).parent().parent().css("backgroundColor", "#DAF3F5").siblings().css("backgroundColor", "");
+			colorStyle($(this).parent().parent());
+
+		});
+	}
+	/*添加标签的确定按钮*/
+	$("#close_Check").on("click", function() {
+		/*关闭模态框*/
+
+		$("#myModalTend_Add").modal('hide');
+		lineTreed();
+		if(tagGropList.length > 0) {
+
+			$("#rhTrendright_bottom").show();
+			$("#li_savegroup1").show();
+			$("#li_savegroup2").show();
+		} else {
+			$("#li_savegroup1").hide();
+			$("#li_savegroup2").hide();
+		}
+
+	});
+	/*自定义查询*/
+	$("#btn_select").on("click", function() {
+		$("#btnWeek").attr("disabled", true);
+		$("#btnToday").attr("disabled", true);
+		lineTreed();
+	});
+	/*获取点击的id号，修改颜色*/
+	function colorStyle(_this) {
+		trId = _this.attr("ID");
+
+		$('.demo').val(RGBToHex(_this.css("color")));
+		$(".minicolors-swatch-color").attr("style", "background-color:" + _this.css("color"));
+
+		bottomtr();
+	}
+	/*Rgb 格式转为16进制*/
+
+	function RGBToHex(rgb) {
+		var regexp = /[0-9]{0,3}/g;
+		var re = rgb.match(regexp); //利用正则表达式去掉多余的部分，将rgb中的数字提取
+		var hexColor = "#";
+		var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+		for(var i = 0; i < re.length; i++) {
+			var r = null,
+				c = re[i],
+				l = c;
+			var hexAr = [];
+			while(c > 16) {
+				r = c % 16;
+				c = (c / 16) >> 0;
+				hexAr.push(hex[r]);
+			}
+			hexAr.push(hex[c]);
+			if(l < 16 && l != "") {
+				hexAr.push(0)
+			}
+			hexColor += hexAr.reverse().join('');
+		}
+
+		return hexColor;
+	}
+	/*获取笔组点*/
+	function GroupList(strokeid) {
+		var dataList = [];
+
+		$.each(tagList, function(index, data) {
+
+			if(data["ID"] === strokeid) {
+
+				dataList.push(data);
+			}
+
+		});
+
+		return dataList;
+
+	}
+
+	//尝试连接至服务器
+	try {
+		socket = new WebSocket(host);
+	} catch(exception) {
+		shalert("对不起，您所使用的浏览器不支持WebSocket.");
+		return false;
+	}
+	//连接成功
+	socket.onopen = function() {
+		if($.cookie("user") && $.cookie("password")) {
+			socket.send("Login {\"username\":\"" + $.cookie("user") + "\",\"password\":\"" + $.cookie("password") + "\"}");
+		}
+		//send("GetTagList");
+		send("GetGroupList");
+		$("#myModalTend_Add tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
+
+	}
+	var tempNum = 0; /*判断笔组列表是否返回值*/
+	//收到消息
+	socket.onmessage = function(msg) {
+		var result = msg.data;
+		result = JSON.parse(result);
+
+		if(result["error"]) {
+			if($.cookie("user") == "" || $.cookie("user") == null) {
+				shconfirm1(result["error"], function(result) {
+					if(result) {
+
+						window.parent.location.href = "../Login.html";
+					}
+				});
+			} else {
+				shalert(result["error"]);
+			}
+		} else if(result["exception"]) {
+			shalert(result["exception"]);
+			return false;
+		} else {
+			switch(result["Function"]) {
+				case "GetTagList":
+					tagList = result["data"];
+					$("#myModalTend_Add tbody").html(tagListbind(result["data"]));
+					tagleftClick();
+					break;
+				case "SelectTagList":
+					tagList = result["data"];
+					$(".div1 tbody").html(tagListbind(result["data"]));
+					tagleftClick();
+
+					break;
+				case "GetGroupList":
+					strokeGroupList = result["data"];
+					$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
+					$("#delete_strokegrouplist").html(strokeGroupbind(strokeGroupList));
+
+					break;
+				case "SelectGroup":
+					var strokeGroup = result["data"];
+
+					tagGropList = [];
+					$.each(strokeGroup, function(index, data) {
+						if(isExist(data["ID"])) {
+							tagGropList.push(data);
+
+						}
+					});
+
+					$(".rhTrendright_bottom tbody").html(tagGropListbind(tagGropList));
+
+					bottomtr();
+					Ccolor();
+					showHide();
+					$(".delgrop").click(function() {
+
+						var trId = "tagGrop" + $(this).attr("data-value");
+						var groupname = $(this).attr("groupname");
+						var tagName = $(this).parent().parent().find("td").eq(0).html();
+
+						if(trId != "") {
+							shconfirm("确定要删除吗？", function(result) {
+								if(result) {
+
+									if(tagGropList != null) {
+										for(var i = 0; i < tagGropList.length; i++) {
+											if(("tagGrop" + tagGropList[i]["ID"]) == trId) {
+												tagGropList.splice(i, 1);
+											}
+										}
+
+										$("#" + trId).remove();
+
+										if(tagGropList.length > 0) {
+											for(var i = 0; i < seriesData.length; i++) {
+												if(tagName == seriesData[i]["name"]) {
+													seriesData.splice(i, 1);
+													i--;
+												}
+											}
+											if(xAxisData.length > 0) {
+												myChart3 = echarts.init(document.getElementById('echarts_line'));
+												var option = {
+
+													tooltip: {
+														trigger: 'axis'
+													},
+													legend: {
+														data: ['High', 'Low']
+													},
+													toolbox: {
+														show: true,
+														feature: {
+															/*	dataView: {
+																	show: true,
+																	readOnly: false
+																},
+																restore: {
+																	show: true
+																},
+																saveAsImage: {
+																	show: true
+																}*/
+															mark: {
+																show: false
+															},
+															dataView: {
+																show: false,
+																readOnly: false
+															},
+															magicType: {
+																title: {
+																	line: '折线图切换',
+																	bar: '柱形图切换'
+																},
+																show: true,
+																type: ['line', 'bar'],
+																right: '20%'
+
+															},
+															restore: {
+																show: false
+															},
+															saveAsImage: {
+																show: false
+															}
+
+														}
+													},
+
+													xAxis: [{
+														type: 'category',
+														boundaryGap: false,
+														data: xAxisData
+
+													}],
+													yAxis: [{
+														type: 'value',
+														scale: true,
+														name: ''
+													}],
+													series: seriesData
+												};
+
+												// 为echarts对象加载数据
+												myChart3.setOption(option);
+												/*随浏览器的变化而变化*/
+												window.onresize = function() {
+
+														myChart3.resize(); //使第一个图表适应
+
+													}
+													/*获取图例*/
+												legendData = [];
+												for(var i = 0; i < seriesData.length; i++) {
+													legendData.push(seriesData[i]["name"]);
+												}
+
+												//option.xAxis[0].data = xAxisData;
+
+												option.series = seriesData;
+
+												option.legend.data = legendData;
+												myChart3.setOption(option);
+
+											}
+
+										} else if(tagGropList.length == 0) {
+
+											$("#echarts_line").css("display", "none");
+
+										}
+
+									}
+
+									if(groupname != "" && groupname != undefined) {
+										strokeGroup = groupname;
+
+										var tagids = IDTag(tagGropList).join(',');
+										var colors = ColorTag(tagGropList).join(',');
+
+										var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
+										send(jsStr);
+
+									}
+								}
+							});
+
+						} else {
+							shalert("请选择要删除的笔")
+						}
+
+					});
+
+					break;
+				case "AddGroup":
+					shalert("保存成功！")
+					send("GetGroupList");
+					$("#myStrokegroup_Add").modal('hide');
+					$("#input_strokegroup").val("");
+					groupName = "";
+					break;
+				case "DeleteGroup":
+					shalert(result["info"])
+					send("GetGroupList");
+
+					/*判定是否做了选择笔组操作，如果标签表中*/
+
+					if(tagGropList.length != 0) {
+						var groupName = $(".rhTrendright_bottom tbody tr").eq(0).find(".delgrop").attr("groupname");
+						if(groupName == GroupNa) {
+							var objtr = $(".rhTrendright_bottom tbody tr");
+
+							for(var i = 0; i < objtr.length; i++) {
+								var Name = $(".rhTrendright_bottom tbody tr").eq(i).find(".delgrop").attr("groupname")
+								if(Name == GroupNa) {
+									$(".rhTrendright_bottom tbody tr").eq(i).remove();
+									i--;
+								}
+							}
+
+						}
+						tagGropList = "";
+					}
+					groupName = "";
+					break;
+
+				case "GetHistoryData":
+                    
+					var dataList = result["data"];
+					console.log(dataList);
+					btnTrend.showLoading({
+						text: "图表数据正在努力加载..."
+					});
+					window.clearTimeout(timeTicket);
+        
+					myChart.clear();
+
+					lineData = [];
+					if(dataList == null) {
+						dataList = [];
+					}
+					if(dataList.length != 0) {
+						tempNum++;
+					}
+
+					var type = "";
+					if(btnTrend == myChart) {
+						type = "line";
+					} else {
+						type = "bar";
+					}
+					if(dataList.length == 0) {
+						seriesData.push({
+							name: tagGropList[colorid].Tagname,
+							type: type,
+							smooth: true,
+							data: []
+						});
+
+					} else {
+						xAxisData = [];
+
+						for(var i = 0; i < dataList.length; i++) {
+							xAxisData.push(dataList[i]["TimeStamp"]);
+							//lineData.push(dataList[i]["Value"] * (item + 1));
+							lineData.push(dataList[i]["Value"]);
+
+						}
+						/*var des="";
+						if(tagGropList[colorid].Description!="")
+						{
+							des=tagGropList[colorid].Description;
+						}else
+						{
+							des=tagGropList[colorid].Tagname;
+						}*/
+						if(btnTrend == myChart) {
+							seriesData.push({
+								name: tagGropList[colorid].Tagname,
+								type: "line",
+								smooth: true,
+								barMaxWidth: 10,
+								barGap: '1%',
+								data: lineData,
+								itemStyle: {
+									normal: {
+										color: tagGropList[colorid].Color
+									}
+								}
+							});
+						} else {
+
+							seriesData.push({
+								name: tagGropList[colorid].Tagname,
+								type: "bar",
+
+								barMaxWidth: 10,
+								barGap: '1%',
+								data: lineData,
+								itemStyle: {
+									normal: {
+										color: tagGropList[colorid].Color
+									}
+								}
+							});
+						}
+
+					}
+
+					btnTrend.clear();
+					if(xAxisData.length > 0) {
+
+						legendData.push(tagGropList[colorid].Tagname);
+
+						option.xAxis[0].data = xAxisData;
+
+						option.xAxis[0].boundaryGap = false;
+
+						option.series = seriesData;
+
+						option.legend.data = legendData;
+						btnTrend.setOption(option);
+						for(var i = 0; i < xAxisData.length; i++) {
+							dataTreedInfo.push({
+								Tagname: tagGropList[colorid].Tagname,
+								time: xAxisData[i],
+								data: lineData[i],
+								des: tagGropList[colorid].Description
+							})
+						}
+
+					}
+
+					colorid++;
+					if(colorid == tagGropList.length) {
+
+						if(tempNum == 0) {
+							shalert("您选择的点没有数据，请重新选择！")
+							btnTrend.hideLoading();
+							disabled_btn();
+
+							$("#btn_fullscreen").attr("disabled", false);
+							return false;
+						} else {
+							btnTrend.hideLoading();
+							disabled_btn();
+
+							$("#btn_fullscreen").attr("disabled", false);
+							console.log(dataTreedInfo);
+							$("#myTreedInfo table tbody").html(TreedInfo(dataTreedInfo));
+							
+							$("#btn_TreedInfo").show();
+							/*列表中的所有按钮文本初始化为隐藏*/
+							$(".showOrhide").text("隐藏");
+						}
+
+					}
+
+					break;
+
+			}
+		}
+	}
+	var dataTreedInfo = [];
+
+	function TreedInfo(dataTreedInfo) {
+		var str = "";
+
+		if(dataTreedInfo.length > 0) {
+
+			$.each(dataTreedInfo, function(index, data) {
+
+				str += "<tr>";
+
+				str += "<td>" + data["Tagname"] + "</td>";
+				str += "<td>" + data["time"] + "</td>";
+				str += "<td>" + data["data"] + "</td>";
+				str += "<td>" + data["des"] + "</td>";
+				str += "</tr>";
+			});
+		}
+        console.log(str);
+		return str;
+	}
+	/*对按钮的隐藏*/
+	function disabled_btn() {
+		$("#btnToday").attr("disabled", false);
+		$("#btnMonth").attr("disabled", false);
+		$("#btnMonth_3").attr("disabled", false);
+		$("#btnMonth_6").attr("disabled", false);
+		$("#btnYear").attr("disabled", false);
+		$("#btnGo").attr("disabled", false);
+		$("#btnBack").attr("disabled", false);
+		$("#btnYesterday").attr("disabled", false);
+		$("#btnYesteryear").attr("disabled", false);
+		$("#btnYesterMonth").attr("disabled", false);
+		$("#btnWeek").attr("disabled", false);
+		$("#btnYesterWeek").attr("disabled", false);
+		$("#btn_select").attr("disabled", false);
+	}
+	/*判断浏览器*/
+	function goPAGE() {
+		if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+			$(".div1 .portlet-body").css("height", pFrameHeight - 600);
+			$(".div1 input").css("width", "210px");
+			window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+				if(window.orientation === 180 || window.orientation === 0) {
+					var height = window.screen.height;
+
+					$(".div1 .portlet-body").css("height", height - 80); //.width(height);
+				}
+				if(window.orientation === 90 || window.orientation === -90) {
+
+					var height = window.screen.width;
+
+					$(".div1 .portlet-body").css("height", height - 80); //.width("550px");
+
+				}
+			}, false);
+
+		} else {
+			$(".div1 .portlet-body").css("height", pFrameHeight * 0.6);
+			$(".div1 input").css("width", "600px");
+		}
+	}
+	/*模态框的显示*/
+	$('#myModalTend_Add').on('shown.bs.modal', function(e) {
+
+		send("GetTagList");
+
+		goPAGE();
+
+	});
+
+	/*模态框关闭*/
+	$("#myModalTend_Add").on("hidden.bs.modal", function() {
+		console.log($(this));
+
+		send("GetTagList");
+
+		goPAGE();
+		$("#input_name").val("");
+		$(this).removeData("bs.modal");
+	});
+	/*趋势详细信息模态框的显示*/
+	$('#myTreedInfo').on('shown.bs.modal', function(e) {
+
+		goPAGE();
+
+	});
+	/*趋势详细信息模态框关闭*/
+	$("#myTreedInfo").on("hidden.bs.modal", function() {
+		goPAGE();
+	});
+	/*趋势详细信息隐藏*/
+	$("#btn_TreedInfo").on("click", function() {
+		$("#myTreedInfo").modal('hide');
+	});
+	//连接断开
+	socket.onclose = function(event) {
+		window.parent.location.href = "../Login.html";
+	}
+
+	//发送
+	function send(msg) {
+		socket.send(msg);
+	}
+
+	//断开连接
+	function disconnect() {
+		socket.close();
+	}
+
 });

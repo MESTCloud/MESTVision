@@ -69,16 +69,20 @@
                                                 </ul>
                                             </div>
 								    </button>
-									<button type="button" class="btn green" id="btn_history" style='padding: 3px 7px;'>
+									<button type="button" class="btn btn-success" id="btn_TreedInfo" style='padding: 3px 7px; display: none;' data-toggle="modal" data-target="#myTreedInfo">
+													    <i class="fa fa-bar-chart-o"></i>
+										                <span>趋势图详细信息</span>
+											    	</button>
+									<!--<button type="button" class="btn green" id="btn_history" style='padding: 3px 7px;'>
 													    <i class="fa fa-line-chart"></i>
 										                <span>折线图</span>
 											    	</button>
 									<button type="button" class="btn green" id="btn_bar" style='padding: 3px 7px;'>
 													    <i class="fa fa-bar-chart-o"></i>
 										                <span>柱状图</span>
-											    	</button>
+											    	</button>-->
 									<button type="button" class="btn btn-success" id="Ccheck"><i class="fa fa-flash"></i> 隐藏列表</button>
-									<button type="button" class="btn green" id="btn_fullscreen" disabled="disabled" style='padding: 3px 7px;'>
+									<button type="button" class="btn btn-success" id="btn_fullscreen" disabled="disabled" style='padding: 3px 7px;'>
 													    <i class="fa fa-bar-chart-o"></i>
 										                <span>全屏</span>
 											    	</button>
@@ -102,12 +106,12 @@
 															<button type="button" class="btn btn-success" id="btnToday">今天</button>
 															<button type="button" class="btn btn-success" id="btnYesterday">前一天</button>
 															<button type="button" class="btn btn-success" id="btnWeek">一周</button>
-															<button type="button" class="btn btn-success" id="btnYesterWeek">上周</button>
+															<!--<button type="button" class="btn btn-success" id="btnYesterWeek">上周</button>-->
 															<button type="button" class="btn green" id="btn_AddList">
 
-							                <!--<span>笔組列表配置</span>-->
-							                <div class="btn-group">
-                                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="color: white;text-decoration:none;"> 更多
+							                                 <!--<span>笔組列表配置</span>-->
+							                                 <div class="btn-group">
+                                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="color: white;text-decoration:none; "> 更多
                                                     <i class="fa fa-angle-down"></i>
                                                 </a>
                                                 <ul class="dropdown-menu" role="menu">
@@ -127,7 +131,7 @@
                                             
                                                
                                             </div>
-								    </button>
+								                             </button>
 
 														</div>
 
@@ -214,8 +218,8 @@
 												<button class="btn btn-default pull-right">X</button>
 											</div>
 											<div class="table-scrollable">
-												<div id="echarts_line" style="height:310px; "></div>
-												<div id="echarts_bar" style="height:310px;"></div>
+												<div id="echarts_line" style="height:410px; "></div>
+
 											</div>
 										</div>
 										<div class="rhTrendright_bottom" id="Table1">
@@ -225,7 +229,7 @@
 													<tr role="row">
 
 														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
-															<span>别名</span>
+															<span>标签名</span>
 														</th>
 														<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-sort="ascending" aria-label=" Username : activate to sort column descending" style="width: 100px;">
 															<span>描述</span>
@@ -361,9 +365,9 @@
 												<form role="form">
 													<div class="form-group">
 														<div class="row">
-															<label for="Name_Add" class="col-md-3 text-right"  style="height: 34px; line-height: 34px;">名称：</label>
+															<label for="Name_Add" class="col-md-3 text-right" style="height: 34px; line-height: 34px;">名称：</label>
 															<div class="col-md-9">
-																<input type="text" class="form-control" id="input_strokegroup" placeholder="名称">
+																<input type="text" class="form-control" id="input_strokegroup" placeholder="请填写笔组名称">
 															</div>
 														</div>
 													</div>
@@ -417,7 +421,7 @@
 												<form role="form">
 													<div class="form-group">
 														<div class="row">
-															<label for="Name_Add" class="col-md-3 text-right"  style="height: 34px; line-height: 34px;">笔组列表：</label>
+															<label for="Name_Add" class="col-md-3 text-right" style="height: 34px; line-height: 34px;">请选择删除笔组：</label>
 															<div class="col-md-9">
 																<select style="max-width: 200px;" class="form-control" id="delete_strokegrouplist"></select>
 															</div>
@@ -428,6 +432,61 @@
 														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 													</div>
 												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--趋势详细信息-->
+								<div class="modal fade" id="myTreedInfo" tabindex="-1" role="dialog" aria-labelledby="myTreedInfo" aria-hidden="true" data-backdrop="static">
+									<div class="modal-dialog">
+										<div class="div1">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="btn btn-default pull-right btn-sm" data-dismiss="modal">X</button>
+													<h4 class="modal-title">详细信息</h4>
+												</div>
+												<div class="modal-body">
+													<form role="form">
+														<!--<div class="ExeOut">
+															<button id="btn_out"  type="button" class="btn btn-success">导出</button>
+														</div>-->
+														<div class="portlet-body">
+															<div id="sample_3_wrapper" class="dataTables_wrapper no-footer">
+																<div class="table-scrollable">
+																	<div id="divtable" style="overflow-y: auto;">
+																		<table class="table table-striped table-bordered table-hover table-checkable order-column no-footer" id="ta" role="grid" aria-describedby="sample_3_info">
+																			<thead>
+																				<tr role="row">
+
+																					<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Email : activate to sort column ascending" style="width: 140px;">
+																						标签名
+																					</th>
+																					<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Number : activate to sort column ascending" style="width: 68px;">
+																						时间
+																					</th>
+																					<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
+																						数值
+																					</th>
+																					<th tabindex="0" aria-controls="sample_3" rowspan="1" colspan="1" aria-label=" Role : activate to sort column ascending" style="width: 68px;">
+																						描述
+																					</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
+
+														</div>
+														<div class="modal-footer">
+															<!--<button type="button" class="btn btn-default" id="btn_TreedInfo">确定</button>-->
+															<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														</div>
+													</form>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -482,7 +541,8 @@ text-align: center;">
 <script src='../resource/jquery-minicolors/jquery.minicolors.min.js'></script>
 
 <!--折线图-->
-<script type="text/javascript" src="../resource/echarts/echarts.js"></script>
+<script type="text/javascript" src="../resource/echarts/echarts.min.js"></script>
+<!--<script type="text/javascript" src="../resource/echarts/echarts.js"></script>-->
 <script type="text/javascript" src="../js/HistoricalTrend.js"></script>
 <!--右键功能-->
 
