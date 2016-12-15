@@ -21,26 +21,26 @@ $("#Dialog").css("height", height - 50);
 $(".rhTrendright").css("height", height);
 $(".rhTrendright_right").css("height", height);
 /*$(".rhTrendright_top_top").css("height", "120px");*/
-$(".rhTrendright_top").css("height", height * 0.12);
+$(".rhTrendright_top_top").css("height", height * 0.12);
 $(".rhTrendright_middle").css("height", height * 0.7);
 $("#echarts_line").css("height", height * 0.66);
 
-$(".rhTrendright_bottom").css("height", height * 0.2);
+$(".rhTrendright_bottom").css("height", height * 0.23);
 $(".rhTrendright_right_top").css("height", height);
 var leftheight = $(".rhTrendleftTitle").height();
 //$(".div1 .portlet-body").css("height", height - leftheight);
 var tags = new Array();
 jQuery(document).ready(function() {
-	/*采集周期的修改*/
-	$("#cycleValue").attr("disabled", true);
-	$("#cycleType").attr("disabled", true);
+	/*采集周期默认值*/
+	$("#cycleType").val("2")
 
 	/*判定点击的此行是否已经存在*/
 	function isExist(id) {
 		var boolE = true;
+
 		$.each(tagGropList, function(index, data) {
 
-			if(data["ID"] == id) {
+			if("tagGrop" + data["ID"] == id) {
 				boolE = false;
 			}
 
@@ -55,117 +55,114 @@ jQuery(document).ready(function() {
 	$("#startTime").val(formatDate(sDate, 0) + " 08：00：00");
 	$("#endTime").val(formatDate(sDate, 1));
 	// --- LINE ---
-    var myChart1;
-    var myChart2;
-    var myChart3;
-    var myChart;
-    var option;
-    chart();
-    function chart()
-    {
-    	myChart = echarts.init(document.getElementById('echarts_line'));
-	 option = {
+	var myChart1;
+	var myChart2;
+	var myChart3;
+	var myChart;
+	var option;
+	chart();
 
-		tooltip: {
-			trigger: 'axis'
-		},
-		
-		dataZoom: [{
-			show: true,
-			/*x: 'center',*/
-            
+	function chart() {
+		myChart = echarts.init(document.getElementById('echarts_line'));
+		option = {
 
-		}, {
-			type: 'inside'
-		}],
-		legend: {
-			data: ['High', 'Low'],
-			/* x: 'center',
+			tooltip: {
+				trigger: 'axis'
+			},
+
+			dataZoom: [{
+				show: true,
+				/*x: 'center',*/
+
+			}, {
+				type: 'inside'
+			}],
+			legend: {
+				data: ['High', 'Low'],
+				/* x: 'center',
              y: '360px',*/
-            
-		},
-		grid: [{
-			containLabel: true,
-			
-			left: 80,
-			right: 80
-			
 
-		}, {
-			
-			left: 80,
-			right: 80,
-			top: '55%',
-			
-			containLabel: true
+			},
+			grid: [{
+				containLabel: true,
 
-		}],
-		toolbox: {
-			show: true,
-			feature: {
+				left: 60,
+				right: 80
 
-				mark: {
-					show: false
-				},
-				dataView: {
-					show: false,
-					readOnly: false
-				},
+			}, {
 
-				magicType: {
-					title: {
-						line: '折线图切换',
-						bar: '柱形图切换'
+				left: 60,
+				right: 80,
+				top: '55%',
+
+				containLabel: true
+
+			}],
+			toolbox: {
+				show: true,
+				feature: {
+
+					mark: {
+						show: false
 					},
-					show: true,
-					type: ['line', 'bar'],
-					right: '20%'
+					dataView: {
+						show: false,
+						readOnly: false
+					},
 
-				},
-				restore: {
-					show: false
-				},
-				saveAsImage: {
-					show: false
+					magicType: {
+						title: {
+							line: '折线图',
+							bar: '柱形图'
+						},
+						show: true,
+						type: ['line', 'bar'],
+						right: '20%'
+
+					},
+					restore: {
+						show: false
+					},
+					saveAsImage: {
+						show: false
+					}
+
 				}
+			},
 
-			}
-		},
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: (function() {
+					var now = new Date();
+					var res = [];
+					var len = 10;
+					while(len--) {
+						res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+						now = new Date(now - 2000);
+					}
+					return res;
+				})()
+			}],
+			yAxis: [{
+				type: 'value',
+				scale: true,
+				name: ''
+			}],
 
-		xAxis: [{
-			type: 'category',
-			boundaryGap: false,
-			data: (function() {
-				var now = new Date();
-				var res = [];
-				var len = 10;
-				while(len--) {
-					res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
-					now = new Date(now - 2000);
-				}
-				return res;
-			})()
-		}],
-		yAxis: [{
-			type: 'value',
-			scale: true,
-			name: ''
-		}],
+			series: []
+		};
 
-		series: []
-	};
+		// 为echarts对象加载数据
 
-	// 为echarts对象加载数据
+		myChart.setOption(option);
+		/*随浏览器的变化而变化*/
+		window.onresize = function() {
 
-	myChart.setOption(option);
-	/*随浏览器的变化而变化*/
-	window.onresize = function() {
+			myChart.resize(); //使第一个图表适应
 
-		myChart.resize(); //使第一个图表适应
-
+		}
 	}
-    }
-	
 
 	/*笔组关联点的name值*/
 	function realTag(tagGropList) {
@@ -204,18 +201,18 @@ jQuery(document).ready(function() {
 		btnTrend.resize();
 	});
 	var btnTrend;
-	
+
 	/*历史趋势点击*/
 	function lineTreed() {
-		 chart();
+		chart();
 		/*myChart1.clear();
 		
 		myChart2.clear();
 		myChart3.clear();*/
-		myChart1="";
-		
-		myChart2="";
-		myChart3="";
+		myChart1 = "";
+
+		myChart2 = "";
+		myChart3 = "";
 		legendData = [];
 
 		btnTrend = myChart;
@@ -223,23 +220,9 @@ jQuery(document).ready(function() {
 		$("#echarts_line").css("display", "block");
 
 		historyLineFunction();
-		/*console.log("eee");
-		if(seriesData.length != 0) {
-			var tempseriesData = seriesData;
-			seriesData = [];
-			for(var i = 0; i < tempseriesData.length; i++) {
-				console.log(tempseriesData[i].show)
-				if(tempseriesData[i].show != "false") {
-					seriesData.push(tempseriesData[i]);
-				}
-
-			}
-			console.log(seriesData);
-		} else {*/
-			seriesData = [];
-		//}
-		//console.log(seriesData);
-		//console.log(seriesData1);
+		
+		seriesData = [];
+		
 
 	}
 	$("#btn_history").on('click', function() {
@@ -279,7 +262,7 @@ jQuery(document).ready(function() {
 
 	/*查询*/
 	$("#bg_checkColl").on("click", function() {
-		$(".div1 tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
+		$("#myModalTend_Add tbody").html('<tr><td colspan="9"><span>正在加载中...</span></td></tr>');
 		var jsStr = "SelectTagList {\"name\":\"" + $("#input_name").val().trim() + "\"}";
 
 		send(jsStr);
@@ -288,12 +271,10 @@ jQuery(document).ready(function() {
 	var xAxisData = new Array();
 	var seriesData = new Array();
 	var legendData = new Array();
-	var value = 1;
-	var type = 1;
 
 	function historyLineFunction() {
 		/*判定*/
-		
+
 		if(tagGropList.length == 0) {
 			shalert("请选择标签！");
 
@@ -309,8 +290,7 @@ jQuery(document).ready(function() {
 		btnTrend.showLoading({
 			btnTrendtext: "图表数据正在努力加载..."
 		});
-		console.log("tagGropList");
-		console.log(tagGropList);
+
 		/*var tagGropList1=[];
 		for(var i=0;i<tagGropList.length;i++)
 		{
@@ -320,84 +300,67 @@ jQuery(document).ready(function() {
 			}
 		}*/
 		var tags = realTag(tagGropList);
+		console.log(tagGropList);
 		var start = $("#startTime").val().replace(/\：/g, ':');
 		var end = $("#endTime").val().replace(/\：/g, ':');
 
 		colorid = 0;
 		//seriesData=[];
-		var hour = GetDateDiff(start, end, "hour");
+		/*	var hour = GetDateDiff(start, end, "hour");
 
-		if(hour <= 1) /*一小时之内的以1s查询*/ {
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("1");
-			$("#cycleType").val("1");
-			value = 1;
-			type = 1;
-		} else if(hour > 1 && hour <= 2)
-		/*两小时内的以半小时查询*/
-		{
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("30");
-			$("#cycleType").val("2");
-			value = 30;
-			type = 2;
-		} else if(hour > 2 && hour <= 24)
-		/*一天之内的以2小时*/
-		{
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("2");
-			$("#cycleType").val("3");
-			value = 2;
-			type = 3;
-		} else if(hour > 24 && hour <= 48)
-		/*两天之内的以4小时间隔*/
-		{
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("4");
-			$("#cycleType").val("3");
-			value = 4;
-			type = 3;
-		} else if(hour > 48 && hour <= 31 * 24) { /*一个月，以48小时间隔*/
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("48");
-			$("#cycleType").val("3");
-			value = 48;
-			type = 3;
-		} else if(hour >= 31 * 24 && hour < 31 * 24 * 3) { /*三个月内，以1个月为间隔*/
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("1");
-			$("#cycleType").val("4");
-			value = 30 * 24;
-			type = 3;
-		} else if(hour >= 31 * 24 * 3 && hour < 31 * 24 * 6) { /*6个月内，以2月为间隔*/
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("2");
-			$("#cycleType").val("4");
-			value = 30 * 24 * 2;
-			type = 3;
-		} else if(hour >= 31 * 24 * 6 && hour < 31 * 24 * 12) {
-			/*12个月内，以4月为间隔*/
-			$("#cycleValue").attr("disabled", true);
-			$("#cycleType").attr("disabled", true);
-			$("#cycleValue").val("4");
-			$("#cycleType").val("4");
-			value = 30 * 24 * 4;
-			type = 3;
-		} else {
-			$("#cycleValue").attr("disabled", false);
-			$("#cycleType").attr("disabled", false);
-			$("#cycleValue").val("1");
-			$("#cycleType").val("2");
-			value = 1;
-			type = 2;
-		}
+			if(hour <= 1) //一小时之内的以1s查询 {
+				
+				$("#cycleValue").val("1");
+				$("#cycleType").val("1");
+				
+			} else if(hour > 1 && hour <= 2)
+			//两小时内的以半小时查询
+			{
+				
+				$("#cycleValue").val("30");
+				$("#cycleType").val("2");
+				
+			} else if(hour > 2 && hour <= 24)
+			//一天之内的以2小时
+			{
+				
+				$("#cycleValue").val("2");
+				$("#cycleType").val("3");
+			
+			} else if(hour > 24 && hour <= 48)
+			//两天之内的以4小时间隔
+			{
+			
+				$("#cycleValue").val("4");
+				$("#cycleType").val("3");
+				
+			} else if(hour > 48 && hour <= 31 * 24) { //一个月，以48小时间隔
+			
+				$("#cycleValue").val("48");
+				$("#cycleType").val("3");
+			
+			} else if(hour >= 31 * 24 && hour < 31 * 24 * 3) { //三个月内，以1个月为间隔
+			
+				$("#cycleValue").val("1");
+				$("#cycleType").val("4");
+				
+			} else if(hour >= 31 * 24 * 3 && hour < 31 * 24 * 6) { //6个月内，以2月为间隔
+				
+				$("#cycleValue").val("2");
+				$("#cycleType").val("4");
+			
+			} else if(hour >= 31 * 24 * 6 && hour < 31 * 24 * 12) {
+				//12个月内，以4月为间隔
+			
+				$("#cycleValue").val("4");
+				$("#cycleType").val("4");
+			
+			} else {
+				
+				$("#cycleValue").val("1");
+				$("#cycleType").val("2");
+				
+			}*/
 		$("#btnToday").attr("disabled", true);
 		$("#btnMonth").attr("disabled", true);
 		$("#btnMonth_3").attr("disabled", true);
@@ -405,12 +368,16 @@ jQuery(document).ready(function() {
 		$("#btnYear").attr("disabled", true);
 		$("#btnGo").attr("disabled", true);
 		$("#btnBack").attr("disabled", true);
-		var cvalue = value;
-		var ctyle = type;
-		console.log("tags");
-		console.log(tags);
+		var cvalue = $("#cycleValue").val();
+
+		var ctyle = $("#cycleType").val();
+		if(ctyle == "4") {
+			cvalue = cvalue * 30 * 24;
+			ctyle = "3";
+		}
+
 		for(var i = 0; i < tags.length; i++) {
-         console.log(tags[i]);
+
 			var jsStr = "GetHistoryData {\"tags\":\"" + tags[i] + "\",\"start\":\"" + start + "\",\"end\":\"" + end + "\",\"cvalue\":\"" + cvalue + "\",\"ctype\":\"" + ctyle + "\"}";
 			send(jsStr);
 		}
@@ -440,25 +407,48 @@ jQuery(document).ready(function() {
 		})
 		/*后退*/
 	$("#btnBack").on("click", function() {
-		colorid = 0;
-		seriesData = [];
+			colorid = 0;
+			seriesData = [];
+			$("#btnToday").attr("disabled", true);
+			$("#btnMonth").attr("disabled", true);
+			$("#btnMonth_3").attr("disabled", true);
+			$("#btnMonth_6").attr("disabled", true);
+			$("#btnYear").attr("disabled", true);
+			$("#btnGo").attr("disabled", true);
+			//$("#btnBack").attr("disabled", true);
+			var st = new Date($("#startTime").val().replace(/\：/g, ':'));
+			var et = new Date($("#endTime").val().replace(/\：/g, ':'));
+			var cDate = et.getTime() - st.getTime();
+			var stDate = new Date(st.getTime() - cDate);
+			var etDate = new Date(et.getTime() - cDate);
+			$("#startTime").val(formatDate(stDate, 1));
+			$("#endTime").val(formatDate(etDate, 1));
+			historyLineFunction();
+		})
+		/*自定义查询*/
+	$("#btn_select").on("click", function() {
+		$("#btnWeek").attr("disabled", true);
 		$("#btnToday").attr("disabled", true);
 		$("#btnMonth").attr("disabled", true);
 		$("#btnMonth_3").attr("disabled", true);
 		$("#btnMonth_6").attr("disabled", true);
 		$("#btnYear").attr("disabled", true);
 		$("#btnGo").attr("disabled", true);
-		//$("#btnBack").attr("disabled", true);
-		var st = new Date($("#startTime").val().replace(/\：/g, ':'));
-		var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-		var cDate = et.getTime() - st.getTime();
-		var stDate = new Date(st.getTime() - cDate);
-		var etDate = new Date(et.getTime() - cDate);
-		$("#startTime").val(formatDate(stDate, 1));
-		$("#endTime").val(formatDate(etDate, 1));
-		historyLineFunction();
-	})
+		$("#btnBack").attr("disabled", true);
 
+		$("#btnYesterMonth").attr("disabled", true);
+		$("#btnYesteryear").attr("disabled", true);
+		$("#btnYesterday").attr("disabled", true);
+		$("#btnWeek").attr("disabled", true);
+
+		$("#btnToday").attr("disabled", true);
+
+		/*var start = $("#startTime").val().replace(/\：/g, ':');
+				var end = $("#endTime").val().replace(/\：/g, ':');
+				var cvalue = $("#cycleValue").val().trim();
+				var ctyle = $("#cycleType").val().trim();*/
+		lineTreed();
+	});
 	/*今天*/
 	$("#btnToday").on("click", function() {
 		$("#echarts_line").css("display", "block");
@@ -476,19 +466,16 @@ jQuery(document).ready(function() {
 		$("#btnYesteryear").attr("disabled", true);
 		$("#btnYesterday").attr("disabled", true);
 		$("#btnWeek").attr("disabled", true);
-		$("#btnYesterWeek").attr("disabled", true);
+
 		$("#btn_select").attr("disabled", true);
 
 		var sDate = new Date();
 
 		$("#startTime").val(formatDate(sDate, 0).toString().split(' ')[0] + " 00：00：00");
 		$("#endTime").val(formatDate(sDate, 0).toString().split(' ')[0] + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
 		$("#cycleValue").val("2");
 		$("#cycleType").val("3");
-		value = 2;
-		type = 3;
+
 		historyLineFunction();
 	});
 	//本月趋势
@@ -515,12 +502,9 @@ jQuery(document).ready(function() {
 		var day = new Date(year, month, 0);
 		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
 		$("#endTime").val(year + '-' + month + '-' + day.getDate() + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
+
 		$("#cycleValue").val("48");
 		$("#cycleType").val("3");
-		value = 48;
-		type = 3;
 		historyLineFunction();
 	});
 
@@ -547,52 +531,10 @@ jQuery(document).ready(function() {
 		$("#startTime").val(formatDate(date, 1));
 
 		$("#endTime").val(formatDate(sDate, 1));
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
+
 		$("#btn_select").attr("disabled", true);
 		$("#cycleValue").val("24");
 		$("#cycleType").val("3");
-		value = 24;
-		type = 3;
-		historyLineFunction();
-	});
-	/*上周*/
-	$("#btnYesterWeek").on("click", function() {
-		$("#echarts_line").css("display", "block");
-
-		colorid = 0;
-		seriesData = [];
-		$("#btnMonth").attr("disabled", true);
-		$("#btnMonth_3").attr("disabled", true);
-		$("#btnMonth_6").attr("disabled", true);
-		$("#btnYear").attr("disabled", true);
-		$("#btnGo").attr("disabled", true);
-		$("#btnBack").attr("disabled", true);
-		$("#btnYesterday").attr("disabled", true);
-		$("#btnYesterMonth").attr("disabled", true);
-		$("#btnYesteryear").attr("disabled", true);
-		$("#btn_select").attr("disabled", true);
-
-		$("#btnWeek").attr("disabled", true);
-		//$("#btnYesterWeek").attr("disabled", true);
-		var now = new Date(); //当前日期 
-		var nowDayOfWeek = now.getDay(); //今天本周的第几天 
-		var nowDay = now.getDate(); //当前日 
-		var nowMonth = now.getMonth(); //当前月 
-		var nowYear = now.getYear(); //当前年 
-		nowYear += (nowYear < 2000) ? 1900 : 0; // 
-		var getUpWeekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
-		var getUpWeekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek - 7));
-		$("#startTime").val(formatDate(getUpWeekStartDate, 0) + " 00：00：00");
-		$("#endTime").val(formatDate(getUpWeekEndDate, 0) + " 23：59：59");
-		/*$("#startTime").val($("#startTime").val().toString().split(' ')[0] + " 00：00：00");
-		$("#endTime").val($("#startTime").val().toString().split(' ')[0] + " 23：59：59");*/
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
-		$("#cycleValue").val("24");
-		$("#cycleType").val("3");
-		value = 24;
-		type = 3;
 		historyLineFunction();
 	});
 	/*三个月*/
@@ -634,12 +576,10 @@ jQuery(document).ready(function() {
 		var day = new Date(year, month, 0);
 		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
 		$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
+
 		$("#cycleValue").val("1");
 		$("#cycleType").val("4");
-		value = 30 * 24;
-		type = 3;
+
 		historyLineFunction();
 	});
 	/*半年*/
@@ -687,12 +627,9 @@ jQuery(document).ready(function() {
 		var day = new Date(year, month, 0);
 		$("#startTime").val(year + '-' + month + '-01' + " 00：00：00");
 		$("#endTime").val(yeartay + '-' + monthTay + '-' + day.getDate() + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
 		$("#cycleValue").val("2");
 		$("#cycleType").val("4");
-		value = 30 * 24 * 2;
-		type = 3;
+
 		historyLineFunction();
 	});
 	/*一年*/
@@ -718,12 +655,9 @@ jQuery(document).ready(function() {
 
 		$("#startTime").val(year + '-' + "01" + '-01' + " 00：00：00");
 		$("#endTime").val(year + '-' + "12" + '-' + "31" + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
 		$("#cycleValue").val("4");
 		$("#cycleType").val("4");
-		value = 30 * 24 * 4;
-		type = 3;
+
 		historyLineFunction();
 	});
 	/*前一天*/
@@ -756,12 +690,10 @@ jQuery(document).ready(function() {
 		//var end = $("#startTime").val().toString();
 		$("#startTime").val(y + "-" + m + "-" + d + " 00：00：00");
 		$("#endTime").val(y + "-" + m + "-" + d + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
+
 		$("#cycleValue").val("2");
 		$("#cycleType").val("3");
-		value = 2;
-		type = 3;
+
 		historyLineFunction();
 	});
 	/*上一年*/
@@ -788,77 +720,53 @@ jQuery(document).ready(function() {
 
 		$("#startTime").val(y + "-" + "01" + "-" + "01" + " 00：00：00");
 		$("#endTime").val(y + "-" + "12" + "-" + "31" + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
+
 		$("#cycleValue").val("4");
 		$("#cycleType").val("4");
-		value = 30 * 24 * 4;
-		type = 3;
-		historyLineFunction();
-	});
-	/*上个月*/
-	$("#btnYesterMonth").on("click", function() {
-		colorid = 0;
-		seriesData = [];
-		$("#echarts_line").css("display", "block");
-
-		$("#btnToday").attr("disabled", true);
-		$("#btnMonth").attr("disabled", true);
-		$("#btnMonth_3").attr("disabled", true);
-		$("#btnMonth_6").attr("disabled", true);
-		$("#btnYear").attr("disabled", true);
-		$("#btnGo").attr("disabled", true);
-		$("#btnBack").attr("disabled", true);
-		$("#btnWeek").attr("disabled", true);
-		$("#btn_select").attr("disabled", true);
-		$("#btnYesterWeek").attr("disabled", true);
-		//$("#btnYesterday").attr("disabled", true);
-		$("#btnYesteryear").attr("disabled", true);
-		//var start = $("#startTime").val().toString();
-		var start = new Date($("#startTime").val().replace(/\：/g, ':'));
-		var et = new Date($("#endTime").val().replace(/\：/g, ':'));
-
-		var y = start.getFullYear();
-		var m = start.getMonth(); //获取当前月份的日期 
-		var d = new Date(y, m, 0);
-
-		//var end = $("#startTime").val().toString();
-		$("#startTime").val(y + "-" + m + "-" + "01" + " 00：00：00");
-		$("#endTime").val(y + "-" + m + "-" + d.getDate() + " 23：59：59");
-		$("#cycleValue").attr("disabled", true);
-		$("#cycleType").attr("disabled", true);
-		$("#cycleValue").val("48");
-		$("#cycleType").val("3");
-		value = 48;
-		type = 3;
 		historyLineFunction();
 	});
 	/*全屏*/
 	fullscreen();
-	function fullscreen()
-	{
+
+	function fullscreen() {
 		$("#btn_fullscreen").on("click", function() {
+			
 
-		$("#close_treed").css('display', 'block');
+			if($("#btn_fullscreen").text().trim() == "全屏") {
+				$("#btn_fullscreen").text("还原");
+				$("#close_treed").css('display', 'block');
 
-		$(".rhTrendright_bottom").css('display', 'none');
-		$(".rhTrendright_middle").addClass("topboder");
-		$(".rhTrendright_right").css('display', 'none');
-		$(".bottom_title").css('display', 'none');
-		$(".rhTrendright_top").css('display', 'none');
-		$(".rhTrendright_top_top").css('display', 'none');
-		$(".rhTrendright_middle").css("height", height);
-		$("#echarts_line").css("height", height * 0.95);
+				$(".rhTrendright_bottom").css('display', 'none');
+				$(".rhTrendright_middle").addClass("topboder");
+				$(".rhTrendright_right").css('display', 'none');
+				$(".bottom_title").css('display', 'none');
+				$(".rhTrendright_top").css('display', 'none');
+				$(".rhTrendright_top_top").css('display', 'none');
+				$(".rhTrendright_middle").css("height", height);
+				$("#echarts_line").css("height", height * 0.95);
+			} else {
+				$("#btn_fullscreen").text("全屏");
+				$("#close_treed").css('display', 'none');
+				$(".rhTrendright_middle").css("height", height * 0.7);
+				$("#echarts_line").css("height", height * 0.66);
 
-		myChart.resize();
+				$(".rhTrendright_middle").removeClass("topboder");
+				$(".rhTrendright_bottom").css('display', 'block');
+				$(".bottom_title").css('display', 'block');
+				$(".rhTrendright_right").css('display', 'none');
+				$(".rhTrendright_top").css('display', 'block');
+				$(".rhTrendright_top_top").css('display', 'block');
 
-	});
-	
+			}
+			myChart.resize();
+
+		});
+
 	}
 	/*关闭全屏*/
-	
-	close_treed();
-	function close_treed()
+
+	//close_treed();
+	/*function close_treed()
 	{
 			$("#close_treed").on("click", function() {
 		$("#close_treed").css('display', 'none');
@@ -876,7 +784,7 @@ jQuery(document).ready(function() {
 
 	});
 	}
-
+*/
 	/*保存笔组*/
 	$("#btn_Savestrokegroup").click(function() {
 
@@ -904,7 +812,7 @@ jQuery(document).ready(function() {
 			var jsStr = "AddGroup {\"name\":\"" + strokeGroup + "\",\"ids\":\"" + tagids + "\",\"colors\":\"" + colors + "\"}";
 			send(jsStr);
 		}
-
+		groupName = $("#input_strokegroup").val();
 	});
 	/*判定此笔组是否已经存在*/
 	function isStrokeGroup(strokeGroup) {
@@ -1188,28 +1096,6 @@ jQuery(document).ready(function() {
 
 		})()
 		/*end----*/
-		/*选择列表*/
-	$("#Ccheck").on("click", function() {
-
-		if($(".rhTrendright_bottom").is(":hidden")) {
-			$(".rhTrendright_middle").css("height", height * 0.7);
-			$("#echarts_line").css("height", height * 0.66);
-
-			$(".rhTrendright_bottom").css('display', 'block');
-			$("#Ccheck").text(" 隐藏列表");
-			$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
-		} else {
-			$("#echarts_line").css("height", height * 0.76);
-
-			$(".rhTrendright_middle").css("height", height * 0.8);
-			$(".rhTrendright_bottom").css('display', 'none');
-			$("#Ccheck").text(" 显示列表");
-			$("#Ccheck").prepend("<i class='fa fa-flash'></i>");
-		}
-
-		myChart.resize();
-
-	});
 
 	function tagListbind(datatable) {
 		var str = "";
@@ -1235,26 +1121,26 @@ jQuery(document).ready(function() {
 	/*tr 的点击事件*/
 	function tagleftClick() {
 
-		$(".div1 tbody tr input").on("click", function() {
+		$("#myModalTend_Add tbody tr input").on("click", function() {
 			var truey = $(this).find('input[name=check_table]').context.checked;
 			$(this).attr("style", "background-color: #DAF3F5").siblings().removeAttr("style");
 			if(truey) {
-
+				
 				if(isExist("tagGrop" + $(this).attr("ID"))) {
 					/*页面动态加载*/
 
 					[tagList[$(this).attr("data-index")]][0]["Color"] = colorArray[colorItem];
 					$(".rhTrendright_bottom tbody").append(tagGropListbind([tagList[$(this).attr("data-index")]]));
-					
+                    $("#dele_this").removeAttr("data-id");
+                    $("#dele_this").hide();
+                    $("#dele_this_line").hide();
+                    /*标签删除*/
 					$(".delgrop").click(function() {
 						var trId = "tagGrop" + $(this).attr("data-value");
 						var groupname = $(this).attr("groupname");
 
 						var tagName = $(this).parent().parent().find("td").eq(0).html();
-						/*if(tagName=="")
-						{
-							tagName = $(this).parent().parent().find("td").eq(0).html();
-						}*/
+
 						if(trId != "") {
 							shconfirm("确定要删除吗？", function(result) {
 								if(result) {
@@ -1267,7 +1153,7 @@ jQuery(document).ready(function() {
 										}
 
 										$("#" + trId).remove();
-										console.log(seriesData)
+										
 										if(tagGropList.length > 0) {
 
 											for(var i = 0; i < seriesData.length; i++) {
@@ -1276,9 +1162,9 @@ jQuery(document).ready(function() {
 													i--;
 												}
 											}
-											console.log(seriesData)
+											
 											if(xAxisData.length > 0) {
-												 myChart1 = echarts.init(document.getElementById('echarts_line'));
+												myChart1 = echarts.init(document.getElementById('echarts_line'));
 												var option = {
 
 													tooltip: {
@@ -1427,7 +1313,9 @@ jQuery(document).ready(function() {
 	}
 
 	/*笔组切换*/
-
+	$("#input_strokegrouplist").on("change", function() {
+		selectGroup();
+	});
 	var groupName;
 
 	function selectGroup() {
@@ -1444,26 +1332,19 @@ jQuery(document).ready(function() {
 		groupName = $("#delete_strokegrouplist").find("option:selected").text(); //$("#input_strokegrouplist").val().trim();
 		send(jsStr);
 	}
-	/*选择笔组*/
-	$("#input_strokegrouplist").on("change", function() {
 
-			selectGroup();
-
-		}
-
-	);
 	/*删除笔组*/
-	$("#delete_strokegrouplist").on("change", function() {
+	/*$("#delete_strokegrouplist").on("change", function() {
 
 			deleteselectGroup();
 
 		}
 
-	);
+	);*/
 
 	/*选择笔组列表*/
 	$("#btn_input").on("click", function() {
-
+		//selectGroup();
 		$("#myStrokegroup_List").modal('hide');
 		lineTreed();
 		if(tagGropList.length > 0) {
@@ -1471,15 +1352,37 @@ jQuery(document).ready(function() {
 			$("#rhTrendright_bottom").show();
 			$("#li_savegroup1").show();
 			$("#li_savegroup2").show();
+			$("#dele_this").show();
+			$("#dele_this_line").show();
+			var value = $("#input_strokegrouplist").val();
+			$("#dele_this").attr("data-id", value);
 		} else {
+
 			$("#li_savegroup1").hide();
 			$("#li_savegroup2").hide();
+			$("#dele_this").hide();
+			$("#dele_this_line").hide();
 		}
 		groupName = "";
 		fullscreen();
-	    close_treed();
+		//close_treed();
 	});
+	/*删除当前笔组*/
+	$("#dele_this").on("click", function() {
+		var deletegroup = $(this).attr("data-id");
+		
+		shconfirm("确定要删除吗？", function(result) {
+			if(result) {
+				var jsStr = "DeleteGroup {\"id\":\"" + deletegroup + "\"}";
 
+				send(jsStr);
+				myChart.clear();
+				tagGropList=[];
+				$(".rhTrendright_bottom tbody tr").html("");
+				
+			}
+		});
+	});
 	/*笔组加载*/
 	function strokeGroupbind(datatable) {
 		var str = "<option></option>";
@@ -1499,13 +1402,14 @@ jQuery(document).ready(function() {
 	var GroupNa = "";
 	$("#btn_Delstrokegroup").click(function() {
 		var strokeGroup = $("#delete_strokegrouplist").val().trim();
-		GroupNa = $("#delete_strokegrouplist").find("option:selected").text();
+		
 		if(strokeGroup == "") {
 			shalert("请选择笔组名称");
 			return false;
 		} else {
 			shconfirm("确定要删除吗？", function(result) {
 				if(result) {
+					GroupNa = $("#delete_strokegrouplist").find("option:selected").text();
 					var jsStr = "DeleteGroup {\"id\":\"" + strokeGroup + "\"}";
 
 					send(jsStr);
@@ -1519,47 +1423,24 @@ jQuery(document).ready(function() {
 	function showHide() {
 		$(".showOrhide").unbind('click');
 		$(".showOrhide").on("click", function() {
-             console.log(tagGropList)
+			
 			var seriesData1 = [];
-			//var tagGropList1=tagGropList;
-			//var tagTemp=tagGropList;
-			//tagGropList=[];
 			var tagName = $(this).parent().parent().find("td").eq(0).html();
-			$.each(tagGropList,function(index,datalist){
-				if(tagName==datalist.Tagname)
-				{
-					if(datalist["show"] == "true" || datalist["show"] == undefined)
-					{
-						datalist["show"] = "false";
-					}else {
-						datalist["show"] = "true";
-						
-						//tagGropList.push(tagGropList1[index]);
-					}
-				}else {
-					if(datalist["show"] == "true" || datalist["show"] == undefined) {
-						//seriesData1.push(data);
-						//tagGropList.push(tagGropList1[index]);
-					}
-
-				}
-			})
 			$.each(seriesData, function(index, data) {
 
 				if(tagName == data["name"]) {
 					if(data["show"] == "true" || data["show"] == undefined) {
 						data["show"] = "false";
 
-
 					} else {
 						data["show"] = "true";
 						seriesData1.push(data);
-						//tagGropList.push(tagGropList1[index]);
+					
 					}
 				} else {
 					if(data["show"] == "true" || data["show"] == undefined) {
 						seriesData1.push(data);
-						//tagGropList.push(tagGropList1[index]);
+					
 					}
 
 				}
@@ -1570,10 +1451,9 @@ jQuery(document).ready(function() {
 			} else {
 				$(this).text("隐藏");
 			}
- console.log(tagGropList)
-			//myChart.clear();
+			
 			if(xAxisData.length > 0) {
-			  myChart2 = echarts.init(document.getElementById('echarts_line'));
+				myChart2 = echarts.init(document.getElementById('echarts_line'));
 				var option = {
 
 					tooltip: {
@@ -1727,6 +1607,12 @@ jQuery(document).ready(function() {
 		/*关闭模态框*/
 
 		$("#myModalTend_Add").modal('hide');
+		
+		ModalTreed();
+
+	});
+
+	function ModalTreed() {
 		lineTreed();
 		if(tagGropList.length > 0) {
 
@@ -1737,14 +1623,7 @@ jQuery(document).ready(function() {
 			$("#li_savegroup1").hide();
 			$("#li_savegroup2").hide();
 		}
-
-	});
-	/*自定义查询*/
-	$("#btn_select").on("click", function() {
-		$("#btnWeek").attr("disabled", true);
-		$("#btnToday").attr("disabled", true);
-		lineTreed();
-	});
+	}
 	/*获取点击的id号，修改颜色*/
 	function colorStyle(_this) {
 		trId = _this.attr("ID");
@@ -1843,7 +1722,7 @@ jQuery(document).ready(function() {
 					break;
 				case "SelectTagList":
 					tagList = result["data"];
-					$(".div1 tbody").html(tagListbind(result["data"]));
+					$("#myModalTend_Add tbody").html(tagListbind(result["data"]));
 					tagleftClick();
 
 					break;
@@ -1851,7 +1730,23 @@ jQuery(document).ready(function() {
 					strokeGroupList = result["data"];
 					$("#input_strokegrouplist").html(strokeGroupbind(strokeGroupList));
 					$("#delete_strokegrouplist").html(strokeGroupbind(strokeGroupList));
-
+                   
+                  /*添加笔组成功后，显示删除当前笔组，并且给删除当前笔组增data-id，以用来表明当前笔组*/
+                    if($("#input_strokegroup").val() != "") {
+                      	
+						var value = "";
+						$.each(strokeGroupList, function(index,data) {
+							if(data.GroupName == $("#input_strokegroup").val()) {
+							
+								value = data.GId;
+							}
+						});
+						
+						$("#dele_this").attr("data-id", value);
+						$("#dele_this").show();
+						$("#dele_this_line").show();
+						$("#input_strokegroup").val("");
+					}
 					break;
 				case "SelectGroup":
 					var strokeGroup = result["data"];
@@ -1869,6 +1764,7 @@ jQuery(document).ready(function() {
 					bottomtr();
 					Ccolor();
 					showHide();
+					//标签删除
 					$(".delgrop").click(function() {
 
 						var trId = "tagGrop" + $(this).attr("data-value");
@@ -2011,46 +1907,57 @@ jQuery(document).ready(function() {
 
 					break;
 				case "AddGroup":
+					
 					shalert("保存成功！")
+                    /*重新绑定笔组列表*/
 					send("GetGroupList");
-					$("#myStrokegroup_Add").modal('hide');
-					$("#input_strokegroup").val("");
+
 					groupName = "";
+				$(".rhTrendright_bottom tbody tr .delgrop").attr("groupname",$("#input_strokegroup").val())
+					/*给删除当前笔组按钮赋值*/
+					$("#myStrokegroup_Add").modal('hide');
 					break;
 				case "DeleteGroup":
-					shalert(result["info"])
+					shalert(result["info"]);
+					/*重新绑定笔组列表*/
 					send("GetGroupList");
 
 					/*判定是否做了选择笔组操作，如果标签表中*/
 
 					if(tagGropList.length != 0) {
 						var groupName = $(".rhTrendright_bottom tbody tr").eq(0).find(".delgrop").attr("groupname");
+						console.log(groupName)
+						console.log(GroupNa)
 						if(groupName == GroupNa) {
-							var objtr = $(".rhTrendright_bottom tbody tr");
+							/*var objtr = $(".rhTrendright_bottom tbody tr");
 
 							for(var i = 0; i < objtr.length; i++) {
 								var Name = $(".rhTrendright_bottom tbody tr").eq(i).find(".delgrop").attr("groupname")
-								if(Name == GroupNa) {
-									$(".rhTrendright_bottom tbody tr").eq(i).remove();
-									i--;
+								if(Name == GroupNa) {*/
+									$(".rhTrendright_bottom tbody tr").remove();
+									myChart.clear();
+									/*i--;
 								}
-							}
+							}*/
 
 						}
 						tagGropList = "";
 					}
 					groupName = "";
+					$("#dele_this").removeAttr("data-id");
+					$("#dele_this").hide();
+                    $("#dele_this_line").hide();
 					break;
 
 				case "GetHistoryData":
-                    
+
 					var dataList = result["data"];
-					console.log(dataList);
+					
 					btnTrend.showLoading({
 						text: "图表数据正在努力加载..."
 					});
 					window.clearTimeout(timeTicket);
-        
+
 					myChart.clear();
 
 					lineData = [];
@@ -2064,8 +1971,6 @@ jQuery(document).ready(function() {
 					var type = "";
 					if(btnTrend == myChart) {
 						type = "line";
-					} else {
-						type = "bar";
 					}
 					if(dataList.length == 0) {
 						seriesData.push({
@@ -2084,14 +1989,7 @@ jQuery(document).ready(function() {
 							lineData.push(dataList[i]["Value"]);
 
 						}
-						/*var des="";
-						if(tagGropList[colorid].Description!="")
-						{
-							des=tagGropList[colorid].Description;
-						}else
-						{
-							des=tagGropList[colorid].Tagname;
-						}*/
+					
 						if(btnTrend == myChart) {
 							seriesData.push({
 								name: tagGropList[colorid].Tagname,
@@ -2164,9 +2062,9 @@ jQuery(document).ready(function() {
 							disabled_btn();
 
 							$("#btn_fullscreen").attr("disabled", false);
-							console.log(dataTreedInfo);
-							$("#myTreedInfo table tbody").html(TreedInfo(dataTreedInfo));
 							
+							$("#myTreedInfo table tbody").html(TreedInfo(dataTreedInfo));
+
 							$("#btn_TreedInfo").show();
 							/*列表中的所有按钮文本初始化为隐藏*/
 							$(".showOrhide").text("隐藏");
@@ -2197,7 +2095,7 @@ jQuery(document).ready(function() {
 				str += "</tr>";
 			});
 		}
-        console.log(str);
+		
 		return str;
 	}
 	/*对按钮的隐藏*/
@@ -2251,14 +2149,17 @@ jQuery(document).ready(function() {
 	});
 
 	/*模态框关闭*/
-	$("#myModalTend_Add").on("hidden.bs.modal", function() {
-		console.log($(this));
-
+	$("#closeX").on("click", function() {
+	  
+         $(this).removeData("bs.modal");
 		send("GetTagList");
-
+       
 		goPAGE();
+		
+		$("#close_Check").click();
+
 		$("#input_name").val("");
-		$(this).removeData("bs.modal");
+		
 	});
 	/*趋势详细信息模态框的显示*/
 	$('#myTreedInfo').on('shown.bs.modal', function(e) {
