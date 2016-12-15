@@ -1368,7 +1368,9 @@ jQuery(document).ready(function() {
 		//close_treed();
 	});
 	/*删除当前笔组*/
+	var  tempbtn="";//用来判定当前点击的删除当前笔组
 	$("#dele_this").on("click", function() {
+		tempbtn="1";
 		var deletegroup = $(this).attr("data-id");
 		
 		shconfirm("确定要删除吗？", function(result) {
@@ -1944,9 +1946,14 @@ jQuery(document).ready(function() {
 						tagGropList = "";
 					}
 					groupName = "";
+					if(tempbtn=="1")
+					{
 					$("#dele_this").removeAttr("data-id");
 					$("#dele_this").hide();
                     $("#dele_this_line").hide();
+                    tempbtn="";
+					}
+					
 					break;
 
 				case "GetHistoryData":
