@@ -1938,12 +1938,13 @@ jQuery(document).ready(function() {
 								if(Name == GroupNa) {*/
 									$(".rhTrendright_bottom tbody tr").remove();
 									myChart.clear();
+									tagGropList = "";
 									/*i--;
 								}
 							}*/
 
 						}
-						tagGropList = "";
+						
 					}
 					groupName = "";
 					if(tempbtn=="1")
