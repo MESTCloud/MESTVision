@@ -427,6 +427,7 @@ jQuery(document).ready(function() {
 		})
 		/*自定义查询*/
 	$("#btn_select").on("click", function() {
+	
 		$("#btnWeek").attr("disabled", true);
 		$("#btnToday").attr("disabled", true);
 		$("#btnMonth").attr("disabled", true);
@@ -1585,7 +1586,7 @@ jQuery(document).ready(function() {
 
 				}
 				str += "<span>删除</span></button>";
-				str += "<button type='button' class='btn green Ccolor'  style='padding: 0px 7px;'><span>颜色配置</span></button>"
+				str += "<button type='button' class='btn btn-primary Ccolor'  style='padding: 0px 7px;'><span>颜色配置</span></button>"
 				str += "<button type='button' class='btn green showOrhide'  style='padding: 0px 7px;'><span>隐藏</span></button>"
 				str += "</td>";
 				str += "</tr>";

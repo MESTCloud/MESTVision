@@ -245,4 +245,7 @@ table.dataTable1 tbody tr{
 .ExeOut{
 	text-align: right;
 }
-
+/*.demo { position: relative; }
+      .demo i {
+        position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer;
+      }*/
