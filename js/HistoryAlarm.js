@@ -4,18 +4,21 @@ var fileName1;
 $(document).ready(function() {
 	/*设置自适应滚动条*/
   	$(".rowcolor").css("height", pFrameHeight - pTitleHeight - pConditionHeight - 30);
-      
+   /*   $("#config-demo").val()
+       console.log($("#config-demo").val());*/
 	/*查询按钮点击事件*/
 	$("#btn_check").click(function() {
-
+  
+  var time=$("#config-demo").val();
 		/*报表名称*/
-		var pUsername = $.cookie("user");
+		var pUsername = $.cookie("user").trim();
 
 		/*开始日期*/
-		var pStime = $("#startTime").val();
-
+		var pStime = time.split('-')[0].trimRight();
+   
 		/*结束日期*/
-		var pEtime = $("#endTime").val();
+		var pEtime =  time.split('-')[1].trimLeft();
+		
 		/*判定事件*/
 		if(pStime == "" || pStime == null) {
 			shalert("开始时间不能为空！");
@@ -37,11 +40,11 @@ $(document).ready(function() {
 	/*导出功能*/
 	$("#btnOutputExcel").click(function() {
 		/*开始日期*/
-
-		var pStime = $("#startTime").val().trim();
+ var time=$("#config-demo").val();
+		var pStime = time.split('-')[0].trimRight();
 
 		/*结束日期*/
-		var pEtime = $("#endTime").val().trim();
+		var pEtime = time.split('-')[1].trimLeft();
 
 		if(pStime == "") {
 			shalert("开始日期不能为空！");
